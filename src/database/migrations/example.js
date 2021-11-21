@@ -1,5 +1,5 @@
 'use strict';
-const {TableSchema, TABLE_TABLE } = require('./../models/example')
+const {TableSchema, TABLE_TABLE } = require('../models/Example')
 
 
 module.exports = {
