@@ -7,7 +7,6 @@
 //     this.genres = [];
 //     this.generate();
 //   }
-
 //   async generate() {
 //     try {
 //       let genresApi = await axios.get(
@@ -22,7 +21,6 @@
 //       throw boom.notFound(error.message);
 //     }
 //   } 
-
 //   async find() {
 //     try {
 //       const allGenres = await models.Genres.findAll();
