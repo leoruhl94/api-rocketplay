@@ -1,12 +1,12 @@
 import  express from 'express';
-const {conn} = require('./src/libs/sequelize');
+const {modelDefiners} = require('./src/libs/sequelize');
 const app = express();
 const {
-  PORT = 3000,
+  PORT = 3002,
 } = process.env;
 
 
-conn.sync().then(() => {
+modelDefiners.sequelize.sync().then(() => {
   app.listen(PORT, () => {
       console.log(`App listening on port ${PORT}`)
   })
