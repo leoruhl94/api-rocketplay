@@ -1,21 +1,53 @@
-import { Model } from 'sequelize';
-module.exports = (sequelize, DataTypes) => {
-  class Plans extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Plans.belongsToMany(models.Users, { through: "UsersPlans" })
+import {
+  Model, UUIDV4
+} from 'sequelize';
+
+interface PlansAttributes {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  userLimit: number;
+}
+
+module.exports = (sequelize: any, DataTypes: any) => {
+  class Plans extends Model<PlansAttributes> 
+  implements PlansAttributes {
+     id!: string;
+     name!: string;
+     description!: string;
+     price!: number;
+     userLimit!: number;
+    static associate(models: any) {
+      Plans.belongsToMany(models.Project, {
+        through: 'UsersPlans'
+      })
     }
   };
   Plans.init({
-    Name: DataTypes.STRING,
-    Description: DataTypes.TEXT,
-    Price: DataTypes.ENUM,
-    UserLimit: DataTypes.INTEGER
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: UUIDV4,
+      allowNull: false,
+      primaryKey: true
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true
+    }, 
+    price: {
+      type: DataTypes.ENUM(100, 250, 300),
+      allowNull: false
+    }, 
+    userLimit: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Plans',
