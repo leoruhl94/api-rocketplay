@@ -8,16 +8,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Name: {
+      name: {
         type: Sequelize.STRING
       },
-      Mail: {
+      mail: {
         type: Sequelize.STRING
       },
-      Password: {
+      password: {
         type: Sequelize.STRING
       },
-      YoutubeChannel: {
+      youtubeChannel: {
         type: Sequelize.STRING
       },
       createdAt: {

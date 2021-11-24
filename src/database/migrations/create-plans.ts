@@ -8,16 +8,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      Name: {
+      name: {
         type: Sequelize.STRING
       },
-      Description: {
+      description: {
         type: Sequelize.TEXT
       },
-      Price: {
-        type: Sequelize.ENUM
+      price: {
+        type: Sequelize.INTEGER
       },
-      UserLimit: {
+      userLimit: {
         type: Sequelize.INTEGER
       },
       createdAt: {

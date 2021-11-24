@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Plans.init({
-    Name: DataTypes.STRING,
-    Description: DataTypes.TEXT,
-    Price: DataTypes.ENUM,
+    name: DataTypes.STRING,
+    description: DataTypes.TEXT,
+    price: DataTypes.INTEGER,
     limitUsers: DataTypes.INTEGER
   }, {
     sequelize,

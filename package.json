@@ -4,14 +4,15 @@
   "description": "Final Project",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.ts",
+    "start": "node build/index.js",
+    "start:dev": "webpack --mode development && node build/index.js",
+    "dev": "ts-node-dev index.ts",
     "migrations:generate": "sequelize-cli migration:generate --name",
     "migrations:run": "sequelize-cli db:migrate",
     "migrations:revert": "sequelize-cli db:migrate:undo ",
     "migrations:delete": "sequelize-cli db:migrate:undo:all ",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack --mode production"
   },
   "keywords": [],
   "author": "Rocket Play",
@@ -28,14 +29,15 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.9.0",
-    "sequelize-cli": "^6.3.0",
-    "ts-loader": "^9.2.6",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.2"
+    "sequelize-cli": "^6.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.2",
+    "webpack": "^5.64.3",
     "webpack-cli": "^4.9.1"
   }
 }

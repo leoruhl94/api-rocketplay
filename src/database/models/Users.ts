@@ -10,15 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Users.belongsToMany(models.Plans, { through: "UsersPlans" })
-      Users.belongsToMany(models.Schemas, { through: "UsersSchemas" })
+      Users.belongsToMany(models.Plans, { through: "UsersPlans"})
+      Users.belongsToMany(models.Schemas, { through: "UsersSchemas"})
     }
   };
   Users.init({
-    Name: DataTypes.STRING,
-    Mail: DataTypes.STRING,
-    Password: DataTypes.STRING,
-    YoutubeChannel: DataTypes.STRING
+    name: DataTypes.STRING,
+    mail: DataTypes.STRING,
+    password: DataTypes.STRING,
+    youtubeChannel: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Users',
