@@ -1,5 +1,6 @@
-const registerBusiness = require('./controllers/registerBusiness.ts')
-const router = require("express").Router();
+const registerBusiness = require('../database/controllers/registerBusiness');
+import Router from "express";
+const router = Router();
 router.post('/', registerBusiness)
 
 module.exports = router;

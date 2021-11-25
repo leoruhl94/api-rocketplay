@@ -1,6 +1,8 @@
-const { Router } = require("express");
+import {Response, Request, Router, NextFunction} from 'express';
 const router = Router();
-const {} = require('./libs/sequelize.ts')
+// const {} = require('./libs/sequelize.ts')
 
-router.post('/', async (req, res, next)=> {})
+router.post('/', async (req:Request, res:Response, next:NextFunction)=> {
+    
+})
 module.exports = router;

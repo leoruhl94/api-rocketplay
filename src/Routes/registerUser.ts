@@ -1,5 +1,6 @@
-const registerUser = require('./controllers/registerUser.ts')
-const router = require("express").Router();
+const registerUser = require('../database/controllers/registerUser');
+import Router from "express";
+const router = Router();
 router.post('/', registerUser)
 
 module.exports = router;

@@ -1,25 +1,20 @@
-const express = require("express");const cookieParser = require('cookie-parser');
-const morgan = require('morgan');
-const routes = require('./routes/index.ts');
-const { json } = require('express');
-
-const server = express();
-require('./database.ts')
-server.name = "API";
-
-server.use(express.urlencoded({ extended: true, limit: "50mb" }));
-server.use(express.json({ limit: "50mb" }));
-server.use(morgan("dev"));
-server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3002"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  next();
-});
-
-server.use("/", routes);
-module.exports = server;
+import express, {Application} from 'express';
+import {Response, Request, NextFunction} from 'express';
+//import cookieParser from 'cookie_parser';
+import bodyParser from 'body-parser';
+//import morgan from 'morgan';
+import routes from './Routes';
+import errorHandler from './middlewares/errorHandler';
+import setHeaders from './middlewares/setHeaders';
+const server: Application = express();
+server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+server.use(bodyParser.json({ limit: '50mb' }));
+//server.use(cookieParser());
+//server.use(morgan('dev'));
+server.use(setHeaders);
+server.use('/', routes);
+server.get('/', async (req:Request, res:Response, next:NextFunction)=> {
+    res.send("gohohoh")
+    })
+server.use(errorHandler);
+export default server;

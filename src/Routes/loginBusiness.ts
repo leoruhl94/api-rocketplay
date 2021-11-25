@@ -1,5 +1,6 @@
-const loginBusiness = require('./controllers/loginBusiness.ts')
-const router = require("express").Router();
-router.post('/', )
+import Router from "express";
+const loginBusiness = require('../database/controllers/loginBusiness');
+const router = Router();
+router.post('/', loginBusiness )
 
 module.exports = router;

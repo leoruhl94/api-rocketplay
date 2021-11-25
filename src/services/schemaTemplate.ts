@@ -1,7 +1,7 @@
-import { Sequelize, DataTypes } from "sequelize"
-const {modelDefiners} = require('./src/libs/sequelize');
+import { DataTypes } from "sequelize"
+const {conn} = require('../libs/sequelize');
 
-const sequelize = modelDefiners.sequelize
+const sequelize = conn
 
 export default function createTemplate(name: string) {
     const User = sequelize.define('User', {

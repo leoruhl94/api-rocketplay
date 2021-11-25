@@ -8,6 +8,7 @@ import path from "path"
 const basename = path.basename(__filename);
 const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
+console.log(config.dbUser)
 const URI = `postgres://${config.dbUser}:${config.dbPassword}@${config.dbHost}/${config.dbName}`
 
 
@@ -27,19 +28,14 @@ fs.readdirSync(path.join(__dirname.slice(0,-5),'/database/models'))
   modelDefiners[file] = model;
 });
 
-
-
 Object.keys(modelDefiners).forEach(modelName => {
   modelDefiners[modelName](sequelize,DataTypes);
   if (modelDefiners[modelName].associate) {
     modelDefiners[modelName].associate(modelDefiners);
   }
 });
-
-modelDefiners["Sequelize"] = Sequelize;
-modelDefiners["sequelize"] = sequelize;
-
 module.exports = {
-  modelDefiners
+  ...sequelize.models,
+  conn: sequelize
 };
 
