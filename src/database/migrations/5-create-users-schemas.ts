@@ -20,12 +20,21 @@ module.exports = {
       schemaId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Schema",
+          model: "Schemas",
           key: "id"
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL"
         
+      }
+      ,
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },

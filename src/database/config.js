@@ -1,8 +1,8 @@
-import config from "../config/config";
+// import config from "../config/config";
+const config = require("../config/config.ts")
 
 const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
-console.log(config.dbUser)
 const URI = `postgres://${config.dbUser}:${config.dbPassword}@${config.dbHost}/${config.dbName}`;
 
 module.exports = {
@@ -15,3 +15,14 @@ module.exports = {
         dialect: 'postgres'
     }
 }
+
+// export default {
+//     development: {
+//         url: URI,
+//         dialect: 'postgres'
+//     },
+//     production: {
+//         url: URI,
+//         dialect: 'postgres'
+//     }
+// }

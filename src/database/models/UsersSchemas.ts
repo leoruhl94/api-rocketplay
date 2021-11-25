@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'UsersSchemas',
+    schema: 'public'
   });
   return UsersSchemas;
 };

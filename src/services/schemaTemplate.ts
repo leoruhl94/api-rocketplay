@@ -1,15 +1,16 @@
-import { DataTypes } from "sequelize"
+import { DataTypes, Sequelize } from "sequelize"
 const {conn} = require('../libs/sequelize');
 
 const sequelize = conn
 
-export default function createTemplate(name: string) {
-    const User = sequelize.define('User', {
+
+export default async function createTemplate(name: string) {
+    const User = sequelize.define('user', {
         name: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        email: {
+        mail: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
@@ -18,20 +19,26 @@ export default function createTemplate(name: string) {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        userType: {
+        usertype: {
             type: DataTypes.ENUM('subscriber', 'admin', 'superadmin'),
             allowNull: false
         }
     }, {
-            schema: name,
+            sequelize,
+            modelName: 'user',
+            schema: name.toLowerCase(),
+            tableName: 'users',
+            timestamps: false, //we do not need updatedAt nor createdAt
+            
+            
         });
     
-    const Channel = sequelize.define('Channel', {
+    const Channel = sequelize.define('channel', {
         name: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        isPrivate: {
+        isprivate: {
             type: DataTypes.BOOLEAN,
             allowNull: false
         },
@@ -40,20 +47,28 @@ export default function createTemplate(name: string) {
         }
 
     }, {
-        schema: name
+        sequelize,
+        modelName: 'channel',
+        schema: name.toLowerCase(),
+        tableName: 'channels',
+        timestamps: false, //we do not need updatedAt nor createdAt
     })
 
-    const Category = sequelize.define('Category', {
+    const Category = sequelize.define('category', {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         }
     }, {
-        schema: name
+        sequelize,
+        modelName: 'category',
+        schema: name.toLowerCase(),
+        tableName: 'categories',
+        timestamps: false, //we do not need updatedAt nor createdAt
     })
 
-    const Video = sequelize.define('Video', {
+    const Video = sequelize.define('video', {
         id: {
             type: DataTypes.UUID,
             allowNull: false,
@@ -72,32 +87,44 @@ export default function createTemplate(name: string) {
         }
 
     }, {
-        schema: name
+        sequelize,
+        modelName: 'video',
+        schema: name.toLowerCase(),
+        tableName: 'videos',
+        timestamps: false, //we do not need updatedAt nor createdAt
     })
 
-    const Tag = sequelize.define('Tag', {
+    const Tag = sequelize.define('tag', {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
         }
     }, {
-        schema: name
+        sequelize,
+        modelName: 'tag',
+        schema: name.toLowerCase(),
+        tableName: 'tags',
+        timestamps: false, //we do not need updatedAt nor createdAt
     })
 
-    User.belongsToMany(Channel, { through: "UserChannels" })
-    Channel.belongsToMany(User, { through: "UserChannels" })
 
-    Category.belongsToMany(Channel, { through: "ChannelsCategory" })
-    Channel.belongsToMany(Category, { through: "ChannelsCategory" })
+    User.belongsToMany(Channel, { through: "userchannels" })
+    Channel.belongsToMany(User, { through: "userchannels" })
 
-    Category.belongsToMany(Video, { through: "VideoCategory" })
-    Video.belongsToMany(Category, { through: "VideoCategory" })
+    Category.belongsToMany(Channel, { through: "channelscategory" })
+    Channel.belongsToMany(Category, { through: "channelscategory" })
 
-    Tag.belongsToMany(Video, { through: "VideoTags" })
-    Video.belongsToMany(Tag, { through: "VideoTags" })
+    Category.belongsToMany(Video, { through: "videocategory" })
+    Video.belongsToMany(Category, { through: "videocategory" })
+
+    Tag.belongsToMany(Video, { through: "videotags" })
+    Video.belongsToMany(Tag, { through: "videotags" })
 
     User.hasMany(Video)
     Video.belongsTo(User)
+    
+    await sequelize.sync({schema: name.toLowerCase()}) 
 
+    return User
 }

@@ -1,6 +1,7 @@
 import {Response, Request, NextFunction} from 'express';
 import cors from 'cors';
-import config from '../config/config';
+const config = require('../config/config')
+// import config from '../config/config';
 const setHeaders = ((req:Request, res:Response, next:NextFunction) => {
   cors({
 		origin: config.cors,

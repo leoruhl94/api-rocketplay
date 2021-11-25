@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes } from "sequelize";
 
-import config from "../config/config";
+// import config from "../config/config";
+const config = require("../config/config")
 import fs from "fs"
 import path from "path"
 
@@ -8,7 +9,7 @@ import path from "path"
 const basename = path.basename(__filename);
 const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
-console.log(config.dbUser)
+console.log("postgres: ", config.dbUser)
 const URI = `postgres://${config.dbUser}:${config.dbPassword}@${config.dbHost}/${config.dbName}`
 
 
