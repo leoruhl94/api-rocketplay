@@ -1,5 +1,4 @@
 require("dotenv").config();
-console.log("config/config.ts: ", process.env.DB_USER)
 const config = {
   env: process.env.NODE_ENV || "dev",
   isProd: process.env.NODE_ENV === 'production',
@@ -12,5 +11,4 @@ const config = {
   dbUrl:process.env.DATABASE_URL,
   cors: process.env.CORS || 'localhost:3002',
 };
-
 module.exports = config

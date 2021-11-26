@@ -1,6 +1,5 @@
 import createTemplate from "../../services/schemaTemplate";
 import { Response, Request, Router, NextFunction } from 'express';
-import { QueryTypes } from "sequelize/types";
 const router = Router();
 const { conn, Users, Plans, Schemas, UsersSchemas } = require('../../libs/sequelize');
 const sequelize = conn;
