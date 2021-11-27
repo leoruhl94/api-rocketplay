@@ -1,5 +1,5 @@
 import {Response, Request, Router, NextFunction} from 'express';
-const {conn, Users} = require('../../libs/sequelize')
+const {conn, Users} = require('../libs/sequelize')
 const router = Router();
 router.post('/', async (req:Request, res:Response, next:NextFunction)=> {
     const {mail, password} = req.body;

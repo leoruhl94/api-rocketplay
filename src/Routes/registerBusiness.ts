@@ -1,5 +1,5 @@
-const registerBusiness = require('../database/controllers/registerBusiness');
 import Router from "express";
+const registerBusiness = require('../controllers/registerBusiness');
 const router = Router();
 router.post('/', registerBusiness)
 
