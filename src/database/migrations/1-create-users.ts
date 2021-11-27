@@ -14,11 +14,9 @@ module.exports = {
       mail: {
         type: Sequelize.STRING
       },
-      password: {
-        type: Sequelize.STRING
-      },
       youtubeChannel: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: null
       },
       createdAt: {
         allowNull: false,
