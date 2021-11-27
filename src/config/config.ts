@@ -8,7 +8,7 @@ const config = {
   dbName: process.env.DB_DATABASE,
   dbPort: process.env.DB_PORT,
   dbPassword: process.env.DB_PASSWORD,
-  dbUrl:process.env.DATABASE_URL,
+  dbUrl:process.env.DATABASE_URL || `postgres://${this.dbUser}:${this.dbPassword}@${this.dbHost}/${this.dbName}`,
   cors: process.env.CORS || 'localhost:3002',
 };
 module.exports = config
