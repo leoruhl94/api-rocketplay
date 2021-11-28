@@ -9,7 +9,7 @@ module.exports = {
   entry: './index.ts',
   // mode: NODE_ENV,
   mode: 'production',
-  // externals: [nodeExternals()],
+  externals: [nodeExternals()],
   target: 'node',
   output: {
     path: path.resolve(__dirname, 'build'),
