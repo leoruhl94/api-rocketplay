@@ -12,3 +12,4 @@ const config = {
   cors: process.env.CORS || 'localhost:3002',
 };
 module.exports = config
+ 
