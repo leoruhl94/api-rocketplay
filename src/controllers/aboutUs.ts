@@ -85,7 +85,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
           GitHub: "https://github.com/LOLE81",
         },
         photo: "https://avatars.githubusercontent.com/u/87158728?v=4",
-        description: `in progress`,
+        description: `Who am I? ✋ 📌 I'm Pablo, but every calls me Lole. This year I found in programming a new passion. Now I can say that I'm close to be a Full Stack Web Developer. I'm finding my path in this wonderful world which is programming, and learning all the time. 📋 I've been working as a trader in the agricultural area for many years, with experience in commodities as soybeans, corn, wheat, barley and others. I've decided to change that way of life, today I'm looking forward to learn and apply all kind of knowledge related to this new passion. 🔍 I'm looking for new experiences and hoping to have the chance to contribute with my knowledges and continue learning, to improve as a professional. 💪 I really like to work in teams and also enjoy working alone if necessary. 💻 I've been studying languages and techs as JavaScript, HTML, CSS, React, Redux, NodeJs, Express, PostgreSQL, Sequelize, and others as Babel, Webpack, TypeScript, and a never ending list of "to learn in the future..." 📨Contact me: ◻ E-mail: martinezpm@gmail.com ◻ GitHub: https://github.com/LOLE81/ ◻ Twitter: @LOLE81PM ◻ Whatsapp: https://wa.link/x3n03h`,
       },
       {
         id: 5,
@@ -110,26 +110,24 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
           GitHub: "https://github.com/leoruhl94",
         },
         photo: "https://avatars.githubusercontent.com/u/41834037?v=4",
-        description: `¿Quien soy?
-        Soy Full Stack Developer con experiencia en el desarrollo de aplicaciones Front-end y Back-end. actualmente especializándome en Front-end.
-        Me apasiona Programar, Enseñar y encarar nuevos desafíos que constantemente me hagan estar aprendiendo algo nuevo.
+        description: `Hola!! Mi nombre es Leo y Soy Full Stack Developer con experiencia en el desarrollo de aplicaciones Front-end y Back-end. Me apasiona Programar, Enseñar y encarar nuevos desafíos que continuamente me permitan aprender algo nuevo.
+
+        Desde la infancia me ha gustado crear cosas, decidí entrar al mundo IT porque para crear algo grandioso, el único limite que existe es tu imaginación.
+        Desde entonces no dejo de sorprenderme de lo que se puede lograr trabajando en equipo y con solo unas líneas de código.
         
-        🔍Estoy en búsqueda de nuevos desafíos donde pueda aportar con mi experiencia y conocimientos. Busco un puesto que me permita seguir aprendiendo y desarrollarme como profesional.
+        🔍Estoy en búsqueda de nuevos desafíos donde pueda aportar mi experiencia y conocimientos. Busco un puesto que me permita seguir aprendiendo y desarrollarme como profesional.
         
-        Desde que era chico siempre me ha gustado crear cosas, cuando descubrí la programación, decidí entrar al mundo IT porque te brinda la posibilidad de crear lo que sea que puedas imaginar.
-        Desde entonces no dejo de sorprenderme de lo que se puede lograr trabajando en equipo y con unas solo líneas de código.
-        
-        🧠Me considero una persona autodidacta, actualmente estoy estudiando para especializarme en tecnologías de Front-end.
+        🧠Me considero una persona autodidacta, actualmente estoy estudiando tecnologías de Front-end para especializarme en esa área de desarrollo.
         
         💡Tecnologías
         ◻ Lenguaje de programación: JavaScript, TypeScript
         ◻ Desarrollo Front-End: HTML5, CSS3, React, Redux, React Native
         ◻ Desarrollo Back-End: NodeJS, Express, Sequelize, PostgreSQL
-        ◻ Otros: Webpack, Git, Github, Slack, Trello, Jira, Heroku, Scrum
+        ◻ Otros: Webpack, Git, Github, Slack, Trello, Jira, Heroku, Scrum, FileZilla
         
         📨Contacto
         ◻ E-mail: Leoruhl94@gmail.com
-        ◻ Github: leoruhl94 - Overview
+        ◻ Github: https://github.com/leoruhl94
         ◻ Whatsapp: wa.link/x4hwcq`,
       },
       {
