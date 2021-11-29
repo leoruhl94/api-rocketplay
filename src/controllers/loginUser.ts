@@ -5,30 +5,47 @@ const sequelize = conn;
 const OAuth2Data = require("../../googleYoutube.json")
 const {google} = require("googleapis")
 
-let authed = false;
+// let authed = false;
 
-const oAuthClient = new google.auth.OAuth2(
-    OAuth2Data.web.client_id,
-    OAuth2Data.web.client_secret,
-    OAuth2Data.web.redirect_uris[0]
-)
+// const oAuthClient = new google.auth.OAuth2(
+//     OAuth2Data.web.client_id,
+//     OAuth2Data.web.client_secret,
+//     OAuth2Data.web.redirect_uris[0]
+// )
 
 router.post('/', async (req:Request, res:Response, next:NextFunction)=> {
     try{
-        const {isBusiness} = req.body
-        if (isBusiness) {
-            const url = oAuthClient.generateAuthUrl({
-                access_type: 'offline',
-                scope: 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl'
+        const {isBusiness, name, email} = req.body
+        const userBool = await Users.findOne({
+            where: {mail: email}
+        })
+        if (!userBool) {
+            const newUser = await Users.create({
+                name: name,
+                mail: email
             })
-            res.json({url})
-        } else {
-            const url = oAuthClient.generateAuthUrl({
-                access_type: 'offline',
-                scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube'
-            })
-            res.json({url})
+            return res.status(200).json(newUser)
         }
+        return res.status(200).json(userBool)
+
+
+
+
+
+
+        // if (isBusiness) {
+        //     const url = oAuthClient.generateAuthUrl({
+        //         access_type: 'offline',
+        //         scope: 'https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.force-ssl'
+        //     })
+        //     res.json({url})
+        // } else {
+        //     const url = oAuthClient.generateAuthUrl({
+        //         access_type: 'offline',
+        //         scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube'
+        //     })
+        //     res.json({url})
+        // }
 
 
         //generar url de logueo de google
@@ -76,7 +93,5 @@ router.post('/', async (req:Request, res:Response, next:NextFunction)=> {
 })
 
 module.exports = {
-    loginUser: router,
-    authed,
-    oAuthClient
+    loginUser: router
 };
