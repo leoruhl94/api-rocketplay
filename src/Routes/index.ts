@@ -6,6 +6,7 @@ const registerBRouter = require("./registerBusiness.ts");
 const registerURouter = require("./registerUser.ts");
 const channelsRouter = require("./channels.ts");
 const tagsRouter = require("./tags.ts");
+const categoryRouter = require("./category.ts");
 const aboutUsRouter = require("./aboutUs.ts");
 const uploadVideo = require("./uploadVideo");
 const oauth2callback = require("./oauth2callback");
@@ -17,6 +18,7 @@ router.use("/registerBusiness", registerBRouter);
 router.use("/registerUser", registerURouter);
 router.use("/channels", channelsRouter);
 router.use("/tags", tagsRouter);
+router.use("/categories", categoryRouter);
 router.use("/aboutUs", aboutUsRouter);
 router.use("/uploadVideo", uploadVideo);
 router.use("/payment",payment)
