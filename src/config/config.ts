@@ -9,6 +9,7 @@ const config = {
   dbPort: process.env.DB_PORT,
   dbPassword: process.env.DB_PASSWORD,
   dbUrl:process.env.DATABASE_URL,
+  keyMP:process.env.KEY_MERCADO_PAGO,
   cors: process.env.CORS || 'localhost:3002',
 };
 module.exports = config
