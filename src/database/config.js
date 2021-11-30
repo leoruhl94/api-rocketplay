@@ -8,16 +8,34 @@ const PASSWORD = encodeURIComponent(config.dbPassword);
 // const URI = `postgres://postgres:38644082@localhost:5432/RocketPlay`;
 const URI = config.dbUrl;
 
+// module.exports = {
+//     development: {
+//         url: URI,
+//         dialect: 'postgres'
+//     },
+//     production: {
+//         url: URI,
+//         dialect: 'postgres'
+//     }
+// }
+
 module.exports = {
     development: {
-        url: URI,
-        dialect: 'postgres'
+      url: config.dbUrl,
+      dialect: "postgres", 
     },
     production: {
-        url: URI,
-        dialect: 'postgres'
-    }
-}
+      url: config.dbUrl,
+      dialect: "postgres",
+      dialectOptions : {
+        ssl: {
+          rejectUnauthorized: false,
+        }
+      }
+    },
+  };
+
+
 
 // export default {
 //     development: {

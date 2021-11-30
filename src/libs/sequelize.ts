@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { Sequelize, DataTypes, Options } from "sequelize";
 
 // import config from "../config/config";
 const config = require("../config/config")
@@ -7,16 +7,30 @@ import path from "path"
 
 
 const basename = path.basename(__filename);
-const USER = encodeURIComponent(config.dbUser);
-const PASSWORD = encodeURIComponent(config.dbPassword);
+;
 console.log("postgres: ", config.dbUser)
-const URI = `postgres://${config.dbUser}:${config.dbPassword}@${config.dbHost}/${config.dbName}`
+// const URI = `postgres://${config.dbUser}:${config.dbPassword}@${config.dbHost}/${config.dbName}`
+const URI = config.dbUrl;
 
 
-const sequelize = new Sequelize( URI,{
-  dialect: "postgres",
-  logging: false,
-});
+
+
+const options: Options = {
+    dialect: "postgres",
+    logging: false,
+    dialectOptions: {},
+  };
+  if (config.isProd) {
+    options.dialectOptions = {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    };
+    options.logging = false;
+  }
+  
+
+const sequelize = new Sequelize( URI, options );
 
 
 const modelDefiners = {}

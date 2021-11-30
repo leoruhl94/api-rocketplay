@@ -9,8 +9,9 @@ const config = {
   dbName: process.env.DB_NAME,
   dbPort: process.env.DB_PORT,
   dbPassword: process.env.DB_PASSWORD,
-  dbUrl:process.env.DATABASE_URL || `postgres://${this.dbUser}:${this.dbPassword}@${this.dbHost}:${this.dbPort}/${this.dbName}`,
-  // const URI = `postgres://postgres:38644082@localhost:5432/RocketPlay`;
+  // en el archivo .env hay q usar comillas dobles y no backticks 
+  // DATABASE_URL="postgres://postgres:38644082@localhost:5432/RocketPlay";
+  dbUrl:process.env.DATABASE_URL,
 };
 
 module.exports = config;
