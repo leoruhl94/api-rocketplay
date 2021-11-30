@@ -1,25 +1,42 @@
-// require("dotenv").config();
-// const { Sequelize } = require("sequelize");
-// const { config } = require("../config/config");
-// const setupModels = require("../db/models/index");
+import { Sequelize, DataTypes } from "sequelize";
 
-// const options = {
-//   dialect: "postgres",
-//   logging: false
-// };
-// if (config.isProd) {
-//   options.dialectOptions = {
-//     ssl: {
-//       rejectUnauthorized: false,
-//     },
-//   };
-//   options.logging = false;
-// }
+// import config from "../config/config";
+const config = require("../config/config")
+import fs from "fs"
+import path from "path"
 
-// const sequelize = new Sequelize(config.dbUrl, options);
 
-// setupModels(sequelize);
+const basename = path.basename(__filename);
+const USER = encodeURIComponent(config.dbUser);
+const PASSWORD = encodeURIComponent(config.dbPassword);
+console.log("postgres: ", config.dbUser)
+const URI = `postgres://${config.dbUser}:${config.dbPassword}@${config.dbHost}/${config.dbName}`
 
-// // sequelize.sync({ force: true });  // activar para modo desarrollo
 
-// module.exports = sequelize;
+const sequelize = new Sequelize( URI,{
+  dialect: "postgres",
+  logging: false,
+});
+
+
+const modelDefiners = {}
+
+
+fs.readdirSync(path.join(__dirname.slice(0,-5),'/database/models'))
+  .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.ts'))
+  .forEach((file) => {
+  const model = require(path.join(__dirname.slice(0,-5), '/database/models', file));
+  modelDefiners[file] = model;
+});
+
+Object.keys(modelDefiners).forEach(modelName => {
+  modelDefiners[modelName](sequelize,DataTypes);
+  if (modelDefiners[modelName].associate) {
+    modelDefiners[modelName].associate(modelDefiners);
+  }
+});
+module.exports = {
+  ...sequelize.models,
+  conn: sequelize
+};
+
