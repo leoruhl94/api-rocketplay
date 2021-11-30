@@ -24,9 +24,11 @@ router.post('/', async (req:Request, res:Response, next:NextFunction)=> {
                 name: name,
                 mail: email
             })
-            return res.status(200).json(newUser)
+            // Si lo creo mando false
+            return res.status(200).json({isRegistered: false})
         }
-        return res.status(200).json(userBool)
+        // Si ya estaba creado mando true
+        return res.status(200).json({isRegistered: true})
 
 
 
@@ -90,6 +92,20 @@ router.post('/', async (req:Request, res:Response, next:NextFunction)=> {
         }catch(error){
             res.status(400).json({message:error})
         }
+})
+
+router.get('/',  async (req:Request, res:Response, next:NextFunction)=> {
+    try {
+        const {email} = req.query
+        const userBool = await Users.findOne({
+            where: {mail: email}
+        })
+        res.status(200).json({isRegistered: !!userBool})
+
+    }  catch (error) {
+        res.status(400).json({message:error})
+    }
+
 })
 
 module.exports = {

@@ -18,7 +18,7 @@ router.get('/', async(req, res) => {
                     version: 'v2',
                     auth: oAuthClient
                 })
-            
+                console.log(oAuthClient)
                 oauth.userinfo.get(async function(err, response){
                     try {
                         console.log(response.data)
