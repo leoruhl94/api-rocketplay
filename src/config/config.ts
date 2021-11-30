@@ -9,9 +9,7 @@ const config = {
   dbName: process.env.DB_NAME,
   dbPort: process.env.DB_PORT,
   dbPassword: process.env.DB_PASSWORD,
-  dbUrl:process.env.DATABASE_URL,
+  dbUrl:process.env.DATABASE_URL || `postgres://${this.dbUser}:${this.dbPassword}@${this.dbHost}/${this.dbName}`,
 };
 
-module.exports = {
-  config,
-};
+module.exports = config;
