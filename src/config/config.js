@@ -12,6 +12,18 @@ const config = {
   // en el archivo .env hay q usar comillas dobles y no backticks 
   // DATABASE_URL="postgres://postgres:38644082@localhost:5432/RocketPlay";
   dbUrl:process.env.DATABASE_URL,
+  corsWhiteList: [
+    'https://www.rocketplay.com.ar',
+    'http://www.rocketplay.com.ar',
+    'http://rocketplay.com.ar',
+    'https://rocketplay.com.ar',
+    'http://develop.rocketplay.com.ar',
+    'https://develop.rocketplay.com.ar',
+    'http://www.develop.rocketplay.com.ar',
+    'https://www.develop.rocketplay.com.ar',
+    'http://localhost:3006',
+    
+  ]
 };
 
 module.exports = config;
