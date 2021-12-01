@@ -51,21 +51,7 @@ router.post('/', async (req:Request, res:Response, next:NextFunction)=> {
     } catch (error) {
         console.log(error)
     }
-    /* try{
-        const {isBusiness, name, email} = req.body
-        const userBool = await Users.findOne({
-            where: {mail: email}
-        })
-        if (!userBool) {
-            const newUser = await Users.create({
-                name: name,
-                mail: email
-            })
-            // Si lo creo mando false
-            return res.status(200).json({isRegistered: false})
-        }
-        // Si ya estaba creado mando true
-        return res.status(200).json({isRegistered: true}) */
+    
 
 
 

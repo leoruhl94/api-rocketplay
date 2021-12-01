@@ -12,7 +12,7 @@ server.use(setHeaders);
 server.use((req, res, next) =>{
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type,Accept, Authortization');  
-    res.setHeader('Access-Control-Allow-Methods','GET, POST, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Methods','GET, POST, PATCH, DELETE, PUT');
     next()
 })
 server.use('/', routes);

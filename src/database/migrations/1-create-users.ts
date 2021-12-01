@@ -12,10 +12,15 @@ module.exports = {
         type: Sequelize.STRING
       },
       mail: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       youtubeChannel: {
         type: Sequelize.STRING,
+        defaultValue: null
+      },
+      isBusiness: {
+        type: Sequelize.BOOLEAN,
         defaultValue: null
       },
       createdAt: {
