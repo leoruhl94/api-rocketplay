@@ -15,10 +15,6 @@ module.exports = async function createTemplate(name) {
             allowNull: false,
             unique: true
         },
-        password: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
         usertype: {
             type: DataTypes.ENUM('subscriber', 'admin', 'superadmin'),
             allowNull: false

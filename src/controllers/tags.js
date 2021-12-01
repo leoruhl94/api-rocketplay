@@ -1,5 +1,4 @@
 const { Router } = require('express');
-
 const router = Router();
 const { conn } = require("../libs/sequelize");
 const sequelize = conn;
