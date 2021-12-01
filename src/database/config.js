@@ -1,5 +1,5 @@
 // import config from "../config/config";
-const config = require("../config/config.ts")
+const config = require("../config/config.js")
 
 const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
