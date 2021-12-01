@@ -7,9 +7,8 @@ const setHeaders = ((req:Request, res:Response, next:NextFunction) => {
 		origin: config.cors,
 		credentials: true,
 		methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
-		allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+		allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept','Authorization'],
 	})
   next();
 });
-
 export default setHeaders;

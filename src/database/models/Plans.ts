@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     price: DataTypes.INTEGER,
-    limitUsers: DataTypes.INTEGER
+    userLimit: DataTypes.INTEGER,
+    subscriptionMP: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Plans',
