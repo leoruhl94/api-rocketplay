@@ -1,8 +1,7 @@
 import { Response, Request, Router, NextFunction } from "express";
 
 const router = Router();
-const { conn } = require("../libs/sequelize");
-const sequelize = conn;
+
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -174,4 +173,4 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-module.exports = router;
+export default router;

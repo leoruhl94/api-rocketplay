@@ -1,7 +1,8 @@
 import { Model } from 'sequelize';
 
-export default (sequelize, DataTypes) => {
-  class Plans extends Model {
+
+module.exports = (sequelize, DataTypes) => {
+  class Users extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,18 +10,19 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Plans.belongsToMany(models.Users, { through: "UsersPlans" })
+      Users.belongsToMany(models.Plans, { through: "UsersPlans"})
+      Users.belongsToMany(models.Schemas, { through: "UsersSchemas"})
     }
   };
-  Plans.init({
+  Users.init({
     name: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    price: DataTypes.INTEGER,
-    limitUsers: DataTypes.INTEGER
+    mail: DataTypes.STRING,
+    password: DataTypes.STRING,
+    youtubeChannel: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Plans',
+    modelName: 'Users',
     schema: 'public'
   });
-  return Plans;
+  return Users;
 };

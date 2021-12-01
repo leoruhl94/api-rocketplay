@@ -1,7 +1,7 @@
+'use strict';
 import { Model } from 'sequelize';
-
-export default (sequelize, DataTypes) => {
-  class Plans extends Model {
+module.exports = (sequelize, DataTypes) => {
+  class UsersSchemas extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,18 +9,15 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Plans.belongsToMany(models.Users, { through: "UsersPlans" })
     }
   };
-  Plans.init({
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    price: DataTypes.INTEGER,
-    limitUsers: DataTypes.INTEGER
+  UsersSchemas.init({
+    userId: DataTypes.INTEGER,
+    schemaId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Plans',
+    modelName: 'UsersSchemas',
     schema: 'public'
   });
-  return Plans;
+  return UsersSchemas;
 };

@@ -49,8 +49,9 @@ Object.keys(modelDefiners).forEach(modelName => {
     modelDefiners[modelName].associate(modelDefiners);
   }
 });
+
 module.exports = {
   ...sequelize.models,
   conn: sequelize
-};
+}
 
