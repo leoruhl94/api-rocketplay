@@ -8,34 +8,24 @@ mercadopago.configure({
   access_token: config.tokenMP,
 });
 router.post("/", async (req, res) => {
-  const {
-    back_url,
-    reason,
-    description,
-    userLimit,
-    currency_id,
-    transaction_amount,
-    repetitions,
-    billing_day,
-    external_reference,
-    freeTrial,
-  } = req.body;
-console.log("transaction_amount ", req.body );
+  const { back_url, reason, auto_recurring } = req.body;
+
+  const { transaction_amount, freeTrial } = auto_recurring;
+
   const preference = {
     back_url,
     reason,
     auto_recurring: {
-      currency_id,
+      currency_id: "ARS",
       frequency: "1",
       frequency_type: "months",
       transaction_amount,
-      repetitions,
-      billing_day,
-      external_reference,
+      repetitions: 12,
+      billing_day: 10,
+      external_reference: "",
       billing_day_proportional: true,
       free_trial: freeTrial
         ? {
-            //por si queremos dar prueba gratis
             frequency_type: "months",
             frequency: "1",
           }
@@ -57,12 +47,15 @@ console.log("transaction_amount ", req.body );
     .then(async (result) => {
       await Plans.create({
         name: reason,
-        description: description || reason,
-        price: transaction_amount, 
-        userLimit: userLimit || 10,
+        description: reason,
+        price: transaction_amount,
+        userLimit: 10,
         subscriptionMP: result.data.init_point,
       });
-      return res.status(200).json({ message: "Success" });
+      return res.status(200).json({
+        message: "Success",
+        subscriptionMP: result.data.init_point,
+      });
     })
     .catch((error) => res.status(400).json({ message: error }));
 });
