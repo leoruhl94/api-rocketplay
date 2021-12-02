@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: null
       },
+      isBusiness: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: null
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
