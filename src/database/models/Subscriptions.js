@@ -22,5 +22,5 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Subscription',
     schema: 'public'
   });
-  return Schemas;
+  return Subscriptions
 };

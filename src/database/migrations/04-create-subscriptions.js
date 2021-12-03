@@ -16,8 +16,7 @@ module.exports = {
       },
       plan_id: {
         field: "plan_id",
-        allowNull: false,
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         refereces: {
           model: "Plans",
           key: "plan_id",
@@ -27,8 +26,7 @@ module.exports = {
       },
       user_id: {
         field: "user_id",
-        allowNull: false,
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         refereces: {
           model: "Users",
           key: "user_id",
@@ -38,8 +36,7 @@ module.exports = {
       },
       schema_id: {
         field: "schema_id",
-        allowNull: false,
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         refereces: {
           model: "Schema",
           key: "shcema_id",

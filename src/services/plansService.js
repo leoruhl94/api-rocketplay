@@ -5,7 +5,7 @@ const preferencesPlans = require("./preferencesPlans");
 
 
 
-class plansService {
+class PlansService {
   constructor() {
     this.plans = [];
   }
@@ -13,7 +13,8 @@ class plansService {
   async generate() {
     try {
       let foundPlans = await Plans.findAll();
-      if (!foundPlans) {
+      // console.log(foundPlans)
+      if (!foundPlans.length) {
         let planBasic = await axios.post(
           `https://api.mercadopago.com/preapproval_plan?access_token=${config.tokenMP}`,
           JSON.stringify(preferencesPlans.planBasic),
@@ -44,22 +45,24 @@ class plansService {
             },
           }
         );
+        // console.log(planBasic.data)
         planBasic.data.description = `The Basic Plans offers you a limit of 100 users on your platform`;
         planBasic.data.userLimit = 100;
-        planBasic.data.description = `The Standard Plans offers you a limit of 500 users on your platform`;
-        planBasic.data.userLimit = 500;
-        planBasic.data.description = `The Premim Plans offers you a limit of 1000 users on your platform`;
-        planBasic.data.userLimit = 1000;
+        planStandard.data.description = `The Standard Plans offers you a limit of 500 users on your platform`;
+        planStandard.data.userLimit = 500;
+        planPremium.data.description = `The Premim Plans offers you a limit of 1000 users on your platform`;
+        planPremium.data.userLimit = 1000;
 
         let plans = [
-          ...planBasic.data,
-          ...planStandard.data,
-          ...planPremium.data,
+          planBasic.data,
+          planStandard.data,
+          planPremium.data,
         ];
-
+        // console.log("=======>>>", plans)
         for (const plan of plans) {
+          // console.log("=======>>>",plan)
           await Plans.create({
-            where: {
+            
               name: plan.reason, //reason (mp)
               description: plan.description,
               price: plan.auto_recurring.transaction_amount, //(auto_recurring) transaction_amount
@@ -68,7 +71,7 @@ class plansService {
               plan_id: plan.id, // id (mp)
               status: plan.status, //status (mp)
               back_url: plan.back_url, //back_url (mp)
-            },
+            
           });
         }
       }
@@ -139,4 +142,4 @@ class plansService {
   }
 }
 
-module.exports = plansService;
+module.exports = PlansService;

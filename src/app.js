@@ -4,9 +4,13 @@ const routes =  require('./Routes');
 const cors = require('cors');
 const errorHandler = require('./middlewares/errorHandler');
 const server= express();
+const PlansService = require('./services/plansService')
 
-
-
+let planService = new PlansService()
+async function seeders (){
+   await planService.generate()
+}
+seeders();
 server.use(express.urlencoded({ extended: true, limit: "50mb" }));
 server.use(express.json({ limit: "50mb" }));
 server.use(morgan('tiny'));
