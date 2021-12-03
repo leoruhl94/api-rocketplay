@@ -66,10 +66,9 @@ module.exports = async function createTemplate(name) {
 
     const Video = sequelize.define('video', {
         id: {
-            type: DataTypes.UUID,
+            type: DataTypes.STRING,
             allowNull: false,
-            primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
+            primaryKey: true
         },
         title: {
             type: DataTypes.STRING,
@@ -78,9 +77,20 @@ module.exports = async function createTemplate(name) {
         description: {
             type: DataTypes.TEXT
         },
-        isShort: {
-            type: DataTypes.BOOLEAN
+        likes: {
+            type: DataTypes.INTEGER
         }
+        // ,
+        // comments: {
+        //     type: DataTypes.STRING,
+        //     get: function() {
+        //         return JSON.parse(this.getDataValue("comments"))
+        //     },
+        //     set: function() {
+
+        //     }
+        // }
+        
 
     }, {
         sequelize,
