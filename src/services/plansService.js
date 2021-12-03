@@ -112,7 +112,6 @@ class PlansService {
         }
       );
       await Plans.create({
-        where: {
           name: plan.reason, //reason (mp)
           description: description,
           price: plan.auto_recurring.transaction_amount, //(auto_recurring) transaction_amount
@@ -121,7 +120,6 @@ class PlansService {
           plan_id: plan.id, // id (mp)
           status: plan.status, //status (mp)
           back_url: plan.back_url, //back_url (mp)
-        },
       });
     } catch (error) {
       throw new Error(error.message || "se rompio todo");
