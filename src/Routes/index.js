@@ -11,6 +11,12 @@ const uploadVideo = require("../controllers/uploadVideo");
 const registerBRouter = require("../controllers/registerBusiness");
 const registerURouter = require("../controllers/registerUser");
 const createSchemaRouter = require("../controllers/createSchema")
+
+
+const testMP = require("./testMp")
+router.use("/testMp", testMP)
+
+
 router.use("/createSchema", createSchemaRouter)
 router.use("/loginUser", loginURouter);
 router.use("/users", usersRouter);

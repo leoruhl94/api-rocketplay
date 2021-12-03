@@ -1,4 +1,6 @@
 require("dotenv").config();
+const mercadopago = require("mercadopago");
+
 const config = {
   env: process.env.NODE_ENV || "development",
   isProd: process.env.NODE_ENV === 'production',
@@ -24,5 +26,9 @@ const config = {
     'http://localhost:3006',
   ]
 };
+
+mercadopago.configure({
+  access_token: config.tokenMP,
+});
 
 module.exports = config;

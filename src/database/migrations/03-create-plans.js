@@ -20,7 +20,16 @@ module.exports = {
       userLimit: {
         type: Sequelize.INTEGER
       },
-      subscriptionMP: {
+      link_checkout: {
+        type: Sequelize.STRING
+      },
+      plan_id: {
+        type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.STRING
+      },
+      back_url: {
         type: Sequelize.STRING
       },
       createdAt: {

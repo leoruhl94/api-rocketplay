@@ -9,15 +9,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Plans.belongsToMany(models.Users, { through: "UsersPlans" })
+      Plans.hasMany(models.Subscriptions, { foreignKey: 'plan_id'})
     }
   };
   Plans.init({
-    name: DataTypes.STRING,
+    name: DataTypes.STRING,  //reason (mp)
     description: DataTypes.TEXT,
-    price: DataTypes.INTEGER,
+    price: DataTypes.INTEGER, //(auto_recurring) transaction_amount
     userLimit: DataTypes.INTEGER,
-    subscriptionMP: DataTypes.STRING
+    link_checkout: DataTypes.STRING, //init_point (mp)
+    plan_id: DataTypes.STRING, // id (mp)
+    status: DataTypes.STRING, //status (mp)
+    back_url: DataTypes.STRING, //back_url (mp)
   }, {
     sequelize,
     modelName: 'Plans',
