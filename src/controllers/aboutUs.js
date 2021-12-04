@@ -157,7 +157,7 @@ router.get("/", async (req, res, next) => {
       },
       {
         id: 8,
-        name: "Marcos Striker",
+        name: "Marcos Stricker",
         links: {
           LinkedIn: "https://www.linkedin.com/in/marcos-stricker/",
           GitHub: "https://github.com/marcosst17",

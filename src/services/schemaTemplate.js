@@ -117,32 +117,59 @@ module.exports = async function createTemplate(name) {
     })
 
     const Comment = sequelize.define('comment', {
-        name: {
+        description: {
             type: DataTypes.TEXT,
             allowNull: false
         }
     }, {
         sequelize,
-        modelName: 'category',
+        modelName: 'comment',
         schema: name.toLowerCase(),
-        tableName: 'comment'
+        tableName: 'comments'
+    })
+
+    const Like = sequelize.define('like', {
+        like: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        }
+    }, {
+        sequelize,
+        modelName: 'like',
+        schema: name.toLowerCase(),
+        tableName: 'likes'
     })
 
 
-    User.belongsToMany(Channel, { through: "userchannels" })
-    Channel.belongsToMany(User, { through: "userchannels" })
+    // User.belongsToMany(Channel, { through: "userchannels" })
+    // Channel.belongsToMany(User, { through: "userchannels" })
 
-    Category.belongsToMany(Channel, { through: "channelscategory" })
-    Channel.belongsToMany(Category, { through: "channelscategory" })
+    // Category.belongsToMany(Channel, { through: "channelscategory" })
+    // Channel.belongsToMany(Category, { through: "channelscategory" })
 
-    Category.belongsToMany(Video, { through: "videocategory" })
-    Video.belongsToMany(Category, { through: "videocategory" })
+    // Category.belongsToMany(Video, { through: "videocategory" })
+    // Video.belongsToMany(Category, { through: "videocategory" })
 
     Tag.belongsToMany(Video, { through: "videotags" })
     Video.belongsToMany(Tag, { through: "videotags" })
 
+    User.belongsToMany(Video, { through: "like" })
+    Video.belongsToMany(User, { through: "like" })
+
     User.hasMany(Video)
     Video.belongsTo(User)
+
+    Video.hasMany(Comment)
+    Comment.belongsTo(Video)
+
+    User.hasMany(Comment)
+    Comment.belongsTo(User)
+
+    Video.hasMany(Category)
+    Category.belongsTo(Video)
+
+    Channel.hasMany(Category)
+    Category.belongsTo(Channel)
 
 
 
