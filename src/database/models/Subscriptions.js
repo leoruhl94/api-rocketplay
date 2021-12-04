@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Subscription',
+    modelName: 'Subscriptions',
     schema: 'public'
   });
   return Subscriptions

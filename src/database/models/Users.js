@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      this.hasMany(models.Subscription, { as: 'subscription', sourceKey: 'mail' })
-      this.belongsToMany(models.Schemas, { through: 'UsersSchemas' })
+      // // define association here
+      // this.hasMany(models.Subscriptions, { as: 'subscription', sourceKey: 'mail' })
+      // this.belongsToMany(models.Schemas, { through: 'UsersSchemas' })
     }
   };
   Users.init({

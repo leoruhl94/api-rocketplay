@@ -58,6 +58,18 @@ class SubscriptionService {
       throw new Error(error.message || "se rompio todo");
     }
   }
+  async deleteByIdDB(id) {
+    try {
+      let subscriptions = await Subscriptions.destroy({
+        where: {
+          id,
+        },
+      });
+      return "deleted";
+    } catch (error) {
+      throw new Error(error.message || "se rompio todo");
+    }
+  }
 }
 
 module.exports = SubscriptionService;

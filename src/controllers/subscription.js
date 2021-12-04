@@ -4,7 +4,7 @@ const {
   conn,
   Users,
   Schemas,
-  Subscription,
+  Subscriptions,
   Plans,
 } = require("../libs/sequelize");
 const sequelize = conn;
@@ -14,29 +14,31 @@ const SubscriptionService = require("../services/subscriptionService");
 ////////////////////////////////////
 let userService = new UsersService();
 let subscriptionService = new SubscriptionService();
-router.get("/", async (req, res, next) => {
-  // recibo id del pago
-  const { subscription_id, mail } = req.body;
+
+
+
+/////////DESTROY SUBSCRIPTION
+router.get("/destroy", async (req, res, next) => {
+  const { subscription_id} = req.body;
   try {
-    let subs = subscriptionService.findOneMP(subscription_id);
-    // let plan = await Plans.findOne({
-    //   where: {
-    //     name: "planBasic",
-    //   },
-    // });
-
-    // await plan.setSubscription(id);
-
-    console.log(subscription_id);
-    let user = await userService.findOneUser(mail);
-    console.log(user);
-    // creo la asociacion de la suscripcion con el plan
-    await user.setSubscription(subscription_id);
-    res.json(user);
+    let deleted = await subscriptionService.deleteByIdDB(subscription_id);
+    res.json(deleted);
   } catch (error) {
     next(error);
   }
 });
+
+///////// SEARCH SUBSCRIPTION
+router.get("/all", async (req, res, next) => {
+  try {
+    let allSubs = await subscriptionService.findAllDB();
+    res.json(allSubs);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 ///////////////////
 router.post("/", async (req, res, next) => {
   // recibo id del pago
@@ -44,31 +46,34 @@ router.post("/", async (req, res, next) => {
   try {
     // buscamos en mp la data del pago de la suscripcion
     let userPaymentData = await subscriptionService.findOneMP(subscription_id);
-
+    // console.log("userPaymentData:  ", userPaymentData)
     // crear la suscripcion en nuestra base de datos
-    let createdSubscription = await Subscription.findOrCreate({
+    let createdSubscription = await Subscriptions.findOrCreate({
       where: {
         id: userPaymentData.id,
         status: userPaymentData.status,
       },
     });
-
+    console.log("=================================LLEGUE FC")
+    
     // busco en la lista de planes el plan al que se suscribe
     let plan = await Plans.findOne({
       where: {
         id: userPaymentData.preapproval_plan_id,
       },
     });
-
+    console.log("Sub ID:  ", subscription_id )
     // creo la asociacion de la suscripcion con el plan
-    await plan.setSubscription(subscription_id);
-
+    await plan.setSubscriptions(subscription_id);
+    
     //buscamos el user
 
     let user = await userService.findOneUser(mail);
     // creo la asociacion de la suscripcion con el plan
-    await user.setSubscription(subscription_id);
-
+    // await user.setSubscriptions(subscription_id);
+    console.log("=================================LLEGUE")
+    // await user.addPlans(plan.id)
+ 
     //retono el plan
     res.json(plan);
   } catch (error) {

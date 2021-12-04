@@ -1,7 +1,7 @@
 const preferences = {
   planBasic: {
     back_url: "https://rocketplay.com.ar/testingMp",
-    reason: "planBasic",
+    reason: "Plan Basic",
     auto_recurring: {
       currency_id: "ARS",
       frequency: "1",
@@ -18,7 +18,7 @@ const preferences = {
   },
   planStandard: {
     back_url: "https://rocketplay.com.ar/testingMp",
-    reason: "planStandard",
+    reason: "Plan Standard",
     auto_recurring: {
       currency_id: "ARS",
       frequency: "1",
@@ -35,7 +35,7 @@ const preferences = {
   },
   planPremium: {
     back_url: "https://rocketplay.com.ar/testingMp",
-    reason: "planPremium",
+    reason: "Plan Premium",
     auto_recurring: {
       currency_id: "ARS",
       frequency: "1",

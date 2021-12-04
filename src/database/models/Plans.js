@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) { 
       
-      this.hasMany(models.Subscription, { 
-        as: 'subscription', foreignKey: 'plan_id'})
+      this.hasMany(models.Subscriptions, { 
+        as: 'subscriptions', foreignKey: 'plan_id'})
     }
   };
   Plans.init({

@@ -12,7 +12,7 @@ const PlansService = require("./services/plansService");
 
 let planService = new PlansService();
 async function seeders() {
-  await planService.generate();
+  await planService.generatePlans();
 }
 seeders();
 server.use(express.urlencoded({ extended: true, limit: "50mb" }));
