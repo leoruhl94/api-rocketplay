@@ -4,6 +4,7 @@
   "description": "Final Project",
   "main": "index.js",
   "scripts": {
+    "alCarajo": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && nodemon index.js",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "migrations:generate": "sequelize-cli migration:generate --name",

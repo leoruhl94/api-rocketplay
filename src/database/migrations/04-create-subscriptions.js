@@ -2,13 +2,14 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Subscriptions", {
+      // id: {
+      //   allowNull: false,
+      //   autoIncrement: true,
+      //   primaryKey: true,
+      //   type: Sequelize.INTEGER,
+      // },
       id: {
-        allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      subscription_id: {
         type: Sequelize.STRING,
       },
       status: {
@@ -16,20 +17,20 @@ module.exports = {
       },
       plan_id: {
         field: "plan_id",
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         refereces: {
           model: "Plans",
-          key: "plan_id",
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
       user_id: {
         field: "user_id",
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         refereces: {
           model: "Users",
-          key: "user_id",
+          key: "mail",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
@@ -39,7 +40,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         refereces: {
           model: "Schema",
-          key: "shcema_id",
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",

@@ -9,13 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-    Subscriptions.belongsTo(models.Users, { foreignKey: 'user_id' })
-    Subscriptions.hasOne(models.Schemas, { foreignKey: 'schema_id' })
-    Subscriptions.belongsTo(models.Plans, { foreignKey: 'plan_id' })
+  
+    // this.belongsTo(models.Plans, { as: 'plan'})
+    // Subscriptions.belongsTo(models.Users, { foreignKey: 'id' })
+    // Subscriptions.hasOne(models.Schemas, { foreignKey: 'schema_id' })
     }
   };
   Subscriptions.init({
-    subscription_id: DataTypes.STRING, //id del pago (mp)
+    id:{type: DataTypes.STRING, primaryKey: true }, //id del pago (mp)
     status: DataTypes.STRING
   }, {
     sequelize,

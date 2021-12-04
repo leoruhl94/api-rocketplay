@@ -2,7 +2,6 @@ const axios = require("axios").default;
 const { Subscriptions } = require("../libs/sequelize");
 const config = require("../config/config");
 
-
 class SubscriptionService {
   constructor() {
     this.subscriptions = [];
@@ -18,7 +17,7 @@ class SubscriptionService {
           },
         }
       );
-      return response.data;
+      return response.data.results[0];
     } catch (error) {
       throw new Error(error.message || "se rompio todo");
     }
@@ -39,17 +38,25 @@ class SubscriptionService {
     }
   }
 
-  async findOneDB(name) {
-    let subscriptions = await Subscriptions.findOne({
-      where: {
-        name,
-      },
-    });
-    return subscriptions;
+  async findOneDB(id) {
+    try {
+      let subscriptions = await Subscriptions.findOne({
+        where: {
+          id,
+        },
+      });
+      return subscriptions;
+    } catch (error) {
+      throw new Error(error.message || "se rompio todo");
+    }
   }
   async findAllDB() {
-    let subscriptions = await Subscriptions.findAll();
-    return subscriptions;
+    try {
+      let subscriptions = await Subscriptions.findAll();
+      return subscriptions;
+    } catch (error) {
+      throw new Error(error.message || "se rompio todo");
+    }
   }
 }
 

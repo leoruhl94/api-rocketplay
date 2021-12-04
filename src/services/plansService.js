@@ -63,12 +63,12 @@ class PlansService {
           // console.log("=======>>>",plan)
           await Plans.create({
             
+              id: plan.id, // id (mp) 
               name: plan.reason, //reason (mp)
               description: plan.description,
               price: plan.auto_recurring.transaction_amount, //(auto_recurring) transaction_amount
               userLimit: plan.userLimit,
               link_checkout: plan.init_point, //init_point (mp)
-              plan_id: plan.id, // id (mp)
               status: plan.status, //status (mp)
               back_url: plan.back_url, //back_url (mp)
             
@@ -117,7 +117,7 @@ class PlansService {
           price: plan.auto_recurring.transaction_amount, //(auto_recurring) transaction_amount
           userLimit: userLimit,
           link_checkout: plan.init_point, //init_point (mp)
-          plan_id: plan.id, // id (mp)
+          id: plan.id, // id (mp)
           status: plan.status, //status (mp)
           back_url: plan.back_url, //back_url (mp)
       });

@@ -2,11 +2,15 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Plans', {
+      // id: {
+      //   allowNull: false,
+      //   autoIncrement: true,
+      //   primaryKey: true,
+      //   type: Sequelize.INTEGER
+      // },
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.STRING,
         primaryKey: true,
-        type: Sequelize.INTEGER
       },
       name: {
         type: Sequelize.STRING
@@ -21,9 +25,6 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       link_checkout: {
-        type: Sequelize.STRING
-      },
-      plan_id: {
         type: Sequelize.STRING
       },
       status: {
