@@ -1,11 +1,8 @@
 const axios = require("axios").default;
-const { Subscriptions } = require("../libs/sequelize");
+const { Subscriptions, Users, Plans } = require("../libs/sequelize");
 const config = require("../config/config");
 
 class SubscriptionService {
-  constructor() {
-    this.subscriptions = [];
-  }
 
   async findOneMP(subscriptionId) {
     try {
@@ -52,7 +49,8 @@ class SubscriptionService {
   }
   async findAllDB() {
     try {
-      let subscriptions = await Subscriptions.findAll();
+      // let subscriptions = await Subscriptions.findAll({include: ["schema", Plans]});
+      let subscriptions = await Users.findAll({include: ["schemas", "subscriptions"]});
       return subscriptions;
     } catch (error) {
       throw new Error(error.message || "se rompio todo");

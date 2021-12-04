@@ -78,8 +78,20 @@ module.exports = async function createTemplate(name) {
         description: {
             type: DataTypes.TEXT
         },
-        isShort: {
-            type: DataTypes.BOOLEAN
+        link: {
+            type: DataTypes.STRING
+        },
+        externalid: {
+            type: DataTypes.STRING
+        },
+        channelname: {
+            type: DataTypes.STRING
+        },
+        channelavatar: {
+            type: DataTypes.STRING
+        },
+        thumbnail: {
+            type: DataTypes.STRING
         }
 
     }, {
@@ -104,6 +116,18 @@ module.exports = async function createTemplate(name) {
         timestamps: false, //we do not need updatedAt nor createdAt
     })
 
+    const Comment = sequelize.define('comment', {
+        name: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        }
+    }, {
+        sequelize,
+        modelName: 'category',
+        schema: name.toLowerCase(),
+        tableName: 'comment'
+    })
+
 
     User.belongsToMany(Channel, { through: "userchannels" })
     Channel.belongsToMany(User, { through: "userchannels" })
@@ -119,6 +143,9 @@ module.exports = async function createTemplate(name) {
 
     User.hasMany(Video)
     Video.belongsTo(User)
+
+
+
     
     await sequelize.sync({schema: name.toLowerCase()}) 
 

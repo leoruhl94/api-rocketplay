@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   UsersSchemas.init({
-    userId: DataTypes.INTEGER,
-    schemaId: DataTypes.INTEGER
+    user_id: DataTypes.STRING,
+    schema_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'UsersSchemas',

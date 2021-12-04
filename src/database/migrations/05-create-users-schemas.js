@@ -8,16 +8,18 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
-        type: Sequelize.INTEGER,
+      user_id: {
+        field: "user_id",
+        type: Sequelize.STRING,
         references: {
           model: "Users",
-          key: "id"
+          key: "mail"
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL"
       },
-      schemaId: {
+      schema_id: {
+        fied: "schema_id",
         type: Sequelize.INTEGER,
         references: {
           model: "Schemas",

@@ -9,17 +9,17 @@ const {
 } = require("../libs/sequelize");
 const sequelize = conn;
 
+const createTemplate = require("../services/schemaTemplate");
+
 const UsersService = require("../services/usersService");
 const SubscriptionService = require("../services/subscriptionService");
 ////////////////////////////////////
 let userService = new UsersService();
 let subscriptionService = new SubscriptionService();
 
-
-
 /////////DESTROY SUBSCRIPTION
 router.get("/destroy", async (req, res, next) => {
-  const { subscription_id} = req.body;
+  const { subscription_id } = req.body;
   try {
     let deleted = await subscriptionService.deleteByIdDB(subscription_id);
     res.json(deleted);
@@ -37,7 +37,26 @@ router.get("/all", async (req, res, next) => {
     next(error);
   }
 });
+router.get("/createuser", async (req, res, next) => {
+  try {
+    let user = await userService.createUser();
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+});
 
+router.get("/deleteSchema", async (req, res, next) => {
+  try {
+    const { schemaName } = req.body;
+    await sequelize.dropSchema(schemaName);
+    let schema = await Schemas.findOne({ where: { name: schemaName } });
+    await schema.destroy();
+    res.send("Schema deleted succesfully");
+  } catch (error) {
+    next(error);
+  }
+});
 
 ///////////////////
 router.post("/", async (req, res, next) => {
@@ -54,28 +73,55 @@ router.post("/", async (req, res, next) => {
         status: userPaymentData.status,
       },
     });
-    console.log("=================================LLEGUE FC")
-    
+    console.log("=================================LLEGUE FC");
+
     // busco en la lista de planes el plan al que se suscribe
     let plan = await Plans.findOne({
       where: {
         id: userPaymentData.preapproval_plan_id,
       },
     });
-    console.log("Sub ID:  ", subscription_id )
+    console.log("Sub ID:  ", subscription_id);
     // creo la asociacion de la suscripcion con el plan
     await plan.setSubscriptions(subscription_id);
-    
+
     //buscamos el user
 
     let user = await userService.findOneUser(mail);
     // creo la asociacion de la suscripcion con el plan
-    // await user.setSubscriptions(subscription_id);
-    console.log("=================================LLEGUE")
-    // await user.addPlans(plan.id)
- 
+    console.log("User: ", user);
+    await user.setSubscriptions(subscription_id);
+
+    const schemaName = user.name.replace(/\s/g, "").toLowerCase();
+    await sequelize
+      .createSchema(schemaName, {
+        logging: false,
+        dialect: "postgres",
+      })
+      .then(async () => {
+        try {
+          await createTemplate(schemaName);
+          const sql = `
+                INSERT INTO ${schemaName}.Users (name, mail, userType)
+                VALUES ('${user.name}', '${user.mail}', 'superadmin')
+        `;
+          await sequelize.query(sql, {
+            type: sequelize.QueryTypes.INSERT,
+          });
+          const schema = await Schemas.create({ name: schemaName });
+          // await UsersSchemas.create({ userId: user.id, schemaId: schema.id });
+          await user.addSchemas(schema.id);
+
+          await createdSubscription[0].update({
+            schema_id: schema.id,
+          });
+        } catch (error) {
+          next(error);
+        }
+      });
+
     //retono el plan
-    res.json(plan);
+    res.status(200).json({message: 'Ok'});
   } catch (error) {
     next(error);
   }
@@ -89,61 +135,8 @@ router.post("/", async (req, res, next) => {
   // relacion entre el schema y la subs a traves del schema_id y subs_id
   // response ("ok created")
 
-  // const sql = `
-  //                   INSERT INTO public.Users (name, password, mail, userType)
-  //                   VALUES ('${name}', '${password}', '${email}', 'superadmin')
-  //           `
-  //           await sequelize.query(sql, {
-  //               type: sequelize.QueryTypes.INSERT
-  //           })
+ 
 });
 router.get("/:name", async (req, res) => {});
 module.exports = router;
 
-// const Router = require('express')
-// const router = Router();
-// const {conn, Users, Schemas} = require('../libs/sequelize');
-// const sequelize = conn;
-
-// router.post("/",  async function(req, res){
-//     try {
-//         const { name, email } = req.body
-//         const schemaName = name.replace(/\s/g, '').toLowerCase()
-//         await sequelize.createSchema(schemaName, {
-//             logging: false,
-//             dialect: 'postgres'
-//         }).then(async () => {
-//             await createTemplate(schemaName)
-//             const sql = `
-//                     INSERT INTO ${schemaName}.Users (name, password, mail, userType)
-//                     VALUES ('${name}', '${password}', '${email}', 'superadmin')
-//             `
-//             await sequelize.query(sql, {
-//                 type: sequelize.QueryTypes.INSERT
-//             })
-//             const schema = await Schemas.create({ name });
-//             const foundUser = await Users.findOne({
-//                 where: {mail: email}
-//             })
-//             await UsersSchemas.create({ userId: foundUser.id, schemaId: schema.id });
-
-//             // await Users.create({ name, password, mail, youtubeChannel })
-//             //     .then(async (user) => {
-//             //         const result = await Schemas.findOne({
-//             //             where: {
-//             //                 name: name
-//             //             }
-//             //         })
-//             //         if (result) {
-
-//             //         }
-//             //     })
-
-//         })
-//         res.send('Schema created succesfully').status(200)
-//     } catch (error) {
-//         res.send(error)
-//     }
-
-// })
-// module.exports = router;

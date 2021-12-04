@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.STRING,
         refereces: {
           model: "Users",
-          key: "mail",
+          key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
@@ -39,7 +39,7 @@ module.exports = {
         field: "schema_id",
         type: Sequelize.INTEGER,
         refereces: {
-          model: "Schema",
+          model: "Schemas",
           key: "id",
         },
         onUpdate: "CASCADE",

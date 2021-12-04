@@ -12,12 +12,13 @@ module.exports = (sequelize, DataTypes) => {
   
     // this.belongsTo(models.Plans, { as: 'plan'})
     // Subscriptions.belongsTo(models.Users, { foreignKey: 'id' })
-    // Subscriptions.hasOne(models.Schemas, { foreignKey: 'schema_id' })
+    this.belongsTo(models.Schemas, { as: 'schema',  foreignKey: 'schema_id'})
     }
   };
   Subscriptions.init({
     id:{type: DataTypes.STRING, primaryKey: true }, //id del pago (mp)
-    status: DataTypes.STRING
+    status: DataTypes.STRING,
+    schema_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Subscriptions',
