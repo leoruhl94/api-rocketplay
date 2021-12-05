@@ -12,7 +12,7 @@ router.post("/", async (req, res, next) => {
     const oAuthClient = new google.auth.OAuth2(
       OAuth2Data.web.client_id,
       OAuth2Data.web.client_secret,
-      OAuth2Data.web.redirect_uris
+      OAuth2Data.web.redirect_uris[0]
     );
     console.log("OAUTH", oAuthClient);
     try {
