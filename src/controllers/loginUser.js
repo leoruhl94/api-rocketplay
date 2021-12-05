@@ -15,6 +15,7 @@ router.post('/', async (req, res, next)=> {
                 OAuth2Data.web.client_secret,
                 OAuth2Data.web.redirect_uris
         )
+        console.log("OAUTH", oAuthClient)
         oAuthClient.getToken(code, function(err, tokens){
             if(err) throw err
             console.log('successfully authenticated')

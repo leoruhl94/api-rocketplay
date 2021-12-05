@@ -65,7 +65,7 @@ router.post("/", async (req, res, next) => {
   try {
     // buscamos en mp la data del pago de la suscripcion
     let userPaymentData = await subscriptionService.findOneMP(subscription_id);
-    // console.log("userPaymentData:  ", userPaymentData)
+   
     // crear la suscripcion en nuestra base de datos
     let createdSubscription = await Subscriptions.findOrCreate({
       where: {
@@ -73,7 +73,7 @@ router.post("/", async (req, res, next) => {
         status: userPaymentData.status,
       },
     });
-    console.log("=================================LLEGUE FC");
+   
 
     // busco en la lista de planes el plan al que se suscribe
     let plan = await Plans.findOne({
@@ -125,18 +125,8 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
-  // relacion con el plan a traves del plan_id
-  // relacion con el user a traves del user_id
-  // obtener el usuario id y name para crear el schema
-  // cambiar isBusiness
-  // crear el schema (name)
-  // relacion entre user y schema a traves de la tabla intermedia
-  // relacion entre el schema y la subs a traves del schema_id y subs_id
-  // response ("ok created")
-
  
 });
-router.get("/:name", async (req, res) => {});
+
 module.exports = router;
 
