@@ -13,7 +13,7 @@ router.post('/', async (req, res, next)=> {
         const oAuthClient = new google.auth.OAuth2(
                 OAuth2Data.web.client_id,
                 OAuth2Data.web.client_secret,
-                OAuth2Data.web.redirect_uris[0]
+                OAuth2Data.web.redirect_uris
         )
         oAuthClient.getToken(code, function(err, tokens){
             if(err) throw err
@@ -25,7 +25,7 @@ router.post('/', async (req, res, next)=> {
             })
         })
     } catch (error) {
-        console.log(error)
+        next(error)
     }
     
 
