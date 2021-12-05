@@ -10,13 +10,15 @@
       "http://localhost:3006",
       "https://develop.rocketplay.com.ar",
       "https://rocketplay.com.ar",
-      "https://www.rocketplay.com.ar"
+      "https://www.rocketplay.com.ar",
+      "https://api-rocketplay.herokuapp.com"
     ],
     "javascript_origins": [
       "http://localhost:3006",
       "https://develop.rocketplay.com.ar",
       "https://rocketplay.com.ar",
-      "https://www.rocketplay.com.ar"
+      "https://www.rocketplay.com.ar",
+      "https://api-rocketplay.herokuapp.com"
     ]
   }
 }
