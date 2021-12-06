@@ -40,10 +40,13 @@ router.post('/', async (req, res, next) => {//subir un video
           redirectUrl
         )
         const {title, tokens} = req.body
-        console.log("adentro ==>>", req.body)
+        console.log("adentro ==>>", req)
         // console.log("data ==>>", req.body.data)
         console.log("Tokens =>>", tokens)
         console.log("Title =>>", title)
+        console.log("File =>>", req.file)
+        console.log("Path =>>", req.file.path)
+        console.log("Dir =>>", ___dirname)
         await oAuthClient.setCredentials(JSON.parse(tokens))     
         if(err) throw err
         
@@ -51,9 +54,7 @@ router.post('/', async (req, res, next) => {//subir un video
           version: 'v3',
           auth: oAuthClient
         })
-        console.log("File =>>", req.file)
-        console.log("Path =>>", req.file.path)
-        console.log("Dir =>>", ___dirname)
+        
         await youtube.videos.insert({//metodo para subir un video
           resource:{
             snippet:{
