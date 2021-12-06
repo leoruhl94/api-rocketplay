@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
     }
 })
 //guardamos el video que me llega con multer
-const upload = multer({storage: storage}).single('videoFile') //el nombre del key donde viene el archivo de video
+const upload = multer({storage: storage}) //el nombre del key donde viene el archivo de video
 //datos del cliente
 
 // Para ver mis listas de reproduccion 
@@ -27,10 +27,10 @@ const upload = multer({storage: storage}).single('videoFile') //el nombre del ke
 // https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cstatus&playlistId=UU2VixUI_oav1QOvFn95rEhA&key=AIzaSyCy5bFCjzTESdANJcoW8GNZRvVS6LJ2864&access_token=ya29.a0ARrdaM_0HeyVKEOYyVvJ0FMHTiy4mQu8qEd_gvPQRVyaRTeCAcwJ43v0stDfhlTdqy_haABBpaWj13Ubhb_nYZIcrnO0qqyrvu0pmv3Pdiby7IFQH2xU8r7bDJRech3aAcNq8tb7VBSqL8NLgih91V_Mdcp7
 
 
-router.post('/', async (req, res, next) => {//subir un video
+router.post('/',upload.single('videoFile'), async (req, res, next) => {//subir un video
   try {
-    upload(req, res, async function(err){
-      console.log("Aguera =>> ", req.body)
+      console.log("Afuera =>> ", req.body)
+      console.log("===========================================================================================================")
       let redirectUrl = req.headers.origin;
       try {
         const oAuthClient = new google.auth.OAuth2(
@@ -41,11 +41,16 @@ router.post('/', async (req, res, next) => {//subir un video
         )
         const {title, tokens} = req.body
         console.log("adentro ==>>", req)
+        console.log("===========================================================================================================")
         // console.log("data ==>>", req.body.data)
         console.log("Tokens =>>", tokens)
+        console.log("===========================================================================================================")
         console.log("Title =>>", title)
+        console.log("===========================================================================================================")
         console.log("File =>>", req.file)
+        console.log("===========================================================================================================")
         console.log("Path =>>", req.file.path)
+        console.log("===========================================================================================================")
         console.log("Dir =>>", ___dirname)
         await oAuthClient.setCredentials(JSON.parse(tokens))     
         if(err) throw err
@@ -86,8 +91,6 @@ router.post('/', async (req, res, next) => {//subir un video
       } catch (error) {
         next(error)
       }
-    })
-    
               
   } catch(error) {
     next(error)
