@@ -40,6 +40,7 @@ router.post('/', async (req, res, next) => {//subir un video
         )
         const {title, tokens} = req.body
         console.log("Tokens =>>", tokens)
+        console.log("Title =>>", title)
         await oAuthClient.setCredentials(JSON.parse(tokens))     
         if(err) throw err
         

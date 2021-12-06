@@ -66,7 +66,7 @@ router.get("/deleteSchema", async (req, res, next) => {
 
 router.get("/showschemas", async (req, res, next) => {
   try {
-    const allSchemas = sequelize.showAllSchemas()
+    const allSchemas = await sequelize.showAllSchemas()
     res.send(allSchemas)
   } catch (error) {
     next(error)
