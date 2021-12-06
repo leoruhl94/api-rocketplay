@@ -6,14 +6,18 @@ const OAuth2Data = require("../../googleYoutube.json");
 const { google } = require("googleapis");
 
 router.post("/", async (req, res, next) => {
+  let redirectUrl = req.headers.origin;
   try {
     const { code } = req.body;
     console.log(code);
     const oAuthClient = new google.auth.OAuth2(
       OAuth2Data.web.client_id,
       OAuth2Data.web.client_secret,
-      OAuth2Data.web.redirect_uris
+      // OAuth2Data.web.redirect_uris
+      redirectUrl
     );
+    console.log("Origin =>>",req.headers.origin)
+    console.log("Redirect =>>",OAuth2Data.web.redirect_uris)
     console.log("OAUTH", oAuthClient);
     try {
       await oAuthClient.getToken(code, function (err, tokens) {

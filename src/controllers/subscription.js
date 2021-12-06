@@ -37,6 +37,12 @@ router.get("/all", async (req, res, next) => {
     next(error);
   }
 });
+router.get("/headers", async (req, res, next) => {
+
+  console.log(req.headers.origin)
+  console.log("===============================")
+
+});
 router.get("/createuser", async (req, res, next) => {
   try {
     let user = await userService.createUser();
@@ -120,7 +126,7 @@ router.post("/", async (req, res, next) => {
         }
       });
 
-    //retono el plan
+    //confirmo q el proceso se completo correctamente
     res.status(200).json({message: 'Ok'});
   } catch (error) {
     next(error);
