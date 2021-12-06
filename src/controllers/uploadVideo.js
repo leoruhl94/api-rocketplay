@@ -30,6 +30,7 @@ const upload = multer({storage: storage}).single('videoFile') //el nombre del ke
 router.post('/', async (req, res, next) => {//subir un video
   let redirectUrl = req.headers.origin;
   try {
+    console.log("Aguera =>> ", req.body)
     upload(req, res, async function(err){
       try {
         const oAuthClient = new google.auth.OAuth2(
@@ -39,6 +40,8 @@ router.post('/', async (req, res, next) => {//subir un video
           redirectUrl
         )
         const {title, tokens} = req.body
+        console.log("adentro ==>>", req.body)
+        // console.log("data ==>>", req.body.data)
         console.log("Tokens =>>", tokens)
         console.log("Title =>>", title)
         await oAuthClient.setCredentials(JSON.parse(tokens))     
