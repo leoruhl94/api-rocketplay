@@ -31,54 +31,59 @@ router.post('/', async (req, res, next) => {//subir un video
   let redirectUrl = req.headers.origin;
   try {
     upload(req, res, async function(err){
-
-      const oAuthClient = new google.auth.OAuth2(
-        OAuth2Data.web.client_id,
-        OAuth2Data.web.client_secret,
-        //OAuth2Data.web.redirect_uris[0]
-        redirectUrl
-      )
-      const {title, tokens} = req.body
-      await oAuthClient.setCredentials(JSON.parse(tokens))     
-      if(err) throw err
-      
-      const youtube = google.youtube({
-        version: 'v3',
-        auth: oAuthClient
-      })
-
-      youtube.videos.insert({//metodo para subir un video
-        resource:{
-          snippet:{
-            title, //titulo
-            description: 'this is a test of youtube api' ///descripcion
+      try {
+        const oAuthClient = new google.auth.OAuth2(
+          OAuth2Data.web.client_id,
+          OAuth2Data.web.client_secret,
+          //OAuth2Data.web.redirect_uris[0]
+          redirectUrl
+        )
+        const {title, tokens} = req.body
+        console.log("Tokens =>>", tokens)
+        await oAuthClient.setCredentials(JSON.parse(tokens))     
+        if(err) throw err
+        
+        const youtube = google.youtube({
+          version: 'v3',
+          auth: oAuthClient
+        })
+  
+        await youtube.videos.insert({//metodo para subir un video
+          resource:{
+            snippet:{
+              title, //titulo
+              description: 'this is a test of youtube api' ///descripcion
+            },
+            status:{
+              privacyStatus: 'private' //video publico, privado o no listado
+            }
           },
-          status:{
-            privacyStatus: 'private' //video publico, privado o no listado
+          part:'snippet,status',
+          media:{
+            body:fs.createReadStream(req.file.path)
           }
         },
-        part:'snippet,status',
-        media:{
-          body:fs.createReadStream(req.file.path)
-        }
-      },
-      (err, data) => {
-        if(err) throw err
-        console.log('uploading video done!')
-        
-        //borra la copia del video de la carpeta upload
-        res.send('success!')
-        fs.unlink(req.file.path, err => {
-          if (err) throw err;
+        (err, data) => {
+          if(err) throw err
+          console.log('uploading video done!')
+          
+          //borra la copia del video de la carpeta upload
+          fs.unlink(req.file.path, err => {
+            if (err) throw err;
+          })
+          res.send('success!')
+          
         })
         
-      })
-      
+
+      } catch (error) {
+        next(error)
+      }
     })
     
               
   } catch(error) {
-    res.send(error)
+    next(error)
   }     
 })
 
