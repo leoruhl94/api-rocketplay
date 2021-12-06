@@ -8,18 +8,19 @@ const multer = require('multer')
 const fs = require('fs')
 
 //modelo de la copia del video que va a crear en la carpeta upload
-const storage = multer.diskStorage({
-    destination: function (req, file, cb){
-        cb(null, 'uploads')
-    },
-    filename: function(req, file, cb){
-        cb(null, `${Date.now()}-${file.originalname}`)
-    }
-})
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb){
+//         cb(null, 'uploads')
+//     },
+//     filename: function(req, file, cb){
+//         cb(null, `${Date.now()}-${file.originalname}`)
+//     }
+// })
 //guardamos el video que me llega con multer
-const upload = multer({storage: storage}) //el nombre del key donde viene el archivo de video
+// const upload = multer({storage: storage}).single('videoFile') //el nombre del key donde viene el archivo de video
 //datos del cliente
-
+const upload = multer({dest: 'uploads/'})
+console.log(upload)
 // Para ver mis listas de reproduccion 
 // https://youtube.googleapis.com/youtube/v3/channels?part=contentDetails&mine=true&key=AIzaSyCy5bFCjzTESdANJcoW8GNZRvVS6LJ2864&access_token=ya29.a0ARrdaM_0HeyVKEOYyVvJ0FMHTiy4mQu8qEd_gvPQRVyaRTeCAcwJ43v0stDfhlTdqy_haABBpaWj13Ubhb_nYZIcrnO0qqyrvu0pmv3Pdiby7IFQH2xU8r7bDJRech3aAcNq8tb7VBSqL8NLgih91V_Mdcp7
 
@@ -28,7 +29,8 @@ const upload = multer({storage: storage}) //el nombre del key donde viene el arc
 
 
 router.post('/',upload.single('videoFile'), async (req, res, next) => {//subir un video
-  try {
+  try { //function(err){
+    upload(req, res, next)
       console.log("Afuera =>> ", req.body)
       console.log("===========================================================================================================")
       let redirectUrl = req.headers.origin;
