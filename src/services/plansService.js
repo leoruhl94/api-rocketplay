@@ -77,40 +77,40 @@ class PlansService {
       // // console.log(foundPlans)
       // if (!foundPlans.length) {
       let planBasic = {
-        "id": "2c9380847d70946c017d88f3fc420d71",
+        "id": "2c9380847d7c2d8f017d8d739a4e0715",
         "name": "Plan Basic",
         "description": "The Basic Plans offers you a limit of 100 users on your platform",
         "price": 5000,
         "userLimit": 100,
-        "link_checkout": "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380847d70946c017d88f3fc420d71",
+        "link_checkout": "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380847d7c2d8f017d8d739a4e0715",
         "status": "active",
-        "back_url": "https://rocketplay.com.ar/#/preapproval",
-        "createdAt": "2021-12-05T04:57:12.455Z",
-        "updatedAt": "2021-12-05T04:57:12.455Z"
+        "back_url": "https://www.rocketplay.com.ar/#/preapproval",
+        "createdAt": "2021-12-06T01:55:04.098Z",
+        "updatedAt": "2021-12-06T01:55:04.098Z"
       };
       let planStandard =  {
-        "id": "2c9380847d7c2d8f017d88f3feed05ac",
+        "id": "2c9380847d7c2d8f017d8d739d140716",
         "name": "Plan Standard",
         "description": "The Standard Plans offers you a limit of 500 users on your platform",
         "price": 15000,
         "userLimit": 500,
-        "link_checkout": "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380847d7c2d8f017d88f3feed05ac",
+        "link_checkout": "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380847d7c2d8f017d8d739d140716",
         "status": "active",
-        "back_url": "https://rocketplay.com.ar/#/preapproval",
-        "createdAt": "2021-12-05T04:57:12.464Z",
-        "updatedAt": "2021-12-05T04:57:12.464Z"
+        "back_url": "https://www.rocketplay.com.ar/#/preapproval",
+        "createdAt": "2021-12-06T01:55:04.107Z",
+        "updatedAt": "2021-12-06T01:55:04.107Z"
       };
       let planPremium = {
-        "id": "2c9380847d7c2d8f017d88f401a905ad",
+        "id": "2c9380847d7c2d8f017d8d739fab0717",
         "name": "Plan Premium",
         "description": "The Premim Plans offers you a limit of 1000 users on your platform",
         "price": 25000,
         "userLimit": 1000,
-        "link_checkout": "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380847d7c2d8f017d88f401a905ad",
+        "link_checkout": "https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=2c9380847d7c2d8f017d8d739fab0717",
         "status": "active",
-        "back_url": "https://rocketplay.com.ar/#/preapproval",
-        "createdAt": "2021-12-05T04:57:12.466Z",
-        "updatedAt": "2021-12-05T04:57:12.466Z"
+        "back_url": "https://www.rocketplay.com.ar/#/preapproval",
+        "createdAt": "2021-12-06T01:55:04.110Z",
+        "updatedAt": "2021-12-06T01:55:04.110Z"
       };
 
       let plans = [planBasic, planStandard, planPremium];

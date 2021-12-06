@@ -50,7 +50,7 @@ class SubscriptionService {
   async findAllDB() {
     try {
       // let subscriptions = await Subscriptions.findAll({include: ["schema", Plans]});
-      let subscriptions = await Users.findAll({include: ["schemas", "subscriptions"]});
+      let subscriptions = await Subscriptions.findAll();
       return subscriptions;
     } catch (error) {
       throw new Error(error.message || "se rompio todo");

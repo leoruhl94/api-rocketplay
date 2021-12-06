@@ -28,13 +28,15 @@ const upload = multer({storage: storage}).single('videoFile') //el nombre del ke
 
 
 router.post('/', async (req, res, next) => {//subir un video
+  let redirectUrl = req.headers.origin;
   try {
     upload(req, res, async function(err){
 
       const oAuthClient = new google.auth.OAuth2(
         OAuth2Data.web.client_id,
         OAuth2Data.web.client_secret,
-        OAuth2Data.web.redirect_uris[0]
+        //OAuth2Data.web.redirect_uris[0]
+        redirectUrl
       )
       const {title, tokens} = req.body
       await oAuthClient.setCredentials(JSON.parse(tokens))     
