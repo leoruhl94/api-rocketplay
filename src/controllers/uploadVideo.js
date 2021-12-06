@@ -28,10 +28,10 @@ const upload = multer({storage: storage}).single('videoFile') //el nombre del ke
 
 
 router.post('/', async (req, res, next) => {//subir un video
-  let redirectUrl = req.headers.origin;
   try {
-    console.log("Aguera =>> ", req.body)
     upload(req, res, async function(err){
+      console.log("Aguera =>> ", req.body)
+      let redirectUrl = req.headers.origin;
       try {
         const oAuthClient = new google.auth.OAuth2(
           OAuth2Data.web.client_id,
@@ -51,7 +51,9 @@ router.post('/', async (req, res, next) => {//subir un video
           version: 'v3',
           auth: oAuthClient
         })
-  
+        console.log("File =>>", req.file)
+        console.log("Path =>>", req.file.path)
+        console.log("Dir =>>", ___dirname)
         await youtube.videos.insert({//metodo para subir un video
           resource:{
             snippet:{
