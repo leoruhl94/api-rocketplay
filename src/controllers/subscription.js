@@ -73,6 +73,15 @@ router.get("/showschemas", async (req, res, next) => {
   }
 })
 
+router.get("/deleteallschemas", async (req, res, next) => {
+  try {
+    const allSchemas = await sequelize.dropAllSchemas()
+    res.send("Creo que funciono")
+  } catch (error) {
+    next(error)
+  }
+})
+
 ///////////////////
 router.post("/", async (req, res, next) => {
   // recibo id del pago
