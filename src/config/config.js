@@ -24,7 +24,10 @@ const config = {
     'http://www.develop.rocketplay.com.ar',
     'https://www.develop.rocketplay.com.ar',
     'http://localhost:3006',
-  ]
+  ],
+  awsAccessKey:process.env.AWS_ACCESS_KEY_ID,
+  awsSecretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
+  bucketName:process.env.S3_BUCKET_KEY
 };
 
 mercadopago.configure({

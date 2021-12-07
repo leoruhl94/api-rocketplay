@@ -5,14 +5,19 @@ const router = Router();
 const OAuth2Data = require('../../googleYoutube.json')
 //este archivo se descarga desde las credenciales con json
 const aws = require('aws-sdk')
+const { S3Client } = require('@aws-sdk/client-s3')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
 const fs = require('fs')
+const { awsAccessKey, awsSecretAccessKey, bucketName } = require('../config/config.js')
+
+aws.config.region = 'us-east-1';
 
 const s3 = new aws.S3({
-  accessKeyId: "clavesita",
-  secretAccessKey: 'clavesota'
+  accessKeyId: awsAccessKey,
+  secretAccessKey: awsSecretAccessKey
 })
+
 
 //modelo de la copia del video que va a crear en la carpeta upload
 const storage = multer.diskStorage({
@@ -48,6 +53,7 @@ var uploadS3 = multer({
 
 // Para ver los videos de la lista de reproduccion (sacar el id de lo de arriba)
 // https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cstatus&playlistId=UU2VixUI_oav1QOvFn95rEhA&key=AIzaSyCy5bFCjzTESdANJcoW8GNZRvVS6LJ2864&access_token=ya29.a0ARrdaM_0HeyVKEOYyVvJ0FMHTiy4mQu8qEd_gvPQRVyaRTeCAcwJ43v0stDfhlTdqy_haABBpaWj13Ubhb_nYZIcrnO0qqyrvu0pmv3Pdiby7IFQH2xU8r7bDJRech3aAcNq8tb7VBSqL8NLgih91V_Mdcp7
+
 
 
 router.post('/',uploadS3.single('videoFile'), async (req, res, next) => {//subir un video
