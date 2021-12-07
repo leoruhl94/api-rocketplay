@@ -1,7 +1,8 @@
-const Router = require('express')
-const axios = require('axios')
-const {google} = require('googleapis')
+const Router = require('express');
+const axios = require('axios');
+const {google} = require('googleapis');
 const router = Router();
+const config = require('')
 const OAuth2Data = require('../../googleYoutube.json')
 //este archivo se descarga desde las credenciales con json
 const aws = require('aws-sdk')
@@ -10,8 +11,8 @@ const multerS3 = require('multer-s3')
 const fs = require('fs')
 
 const s3 = new aws.S3({
-  accessKeyId: 'clavesita',
-  secretAccessKey: 'clavesota'
+  accessKeyId: config.accessKeyId,
+  secretAccessKey: config.secretAccessKey
 })
 
 //modelo de la copia del video que va a crear en la carpeta upload
@@ -32,7 +33,7 @@ console.log(upload)
 var uploadS3 = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'rocketplay2021',
+    bucket: config.bucketName,
     acl: 'public-read',
     metadata: function (req, file, cb) {
       cb(null, {fieldName: file.fieldname});
