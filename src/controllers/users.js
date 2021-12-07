@@ -12,6 +12,13 @@ router.get('/all', async(req, res, next) => {
         next(error)
     }
 })
+router.get('/deleteall', async(req, res, next) => {
+    try {
+        res.json(await usersService.deleteAllUsers())
+    } catch(error) {
+        next(error)
+    }
+})
 
 
 router.get('/', async (req, res, next)=> {
