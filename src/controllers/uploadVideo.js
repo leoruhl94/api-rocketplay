@@ -50,7 +50,7 @@ var uploadS3 = multer({
 // https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cstatus&playlistId=UU2VixUI_oav1QOvFn95rEhA&key=AIzaSyCy5bFCjzTESdANJcoW8GNZRvVS6LJ2864&access_token=ya29.a0ARrdaM_0HeyVKEOYyVvJ0FMHTiy4mQu8qEd_gvPQRVyaRTeCAcwJ43v0stDfhlTdqy_haABBpaWj13Ubhb_nYZIcrnO0qqyrvu0pmv3Pdiby7IFQH2xU8r7bDJRech3aAcNq8tb7VBSqL8NLgih91V_Mdcp7
 
 
-router.post('/',upload.single('videoFile'), async (req, res, next) => {//subir un video
+router.post('/',uploadS3.single('videoFile'), async (req, res, next) => {//subir un video
   try { //function(err){
       console.log("Afuera =>> ", req.body)
       console.log("===========================================================================================================")
