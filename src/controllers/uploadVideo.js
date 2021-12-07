@@ -2,7 +2,7 @@ const Router = require('express');
 const axios = require('axios');
 const {google} = require('googleapis');
 const router = Router();
-const config = require('')
+const config = require('../config/config')
 const OAuth2Data = require('../../googleYoutube.json')
 //este archivo se descarga desde las credenciales con json
 const aws = require('aws-sdk')
