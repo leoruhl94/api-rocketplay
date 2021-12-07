@@ -10,8 +10,8 @@ const multerS3 = require('multer-s3')
 const fs = require('fs')
 
 const s3 = new aws.S3({
-  accessKeyId: 'AKIA4KENAPOS2C2TJENZ',
-  secretAccessKey: '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'
+  accessKeyId: "clavesita",
+  secretAccessKey: 'clavesota'
 })
 
 //modelo de la copia del video que va a crear en la carpeta upload
