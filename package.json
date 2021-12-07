@@ -16,6 +16,7 @@
   "author": "Rocket Play",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.44.0",
     "aws-sdk": "^2.1043.0",
     "axios": "^0.24.0",
     "cors": "^2.8.5",

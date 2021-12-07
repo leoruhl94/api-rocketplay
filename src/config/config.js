@@ -27,7 +27,7 @@ const config = {
   ],
   awsAccessKey:process.env.AWS_ACCESS_KEY_ID,
   awsSecretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
-  bucketName:process.env.S3_BUCKET_KEY
+  bucketName:process.env.S3_BUCKET_NAME
 };
 
 mercadopago.configure({
