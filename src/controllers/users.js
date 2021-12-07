@@ -1,6 +1,19 @@
 const Router = require('express');
 const {conn, Users} = require('../libs/sequelize')
 const router = Router();
+const UsersService = require('../services/usersService')
+/////////////////////////////////////////////
+let usersService = new UsersService()
+
+router.get('/all', async(req, res, next) => {
+    try {
+        res.json(await usersService.findAllUsers())
+    } catch(error) {
+        next(error)
+    }
+})
+
+
 router.get('/', async (req, res, next)=> {
     try{
         const {email} = req.query

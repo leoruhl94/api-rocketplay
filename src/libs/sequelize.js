@@ -1,14 +1,11 @@
 
 const {Sequelize, DataTypes} = require("sequelize")
-
 const config = require("../config/config");
 const fs = require("fs")
 const path =  require("path")
-
-
 const basename = path.basename(__filename);
 
-// const URI = `postgres://${config.dbUser}:${config.dbPassword}@${config.dbHost}/${config.dbName}`
+
 const URI = config.dbUrl;
 
 
@@ -16,7 +13,7 @@ const URI = config.dbUrl;
 
 const options = {
     dialect: "postgres",
-    // logging: false,
+    logging: false,
     dialectOptions: {},
   };
   if (config.isProd) {
@@ -37,18 +34,16 @@ const modelDefiners = {}
 
 fs.readdirSync(path.join(__dirname.slice(0,-5),'/database/models'))
   .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
-  .forEach((file) => {
+  .forEach((file) => { 
   const model = require(path.join(__dirname.slice(0,-5), '/database/models', file));
-  modelDefiners[file] = model;
+  const modelo = model(sequelize,DataTypes);
+  modelDefiners[file] = modelo;
 });
 
-
-
 Object.keys(modelDefiners).forEach(modelName => {
-  modelDefiners[modelName](sequelize,DataTypes);
   if (modelDefiners[modelName].associate) {
-    modelDefiners[modelName].associate(modelDefiners);
-  }
+      modelDefiners[modelName].associate(sequelize.models);
+    }
 });
 
 module.exports = {

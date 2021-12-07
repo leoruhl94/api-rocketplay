@@ -78,8 +78,20 @@ module.exports = async function createTemplate(name) {
         description: {
             type: DataTypes.TEXT
         },
-        isShort: {
-            type: DataTypes.BOOLEAN
+        link: {
+            type: DataTypes.STRING
+        },
+        externalid: {
+            type: DataTypes.STRING
+        },
+        channelname: {
+            type: DataTypes.STRING
+        },
+        channelavatar: {
+            type: DataTypes.STRING
+        },
+        thumbnail: {
+            type: DataTypes.STRING
         }
 
     }, {
@@ -104,21 +116,63 @@ module.exports = async function createTemplate(name) {
         timestamps: false, //we do not need updatedAt nor createdAt
     })
 
+    const Comment = sequelize.define('comment', {
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        }
+    }, {
+        sequelize,
+        modelName: 'comment',
+        schema: name.toLowerCase(),
+        tableName: 'comments'
+    })
 
-    User.belongsToMany(Channel, { through: "userchannels" })
-    Channel.belongsToMany(User, { through: "userchannels" })
+    const Like = sequelize.define('like', {
+        like: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        }
+    }, {
+        sequelize,
+        modelName: 'like',
+        schema: name.toLowerCase(),
+        tableName: 'likes'
+    })
 
-    Category.belongsToMany(Channel, { through: "channelscategory" })
-    Channel.belongsToMany(Category, { through: "channelscategory" })
 
-    Category.belongsToMany(Video, { through: "videocategory" })
-    Video.belongsToMany(Category, { through: "videocategory" })
+    // User.belongsToMany(Channel, { through: "userchannels" })
+    // Channel.belongsToMany(User, { through: "userchannels" })
+
+    // Category.belongsToMany(Channel, { through: "channelscategory" })
+    // Channel.belongsToMany(Category, { through: "channelscategory" })
+
+    // Category.belongsToMany(Video, { through: "videocategory" })
+    // Video.belongsToMany(Category, { through: "videocategory" })
 
     Tag.belongsToMany(Video, { through: "videotags" })
     Video.belongsToMany(Tag, { through: "videotags" })
 
+    User.belongsToMany(Video, { through: "like" })
+    Video.belongsToMany(User, { through: "like" })
+
     User.hasMany(Video)
     Video.belongsTo(User)
+
+    Video.hasMany(Comment)
+    Comment.belongsTo(Video)
+
+    User.hasMany(Comment)
+    Comment.belongsTo(User)
+
+    Video.hasMany(Category)
+    Category.belongsTo(Video)
+
+    Channel.hasMany(Category)
+    Category.belongsTo(Channel)
+
+
+
     
     await sequelize.sync({schema: name.toLowerCase()}) 
 
