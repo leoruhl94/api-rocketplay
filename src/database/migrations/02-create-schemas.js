@@ -11,6 +11,16 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      // subscription_id: {
+      //   field: "subscription_id",
+      //   type: Sequelize.INTEGER,
+      //   refereces: {
+      //     model: "Subscriptions",
+      //     key: "id",
+      //   },
+      //   onUpdate: "CASCADE",
+      //   onDelete: "SET NULL",
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

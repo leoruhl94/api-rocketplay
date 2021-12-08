@@ -9,11 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Schemas.belongsToMany(models.Users, { through: "UsersSchemas" })
+      // this.belongsToMany(models.Users, { as: "schema_id", through: "UsersSchemas" })
+      // this.hasOne(models.Subscriptions, { as: 'schemas', foreignKey: 'schema_id' })
     }
   };
   Schemas.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    // subscription_id: DataTypes.STRING //id del pago (mp)
   }, {
     sequelize,
     modelName: 'Schemas',

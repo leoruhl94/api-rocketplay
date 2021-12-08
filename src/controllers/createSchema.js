@@ -3,7 +3,7 @@ const router = Router();
 const {conn, Users, Schemas} = require('../libs/sequelize');
 const sequelize = conn;
 
-router.post("/",  async function(req, res, next){
+router.post("/",  async function(req, res){
     try {
         const { name, email } = req.body
         const schemaName = name.replace(/\s/g, '').toLowerCase()
