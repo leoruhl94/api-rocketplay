@@ -6,14 +6,14 @@ class UsersService {
     this.users = [];
   }
 
-  async createUser({name, mail, youtubeChannel=null, isBusiness=false}) {
+  async findOrCreateUser({name, mail, youtubeChannel=null, isBusiness=false}) {
     try {
-      let user = await Users.create({
+      let user = await Users.findOrCreate({where:{
         name,
         mail,
         youtubeChannel,
         isBusiness
-      });
+      }});
       return user;
     } catch (error) {
       throw new Error(error.message || "everything is broken");
@@ -35,7 +35,7 @@ class UsersService {
   async deleteAllUsers() {
     try {
       let user = await Users.destroy({
-        truncate: true,
+        where: {},
       });
       return user;
     } catch (error) {

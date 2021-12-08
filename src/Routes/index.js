@@ -12,7 +12,9 @@ const registerBRouter = require("../controllers/registerBusiness");
 const registerURouter = require("../controllers/registerUser");
 const createSchemaRouter = require("../controllers/createSchema")
 const plans = require("./plans")
+const v2Users = require("./users2.js")
 
+router.use("/v2/users", v2Users)
 router.use("/plans", plans)
 router.use("/createSchema", createSchemaRouter)
 router.use("/loginUser", loginURouter);
