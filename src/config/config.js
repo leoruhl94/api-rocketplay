@@ -27,7 +27,9 @@ const config = {
     'http://www.develop.rocketplay.com.ar',
     'https://www.develop.rocketplay.com.ar',
     'http://localhost:3006',
-  ]
+  ],
+  userName: process.env.EMAIL_USERNAME,
+  userPass: process.env.EMAIL_PASSWORD,
 };
 
 mercadopago.configure({
