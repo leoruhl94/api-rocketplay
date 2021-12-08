@@ -3,6 +3,7 @@ const {conn, Users} = require('../libs/sequelize')
 const router = Router();
 const nodemailer = require("nodemailer");
 const UsersService = require('../services/usersService')
+const {userName, userPass} = require('../config/config')
 /////////////////////////////////////////////
 let usersService = new UsersService()
 

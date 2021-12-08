@@ -11,6 +11,8 @@ const sequelize = conn;
 const nodemailer = require("nodemailer");
 const createTemplate = require("../services/schemaTemplate");
 
+const {userName, userPass} = require('../config/config')
+
 const UsersService = require("../services/usersService");
 const SubscriptionService = require("../services/subscriptionService");
 ////////////////////////////////////
