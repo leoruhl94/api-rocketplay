@@ -14,8 +14,8 @@ const config = {
   // DATABASE_URL="postgres://postgres:38644082@localhost:5432/RocketPlay";
   dbUrl:process.env.DATABASE_URL,
   tokenMP:process.env.TOKEN_MERCADO_PAGO,
-  accessKeyId:process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
+  awsAccessKey:process.env.AWS_ACCESS_KEY_ID,
+  awsSecretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
   bucketName:process.env.S3_BUCKET_NAME,
   corsWhiteList: [
     'https://www.rocketplay.com.ar',
@@ -29,7 +29,7 @@ const config = {
     'http://localhost:3006',
   ],
   userName: process.env.EMAIL_USERNAME,
-  userPass: process.env.EMAIL_PASSWORD,
+  userPass: process.env.EMAIL_PASSWORD
 };
 
 mercadopago.configure({

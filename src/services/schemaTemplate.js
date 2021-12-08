@@ -165,8 +165,8 @@ module.exports = async function createTemplate(name) {
     User.hasMany(Comment)
     Comment.belongsTo(User)
 
-    Video.hasMany(Category)
-    Category.belongsTo(Video)
+    Category.hasMany(Video)
+    Video.belongsTo(Category)
 
     Channel.hasMany(Category)
     Category.belongsTo(Channel)
