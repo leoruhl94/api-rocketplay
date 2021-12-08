@@ -11,7 +11,7 @@ const sequelize = conn;
 const nodemailer = require("nodemailer");
 const createTemplate = require("../services/schemaTemplate");
 
-const {userName, userPass} = require('../config/config')
+const { userName, userPass } = require("../config/config");
 
 const UsersService = require("../services/usersService");
 const SubscriptionService = require("../services/subscriptionService");
@@ -40,10 +40,8 @@ router.get("/all", async (req, res, next) => {
   }
 });
 router.get("/headers", async (req, res, next) => {
-
-  console.log(req.headers.origin)
-  console.log("===============================")
-
+  console.log(req.headers.origin);
+  console.log("===============================");
 });
 router.get("/createuser", async (req, res, next) => {
   try {
@@ -68,21 +66,21 @@ router.get("/deleteSchema", async (req, res, next) => {
 
 router.get("/showschemas", async (req, res, next) => {
   try {
-    const allSchemas = await sequelize.showAllSchemas()
-    res.send(allSchemas)
+    const allSchemas = await sequelize.showAllSchemas();
+    res.send(allSchemas);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 router.get("/deleteallschemas", async (req, res, next) => {
   try {
-    const allSchemas = await sequelize.dropAllSchemas()
-    res.send("Creo que funciono")
+    const allSchemas = await sequelize.dropAllSchemas();
+    res.send("Creo que funciono");
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 ///////////////////
 router.post("/", async (req, res, next) => {
@@ -91,7 +89,7 @@ router.post("/", async (req, res, next) => {
   try {
     // buscamos en mp la data del pago de la suscripcion
     let userPaymentData = await subscriptionService.findOneMP(subscription_id);
-   
+
     // crear la suscripcion en nuestra base de datos
     let createdSubscription = await Subscriptions.findOrCreate({
       where: {
@@ -99,7 +97,6 @@ router.post("/", async (req, res, next) => {
         status: userPaymentData.status,
       },
     });
-   
 
     // busco en la lista de planes el plan al que se suscribe
     let plan = await Plans.findOne({
@@ -115,7 +112,7 @@ router.post("/", async (req, res, next) => {
 
     let user = await userService.findOneUser(mail);
     // creo la asociacion de la suscripcion con el plan
-    console.log("User: ", user);
+    // console.log("User: ", user);
     await user.setSubscriptions(subscription_id);
 
     const schemaName = user.name.replace(/\s/g, "").toLowerCase();
@@ -137,7 +134,7 @@ router.post("/", async (req, res, next) => {
           const schema = await Schemas.create({ name: schemaName });
           // await UsersSchemas.create({ userId: user.id, schemaId: schema.id });
           await user.addSchemas(schema.id);
-
+          await user.update({ isBusiness: true });
           await createdSubscription[0].update({
             schema_id: schema.id,
           });
@@ -145,34 +142,33 @@ router.post("/", async (req, res, next) => {
           next(error);
         }
       });
-      try {
-        let transporter = nodemailer.createTransport({
-            host: "smtp.gmail.email",
-            port: 465,
-            secure: true, 
-            auth: {
-              user: userName,
-              pass: userPass
-            },
-          });
-          let info = await transporter.sendMail({
-            from: '"Rocket Play" <rocketplay2022@gmail.com>', // sender address
-            to: mail, // list of receivers
-            subject: "Thanks for subscribing", // Subject line
-            text: "Hello, thank you for using our services! ", // plain text body
-            html: "<b>Hello, thank you for using our services!</b>", // html body
-          });
-        
-          console.log("Message sent: %s", info.messageId)
-       } catch (error) {
-          console.log(error) }
+    try {
+      let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.email",
+        port: 465,
+        secure: true,
+        auth: {
+          user: userName,
+          pass: userPass,
+        },
+      });
+      let info = await transporter.sendMail({
+        from: '"Rocket Play" <rocketplay2022@gmail.com>', // sender address
+        to: mail, // list of receivers
+        subject: "Thanks for subscribing", // Subject line
+        text: "Hello, thank you for using our services! ", // plain text body
+        html: "<b>Hello, thank you for using our services!</b>", // html body
+      });
+
+      console.log("Message sent: %s", info.messageId);
+    } catch (error) {
+      console.log(error);
+    }
     //confirmo q el proceso se completo correctamente
-    res.status(200).json({message: 'Ok'});
+    res.status(200).json({ message: "Ok" });
   } catch (error) {
     next(error);
   }
- 
 });
 
 module.exports = router;
-

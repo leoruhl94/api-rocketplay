@@ -54,7 +54,7 @@ router.post("/", async (req, res, next) => {
     //mandar mail de welcome
     try {
       let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.email",
+        host: "smtp.gmail.com.com.ar",
         port: 465,
         secure: true,
         auth: {
@@ -62,6 +62,7 @@ router.post("/", async (req, res, next) => {
           pass: userPass,
         },
       });
+      console.log("email====>>",  email )
       let info = await transporter.sendMail({
         from: '"Rocket Play" <rocketplay2022@gmail.com>', // sender address
         to: email, // list of receivers

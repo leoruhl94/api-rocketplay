@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 // const upload = multer({storage: storage}).single('videoFile') //el nombre del key donde viene el archivo de video
 //datos del cliente
 const upload = multer({storage})
-console.log(upload)
+// console.log(upload)
 
 var uploadS3 = multer({
   storage: multerS3({

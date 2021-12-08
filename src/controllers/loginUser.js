@@ -16,9 +16,9 @@ router.post("/", async (req, res, next) => {
       // OAuth2Data.web.redirect_uris
       redirectUrl
     );
-    console.log("Origin =>>",req.headers.origin)
-    console.log("Redirect =>>",OAuth2Data.web.redirect_uris)
-    console.log("OAUTH", oAuthClient);
+    // console.log("Origin =>>",req.headers.origin)
+    // console.log("Redirect =>>",OAuth2Data.web.redirect_uris)
+    // console.log("OAUTH", oAuthClient);
     try {
       await oAuthClient.getToken(code, function (err, tokens) {
         if (err) throw err;
