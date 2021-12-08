@@ -54,6 +54,7 @@ class UsersService {
     try {
       const user = await Users.findOne({
         where: { mail: email },
+        include: ["subscriptions"]
       });
       return user;
     } catch (error) {

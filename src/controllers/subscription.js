@@ -144,7 +144,7 @@ router.post("/", async (req, res, next) => {
       });
     try {
       let transporter = nodemailer.createTransport({
-        service:'Gmail',
+        service: "Gmail",
         auth: {
           user: userName,
           pass: userPass,
@@ -168,5 +168,26 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+router.put("/", async (req, res, next) => {
+  const { email, status } = req.body;
 
+  let user = await userService.findOneUser(email);
+
+  let subscription = await subscriptionService.findOneDB(
+    user.subscriptions[0].id
+  );
+
+  let subscriptionUpdated = await subscriptionService.updateSubscriptionMP(
+    user.subscriptions[0].id, status
+  );
+
+  if(subscriptionUpdated.status === status){
+    await subscription.update({status: status})
+    res.json("Your subscription was updated " + subscriptionUpdated.status);
+  }else {
+    res.json("Your subscription was not updated " + subscriptionUpdated.status);
+
+  }
+
+});
 module.exports = router;
