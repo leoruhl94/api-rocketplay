@@ -8,7 +8,7 @@ const {
   Plans,
 } = require("../libs/sequelize");
 const sequelize = conn;
-
+const nodemailer = require("nodemailer");
 const createTemplate = require("../services/schemaTemplate");
 
 const UsersService = require("../services/usersService");
@@ -143,7 +143,27 @@ router.post("/", async (req, res, next) => {
           next(error);
         }
       });
-
+      try {
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.email",
+            port: 465,
+            secure: true, 
+            auth: {
+              user: userName,
+              pass: userPass
+            },
+          });
+          let info = await transporter.sendMail({
+            from: '"Rocket Play" <rocketplay2022@gmail.com>', // sender address
+            to: mail, // list of receivers
+            subject: "Thanks for subscribing", // Subject line
+            text: "Hello, thank you for using our services! ", // plain text body
+            html: "<b>Hello, thank you for using our services!</b>", // html body
+          });
+        
+          console.log("Message sent: %s", info.messageId)
+       } catch (error) {
+          console.log(error) }
     //confirmo q el proceso se completo correctamente
     res.status(200).json({message: 'Ok'});
   } catch (error) {

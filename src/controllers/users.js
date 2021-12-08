@@ -1,6 +1,7 @@
 const Router = require('express');
 const {conn, Users} = require('../libs/sequelize')
 const router = Router();
+const nodemailer = require("nodemailer");
 const UsersService = require('../services/usersService')
 /////////////////////////////////////////////
 let usersService = new UsersService()
@@ -39,6 +40,29 @@ router.post("/", async (req, res, next)=> {
     try{
         const {name, email, isBusiness} = req.body
         const newUser = await Users.create({name:name, mail:email, isBusiness:isBusiness})
+        //mandar mail de welcome
+       try {
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.email",
+            port: 465,
+            secure: true, 
+            auth: {
+              user: userName,
+              pass: userPass
+            },
+          });
+          let info = await transporter.sendMail({
+            from: '"Rocket Play" <rocketplay2022@gmail.com>', // sender address
+            to: email, // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: "Hello world?", // plain text body
+            html: "<b>Hello world?</b>", // html body
+          });
+        
+          console.log("Message sent: %s", info.messageId)
+       } catch (error) {
+          console.log(error) 
+       }
         res.status(200).json(newUser)
     } catch (error) {
         res.send(error)
