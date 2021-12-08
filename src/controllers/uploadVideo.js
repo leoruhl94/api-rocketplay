@@ -84,6 +84,7 @@ router.get("/aws-client", async (req, res, next) => {
     try {
       // Avatar - Autor - Descripcion - UUID (video) - Link AWS - Titulo video - Likes - 
       const { title, avatar, author, description, thumbnail, link } = req.body
+      link = link.replace(/\s+/g, '+');
       const schemaName = author.replace(/\s/g, "").toLowerCase();
       const sql = `
       INSERT INTO ${schemaName}.videos (title, description, link, channelname, channelavatar)
@@ -126,8 +127,6 @@ router.get("/aws-client", async (req, res, next) => {
       } else {
         res.json({message:'Could not delete video'})
       }
-
-      
   }catch(error){
     next(error)
   }
