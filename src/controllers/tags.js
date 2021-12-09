@@ -6,7 +6,7 @@ const sequelize = conn;
 router.post("/", async function(req, res, next) {
   try {
     const { author, nameTag } = req.body;
-    const schemaName = author.replace(/\s/g, "").toLowerCase();
+    let schemaName = author.replace(/\s/g, "").toLowerCase();
     const sql = `
             INSERT INTO ${schemaName.toLowerCase()}.tags (name) VALUES('${nameTag}')
             `;
@@ -15,15 +15,16 @@ router.post("/", async function(req, res, next) {
     });
     res.status(200).send("Tag created succesfully");
   } catch (error) {
-    res.status(400).json({ message: error });
+    next(error);
   }
 });
 
 router.get("/", async (req, res, next) => {
   try {
-    const { schemaName } = req.body;
+    let { schemaName } = req.body;
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     const sql = `
-            SELECT * FROM ${schemaName.toLowerCase()}.tags
+            SELECT * FROM ${schemaName}.tags
             `;
     const result = await sequelize.query(sql, {
       type: sequelize.QueryTypes.SELECT,
@@ -41,9 +42,9 @@ router.put("/", async (req, res, next) => {
   const schemaName = author.replace(/\s/g, "").toLowerCase();
   try {
     const sql = `
-    UPDATE ${schemaName}.tags SET name=${newNameTag} WHERE name=${nameTag}`;
+    UPDATE ${schemaName}.tags SET name='${newNameTag}' WHERE name='${nameTag}'`;
     const respond = await sequelize.query(sql, {
-      type: sequelize.QueryTypes.INSERT
+      type: sequelize.QueryTypes.UPDATE
       })
       res.status(200).json({respond})       
       
@@ -58,7 +59,7 @@ router.delete('/', async (req, res, next) => {
     const schemaName = author.replace(/\s/g, "").toLowerCase();
   try{
       const sql = `
-      SELECT * FROM ${schemaName}.tags WHERE name=${name}  
+      SELECT * FROM ${schemaName}.tags WHERE name='${name}'  
       `;
       const respond = await sequelize.query(sql, {
           type: sequelize.QueryTypes.INSERT
@@ -66,7 +67,7 @@ router.delete('/', async (req, res, next) => {
   
       if (respond[1] === 1) {
           const sql2 = `
-          DELETE * FROM ${schemaName}.tags WHERE name=${name}
+          DELETE FROM ${schemaName}.tags WHERE name='${name}'
           `;
           await sequelize.query(sql2, {
               type: sequelize.QueryTypes.INSERT

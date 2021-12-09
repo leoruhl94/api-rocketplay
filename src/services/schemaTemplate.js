@@ -55,7 +55,7 @@ module.exports = async function createTemplate(name) {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
-        }
+        },
     }, {
         sequelize,
         modelName: 'category',
