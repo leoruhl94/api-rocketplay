@@ -34,7 +34,7 @@ router.get("/exist", async (req, res, next) => {
 });
 router.get("/", async (req, res, next) => {
   try {
-    const { email } = req.query;
+    const { email } = req.body;
     return res.status(200).json(await usersService.findOneUser(email));
   } catch (error) {
     res.send(error);

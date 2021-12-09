@@ -110,14 +110,14 @@ router.post("/", async (req, res, next) => {
     // creo la asociacion de la suscripcion con el plan
     await plan.setSubscriptions(subscription_id);
 
-    //buscamos el user
-
     let user = await userService.findOneUser(mail);
     // creo la asociacion de la suscripcion con el plan
-    // console.log("User: ", user);
+
     await user.setSubscriptions(subscription_id);
     let name = user.name;
     const schemaName = user.name.replace(/\s/g, "").toLowerCase();
+    // let schemaBoolean = await !!Schemas.findOne({where:{}})
+   
     await sequelize
       .createSchema(schemaName, {
         logging: false,
@@ -143,7 +143,6 @@ router.post("/", async (req, res, next) => {
           await createdSubscription[0].update({
             schema_id: schema.id,
           });
-
         } catch (error) {
           next(error);
         }
@@ -167,109 +166,67 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-
-
-/////////////////   PUT___ 
+/////////////////   PUT___
 
 router.put("/", async (req, res, next) => {
-  const { email, status } = req.body;
-try {
-  let user = await userService.findOneUser(email);
-  let name = user.name
-  let subscription = await subscriptionService.findOneDB(
-    user.subscriptions[0].id
-  );
+  const { email, status, id } = req.body;
+  try {
+    let user = await userService.findOneUser(email);
+    let subscription = await subscriptionService.findOneDB(
+      user.subscriptions[0].id
+    );
 
-  let subscriptionUpdated = await subscriptionService.updateSubscriptionMP(
-    user.subscriptions[0].id,
-    status
-  );
+    let subscriptionUpdated = await subscriptionService.updateSubscriptionMP(
+      user.subscriptions[0].id,
+      status
+    );
 
-  if (subscriptionUpdated.status === status) {
-    await subscription.update({ status: status });
-    try {
-      let subject = "News from the RocketPlay Team";
-      let text = `Hello ${name}! Your subscription has been correctly updated.
-     
+    if (subscriptionUpdated.status === status) {
+      await subscription.update({ status: status });
+
+      if (subscriptionCancelled.status === "cancelled") {
+        // cambiar en tabla schema a cancelled
+        await user.update({ isBusiness: false });
+      }
+
+      try {
+        let subject = "News from the RocketPlay Team";
+        let text = `Hello ${user.name}! Your subscription has been correctly updated.
+      The new status is ${subscriptionUpdated.status}
       Best regards,
       The Rocket Play Team`;
-      await mailService.sendEmail(email, subject, text);
+        let info = await mailService.sendEmail(email, subject, text);
 
-      console.log("Message sent: %s", info.messageId);
-    } catch (error) {
-      console.log(error);
-    }
-    res.json("Your subscription was updated " + subscriptionUpdated.status);
-  } else {
-    try {
-      let subject = "News from the RocketPlay Team";
-      let text = `Hello ${name}! Your subscription has not been correctly updated.
+        console.log("Message sent: %s", info.messageId);
+      } catch (error) {
+        console.log(error);
+      }
+      res.json({
+        message: "Your subscription was updated",
+        status: subscriptionUpdated.status,
+      });
+    } else {
+      try {
+        let subject = "News from the RocketPlay Team";
+        let text = `Hello ${user.name}! Your subscription has not been correctly updated.
+      The current status is ${subscriptionUpdated.status}
       Please try again.
       Best regards,
       The Rocket Play Team`;
-      await mailService.sendEmail(email, subject, text);
+        let info = await mailService.sendEmail(email, subject, text);
 
-      console.log("Message sent: %s", info.messageId);
-    } catch (error) {
-      console.log(error);
+        console.log("Message sent: %s", info.messageId);
+      } catch (error) {
+        console.log(error);
+      }
+      res.json({
+        message: "Your subscription was not updated",
+        status: subscriptionUpdated.status,
+      });
     }
-    res.json("Your subscription was not updated " + subscriptionUpdated.status);
-  }
-} catch (error) {
-  console.log(error)
-}
-
-});
-
-
-
-
-router.put("/cancel", async (req, res, next) => {
-  const { email } = req.body;
-
-  let user = await userService.findOneUser(email);
-  let name = user.name
-  let subscription = await subscriptionService.findOneDB(
-    user.subscriptions[0].id
-  );
-
-  let subscriptionCancelled = await subscriptionService.cancelSubscriptionMP(
-    user.subscriptions[0].id
-  );
-
-  if (subscriptionCancelled.status === "cancelled") {
-    await subscription.update({ status: cancelled });
-    // cambiar en tabla schema a cancelled
-    await user.update({ isBusiness: false });
-    try {
-      let subject = "News from the RocketPlay Team";
-      let text = `Hello ${name}! Your subscription has been correctly cancelled.
-     
-      Best regards,
-      The Rocket Play Team`;
-      await mailService.sendEmail(email, subject, text);
-
-      console.log("Message sent: %s", info.messageId);
-    } catch (error) {
-      console.log(error);
-    }
-    res.json("Your subscription was cancelled " + subscriptionCancelled.status);
-  } else {
-    try {
-      let subject = "News from the RocketPlay Team";
-      let text = `Hello ${name}! Your subscription has not been correctly cancelled.
-       Please try again.
-      Best regards,
-      The Rocket Play Team`;
-      await mailService.sendEmail(email, subject, text);
-
-      console.log("Message sent: %s", info.messageId);
-    } catch (error) {
-      console.log(error);
-    }
-    res.json(
-      "Your subscription was not cancelled " + subscriptionCancelled.status
-    );
+  } catch (error) {
+    console.log(error);
   }
 });
+
 module.exports = router;
