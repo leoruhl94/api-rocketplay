@@ -1,5 +1,6 @@
 require("dotenv").config();
 const mercadopago = require("mercadopago");
+const nodemailer = require("nodemailer")
 
 const config = {
   env: process.env.NODE_ENV || "development",
@@ -29,11 +30,19 @@ const config = {
     'http://localhost:3006',
   ],
   userName: process.env.EMAIL_USERNAME,
-  userPass: process.env.EMAIL_PASSWORD
+  userPass: process.env.EMAIL_PASSWORD,
+  transporter: nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  })
 };
 
 mercadopago.configure({
   access_token: config.tokenMP,
 });
+
 
 module.exports = config;

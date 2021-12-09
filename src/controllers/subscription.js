@@ -11,12 +11,14 @@ const sequelize = conn;
 const nodemailer = require("nodemailer");
 const createTemplate = require("../services/schemaTemplate");
 
-const { userName, userPass } = require("../config/config");
-
+const transporter = require("../config/config");
 const UsersService = require("../services/usersService");
+const MailService = require("../services/mailService");
 const SubscriptionService = require("../services/subscriptionService");
+
 ////////////////////////////////////
 let userService = new UsersService();
+let mailService = new MailService();
 let subscriptionService = new SubscriptionService();
 
 /////////DESTROY SUBSCRIPTION
@@ -114,7 +116,7 @@ router.post("/", async (req, res, next) => {
     // creo la asociacion de la suscripcion con el plan
     // console.log("User: ", user);
     await user.setSubscriptions(subscription_id);
-
+    let name = user.name;
     const schemaName = user.name.replace(/\s/g, "").toLowerCase();
     await sequelize
       .createSchema(schemaName, {
@@ -131,32 +133,28 @@ router.post("/", async (req, res, next) => {
           await sequelize.query(sql, {
             type: sequelize.QueryTypes.INSERT,
           });
-          const schema = await Schemas.create({ name: schemaName });
+          const schema = await Schemas.create({
+            name: schemaName,
+            status: "authorized",
+          });
           // await UsersSchemas.create({ userId: user.id, schemaId: schema.id });
           await user.addSchemas(schema.id);
           await user.update({ isBusiness: true });
           await createdSubscription[0].update({
             schema_id: schema.id,
           });
+
         } catch (error) {
           next(error);
         }
       });
     try {
-      let transporter = nodemailer.createTransport({
-        service: "Gmail",
-        auth: {
-          user: userName,
-          pass: userPass,
-        },
-      });
-      let info = await transporter.sendMail({
-        from: '"Rocket Play" <rocketplay2022@gmail.com>', // sender address
-        to: mail, // list of receivers
-        subject: "Thanks for subscribing", // Subject line
-        text: "Hello, thank you for using our services! ", // plain text body
-        html: "<b>Hello, thank you for using our services!</b>", // html body
-      });
+      let subject = "Welcome to the RocketPlay subscription system";
+      let text = `Hello ${name}! Thank you for subscribing to ${plan.name}.
+      We are glad to be working with you.
+      Best regards,
+      The Rocket Play Team`;
+      await mailService.sendEmail(mail, subject, text);
 
       console.log("Message sent: %s", info.messageId);
     } catch (error) {
@@ -168,26 +166,110 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
+
+
+/////////////////   PUT___ 
+
 router.put("/", async (req, res, next) => {
   const { email, status } = req.body;
-
+try {
   let user = await userService.findOneUser(email);
-
+  let name = user.name
   let subscription = await subscriptionService.findOneDB(
     user.subscriptions[0].id
   );
 
   let subscriptionUpdated = await subscriptionService.updateSubscriptionMP(
-    user.subscriptions[0].id, status
+    user.subscriptions[0].id,
+    status
   );
 
-  if(subscriptionUpdated.status === status){
-    await subscription.update({status: status})
+  if (subscriptionUpdated.status === status) {
+    await subscription.update({ status: status });
+    try {
+      let subject = "News from the RocketPlay Team";
+      let text = `Hello ${name}! Your subscription has been correctly updated.
+     
+      Best regards,
+      The Rocket Play Team`;
+      await mailService.sendEmail(email, subject, text);
+
+      console.log("Message sent: %s", info.messageId);
+    } catch (error) {
+      console.log(error);
+    }
     res.json("Your subscription was updated " + subscriptionUpdated.status);
-  }else {
+  } else {
+    try {
+      let subject = "News from the RocketPlay Team";
+      let text = `Hello ${name}! Your subscription has not been correctly updated.
+      Please try again.
+      Best regards,
+      The Rocket Play Team`;
+      await mailService.sendEmail(email, subject, text);
+
+      console.log("Message sent: %s", info.messageId);
+    } catch (error) {
+      console.log(error);
+    }
     res.json("Your subscription was not updated " + subscriptionUpdated.status);
-
   }
+} catch (error) {
+  console.log(error)
+}
 
+});
+
+
+
+
+router.put("/cancel", async (req, res, next) => {
+  const { email } = req.body;
+
+  let user = await userService.findOneUser(email);
+  let name = user.name
+  let subscription = await subscriptionService.findOneDB(
+    user.subscriptions[0].id
+  );
+
+  let subscriptionCancelled = await subscriptionService.cancelSubscriptionMP(
+    user.subscriptions[0].id
+  );
+
+  if (subscriptionCancelled.status === "cancelled") {
+    await subscription.update({ status: cancelled });
+    // cambiar en tabla schema a cancelled
+    await user.update({ isBusiness: false });
+    try {
+      let subject = "News from the RocketPlay Team";
+      let text = `Hello ${name}! Your subscription has been correctly cancelled.
+     
+      Best regards,
+      The Rocket Play Team`;
+      await mailService.sendEmail(email, subject, text);
+
+      console.log("Message sent: %s", info.messageId);
+    } catch (error) {
+      console.log(error);
+    }
+    res.json("Your subscription was cancelled " + subscriptionCancelled.status);
+  } else {
+    try {
+      let subject = "News from the RocketPlay Team";
+      let text = `Hello ${name}! Your subscription has not been correctly cancelled.
+       Please try again.
+      Best regards,
+      The Rocket Play Team`;
+      await mailService.sendEmail(email, subject, text);
+
+      console.log("Message sent: %s", info.messageId);
+    } catch (error) {
+      console.log(error);
+    }
+    res.json(
+      "Your subscription was not cancelled " + subscriptionCancelled.status
+    );
+  }
 });
 module.exports = router;

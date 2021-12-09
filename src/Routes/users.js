@@ -1,10 +1,10 @@
 const Router = require("express");
 const { conn, Users } = require("../libs/sequelize");
 const router = Router();
-const nodemailer = require("nodemailer");
 const UsersService = require("../services/usersService");
-const { userName, userPass } = require("../config/config");
+const MailService = require("../services/mailService");
 /////////////////////////////////////////////
+let mailService = new MailService();
 let usersService = new UsersService();
 
 router.get("/all", async (req, res, next) => {
@@ -50,28 +50,20 @@ router.post("/", async (req, res, next) => {
       youtubeChannel: youtubeChannel || null,
       isBusiness: isBusiness || false,
     });
-    // console.log(newUser)
+    console.log(newUser[1])
     //mandar mail de welcome
-    try {
-      let transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: userName,
-          pass: userPass,
-        },
-      });
-      console.log("email====>>",  email )
-      let info = await transporter.sendMail({
-        from: '"Rocket Play" <rocketplay2022@gmail.com>', // sender address
-        to: email, // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
-      });
-
-      console.log("Message sent: %s", info.messageId);
-    } catch (error) {
-      console.log(error);
+    if(newUser[1]){
+      try {
+        let subject = 'Welcome to RocketPlay'
+        let text = `Hello ${name}! Welcome to RocketPlay, we hope you enjoy the experience with us.
+        Best regards,
+        The Rocket Play Team`
+        let info = await mailService.sendEmail(email, subject, text)
+       
+        console.log("Message sent: %s", info.messageId);
+      } catch (error) {
+        console.log(error);
+      }
     }
     res.status(200).json(newUser[0]);
   } catch (error) {
