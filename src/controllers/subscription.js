@@ -88,6 +88,7 @@ router.get("/deleteallschemas", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   // recibo id del pago
   const { subscription_id, mail } = req.body;
+  console.log("subscription email >> ", subscription_id, mail)
   try {
     // buscamos en mp la data del pago de la suscripcion
     let userPaymentData = await subscriptionService.findOneMP(subscription_id);
@@ -153,7 +154,7 @@ router.post("/", async (req, res, next) => {
       We are glad to be working with you.
       Best regards,
       The Rocket Play Team`;
-      await mailService.sendEmail(mail, subject, text);
+      let info = await mailService.sendEmail(mail, subject, text);
 
       console.log("Message sent: %s", info.messageId);
     } catch (error) {
