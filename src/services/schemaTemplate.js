@@ -66,12 +66,6 @@ module.exports = async function createTemplate(name) {
     })
 
     const Video = sequelize.define('video', {
-        id: {
-            type: DataTypes.UUID,
-            allowNull: false,
-            primaryKey: true,
-            defaultValue: DataTypes.UUIDV4
-        },
         title: {
             type: DataTypes.STRING,
             allowNull: false

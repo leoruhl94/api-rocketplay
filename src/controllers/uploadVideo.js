@@ -83,13 +83,14 @@ router.get("/aws-client", async (req, res, next) => {
   
   router.post("/aws", async (req, res, next) => {
     try {
+      // id - title - description - link - externalid - channelname - channelavatar - thumbnail - userId - categoryId
       // Avatar - Autor - Descripcion - UUID (video) - Link AWS - Titulo video - Likes - 
-      const { title, avatar, author, description, thumbnail, link } = req.body
+      let { title, avatar, author, description, thumbnail, link, userId, categoryId } = req.body
       link = link.replace(/\s+/g, '+');
       const schemaName = author.replace(/\s/g, "").toLowerCase();
       const sql = `
-      INSERT INTO ${schemaName}.videos (title, description, link, channelname, channelavatar)
-      VALUES ('${title}', '${description}', '${link}', '${author}', '${avatar}')
+      INSERT INTO ${schemaName}.videos (title, description, link, channelname, channelavatar, thumbnail, "userId", "categoryId")
+      VALUES ('${title}', '${description}', '${link}', '${author}', '${avatar}', '${thumbnail}', '${userId}', '${categoryId}')
       `;
       
       await sequelize.query(sql, {
