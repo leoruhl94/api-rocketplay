@@ -172,6 +172,7 @@ router.post("/", async (req, res, next) => {
 router.put("/", async (req, res, next) => {
   const { email, status, id } = req.body;
   try {
+    console.log("PUT ==>> ", email, status)
     let user = await userService.findOneUser(email);
     let subscription = await subscriptionService.findOneDB(
       user.subscriptions[0].id
@@ -185,7 +186,7 @@ router.put("/", async (req, res, next) => {
     if (subscriptionUpdated.status === status) {
       await subscription.update({ status: status });
 
-      if (subscriptionCancelled.status === "cancelled") {
+      if (subscriptionUpdated.status === "cancelled") {
         // cambiar en tabla schema a cancelled
         await user.update({ isBusiness: false });
       }
@@ -226,7 +227,7 @@ router.put("/", async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 });
 
