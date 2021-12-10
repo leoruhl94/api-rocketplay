@@ -6,7 +6,7 @@ const config = require('../config/config')
 const OAuth2Data = require('../../googleYoutube.json')
 //este archivo se descarga desde las credenciales con json
 const aws = require('aws-sdk')
-const { S3Client } = require('@aws-sdk/client-s3')
+const { S3Client, S3 } = require('@aws-sdk/client-s3')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
 const fs = require('fs')
@@ -132,7 +132,6 @@ router.get("/aws-client", async (req, res, next) => {
     next(error)
   }
 })
-
 
 // router.post('/',uploadS3.single('videoFile'), async (req, res, next) => {//subir un video
 //   try { //function(err){
