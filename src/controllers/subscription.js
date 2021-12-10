@@ -33,7 +33,7 @@ router.get("/destroy", async (req, res, next) => {
 });
 
 ///////// SEARCH SUBSCRIPTION
-router.get("/all", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     let allSubs = await subscriptionService.findAllDB();
     res.json(allSubs);
@@ -41,48 +41,7 @@ router.get("/all", async (req, res, next) => {
     next(error);
   }
 });
-router.get("/headers", async (req, res, next) => {
-  console.log(req.headers.origin);
-  console.log("===============================");
-});
-router.get("/createuser", async (req, res, next) => {
-  try {
-    let user = await userService.createUser();
-    res.json(user);
-  } catch (error) {
-    next(error);
-  }
-});
 
-router.get("/deleteSchema", async (req, res, next) => {
-  try {
-    const { schemaName } = req.body;
-    await sequelize.dropSchema(schemaName);
-    let schema = await Schemas.findOne({ where: { name: schemaName } });
-    await schema.destroy();
-    res.send("Schema deleted succesfully");
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get("/showschemas", async (req, res, next) => {
-  try {
-    const allSchemas = await sequelize.showAllSchemas();
-    res.send(allSchemas);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.get("/deleteallschemas", async (req, res, next) => {
-  try {
-    const allSchemas = await sequelize.dropAllSchemas();
-    res.send("Creo que funciono");
-  } catch (error) {
-    next(error);
-  }
-});
 
 ///////////////////
 router.post("/", async (req, res, next) => {
@@ -115,10 +74,13 @@ router.post("/", async (req, res, next) => {
     // creo la asociacion de la suscripcion con el plan
 
     await user.setSubscriptions(subscription_id);
-    let name = user.name;
-    const schemaName = user.name.replace(/\s/g, "").toLowerCase();
-    // let schemaBoolean = await !!Schemas.findOne({where:{}})
    
+    const schemaName = user.name.replace(/\s/g, "").toLowerCase();
+    let foundSchema = await Schemas.findOne({ where: {name: schemaName}})
+   if (foundSchema) {
+    await sequelize.dropSchema(foundSchema);
+      await foundSchema.destroy()
+   } 
     await sequelize
       .createSchema(schemaName, {
         logging: false,
@@ -137,6 +99,8 @@ router.post("/", async (req, res, next) => {
           const schema = await Schemas.create({
             name: schemaName,
             status: "authorized",
+            code: schemaName,
+            title: user.name,
           });
           // await UsersSchemas.create({ userId: user.id, schemaId: schema.id });
           await user.addSchemas(schema.id);
@@ -150,7 +114,7 @@ router.post("/", async (req, res, next) => {
       });
     try {
       let subject = "Welcome to the RocketPlay subscription system";
-      let text = `Hello ${name}! Thank you for subscribing to ${plan.name}.
+      let text = `Hello ${user.name}! Thank you for subscribing to ${plan.name}.
       We are glad to be working with you.
       Best regards,
       The Rocket Play Team`;
@@ -165,6 +129,7 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
 });
 
 /////////////////   PUT___
