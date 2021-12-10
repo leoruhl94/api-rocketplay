@@ -25,7 +25,10 @@ router.get("/",async (req, res, next) => {
       let { schemaName } = req.body;
       schemaName = schemaName.replace(/\s/g, "").toLowerCase();
       const sql = `
-              SELECT * FROM ${schemaName}.categories
+              SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", cha.description, cha.isprivate 
+              FROM ${schemaName}.categories cat 
+              LEFT JOIN ${schemaName}.channels cha 
+              ON cat."channelId" = cha.id
               `;
       const result = await sequelize.query(sql, {
         type: sequelize.QueryTypes.SELECT,
