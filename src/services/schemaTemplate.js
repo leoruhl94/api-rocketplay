@@ -17,7 +17,8 @@ module.exports = async function createTemplate(name) {
         },
         usertype: {
             type: DataTypes.ENUM('subscriber', 'admin', 'superadmin'),
-            allowNull: false
+            allowNull: false,
+            defaultValue: 'subscriber'
         }
     }, {
             sequelize,

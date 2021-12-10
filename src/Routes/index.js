@@ -12,8 +12,9 @@ const registerURouter = require("../controllers/registerUser");
 const createSchemaRouter = require("../controllers/createSchema")
 const plans = require("./plans")
 const usersRouter = require("./users.js")
+const workspace = require('./workspace')
 
-router.use("/v2/users", usersRouter)
+router.use("/users", usersRouter)
 router.use("/plans", plans)
 router.use("/createSchema", createSchemaRouter)
 router.use("/loginUser", loginURouter);
@@ -25,5 +26,6 @@ router.use("/category", category);
 router.use("/uploadVideo", uploadVideo);
 router.use("/registerBusiness", registerBRouter);
 router.use("/registerUser", registerURouter);
+router.use('/workspace', workspace)
 
 module.exports = router;

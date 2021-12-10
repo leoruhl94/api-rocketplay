@@ -16,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   Schemas.init({
     name: DataTypes.STRING,
     status: DataTypes.STRING,
+    code: DataTypes.STRING,
+    title: DataTypes.STRING,
   
   }, {
     sequelize,
