@@ -36,6 +36,24 @@ router.get("/", async (req, res, next) => {
 	}
 });
 
+router.get("/category", async (req, res, next) => {
+    let { categoryId, schemaName } = req.body
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+    try {
+        const sql = `
+        SELECT * FROM ${schemaName}.videos AS v
+        WHERE "categoryId" = '${categoryId}'
+        `
+
+        let videos = await sequelize.query(sql, {
+            type: sequelize.QueryTypes.SELECT,
+        })
+        res.status(200).json(videos)
+    } catch (error){
+        next(error)
+    }
+
+})
   
 router.put("/delete", async (req, res, next) => {
     try {

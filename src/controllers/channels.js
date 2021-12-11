@@ -1,7 +1,10 @@
 const { Router } = require('express');
 const router = Router();
 const {conn, Users} = require('../libs/sequelize');
+const config = require('../config/config.js')
 const sequelize = conn
+
+const URL_BASE = config.env === "production" ? "https://api-rocketplay.herokuapp.com" : "http://localhost:3002"
 
 router.post('/', async function(req, res, next){
     let { schemaName, name, isprivate, description } = req.body;
@@ -9,9 +12,23 @@ router.post('/', async function(req, res, next){
     try {
         const sql = `INSERT INTO ${schemaName}.channels (name, isprivate, description)
                     VALUES ('${name}', '${isprivate}', '${description}')`
-            await sequelize.query(sql, {
-                type: sequelize.QueryTypes.INSERT
-            })    
+        await sequelize.query(sql, {
+            type: sequelize.QueryTypes.INSERT
+        })   
+        const sqlChannel = `
+        SELECT * FROM ${schemaName}.channels WHERE name = '${name}'
+        `
+        const channel = await sequelize.query(sqlChannel, {
+            type: sequelize.QueryTypes.SELECT
+        })
+        const sqlCategory = `
+        INSERT INTO ${schemaName}.categories (name, "channelId")
+        VALUES ('Uncategorized', '${channel[0].id}')
+        `
+
+        await sequelize.query(sqlCategory, {
+            type: sequelize.QueryTypes.INSERT
+        })
         res.status(200).send('Channel created succesfully')
     } catch (error) {
         next(error)

@@ -16,8 +16,10 @@ const workspace = require('./workspace')
 const videosRouter = require("../controllers/video")
 const likesRouter = require("../controllers/likes")
 const commentsRouter = require("../controllers/comments")
+const memberRouter = require("../controllers/members")
 
 
+router.use("/members", memberRouter)
 router.use("/comments", commentsRouter)
 router.use("/likes", likesRouter)
 router.use("/video", videosRouter)
