@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       mail: { type: DataTypes.STRING, primaryKey: true },
       youtubeChannel: DataTypes.STRING,
       isBusiness: DataTypes.BOOLEAN,
+      workspaces: DataTypes.ARRAY(DataTypes.STRING),
     },
     {
       sequelize,

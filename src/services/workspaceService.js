@@ -1,6 +1,6 @@
 const axios = require("axios").default;
 const { Subscriptions, Users, Plans, Schemas } = require("../libs/sequelize");
-const {conn} = require("../libs/sequelize");
+const { conn } = require("../libs/sequelize");
 const sequelize = conn;
 const config = require("../config/config");
 
@@ -17,16 +17,18 @@ class WorkspaceService {
     try {
       //   let schema = await Schemas.findOne({ where: { name: schemaName } });
       let user = await Users.findOne({ where: { mail: userEmail } });
-        console.log("dentro del Join ", schemaName, user.mail, user.name )
+      console.log("dentro del Join ", schemaName, user.mail, user.name);
       const sql = `
     INSERT INTO ${schemaName}.users (name, mail, userType) VALUES('${user.name}', '${user.mail}', 'subscriber')
     `;
-     let addedUser = await sequelize.query(sql, {
-        type: sequelize.QueryTypes.INSERT,
-      });
-
-      console.log(addedUser);
-      return addedUser;
+      try {
+        let succesfully = await sequelize.query(sql, {
+          type: sequelize.QueryTypes.INSERT,
+        });
+        return true;
+      } catch (error) {
+        return false;
+      }
     } catch (error) {
       throw new Error(error.message || "se rompio todo");
     }

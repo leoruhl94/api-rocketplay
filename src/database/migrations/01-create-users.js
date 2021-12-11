@@ -1,4 +1,7 @@
 'use strict';
+
+
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Users', {
@@ -17,6 +20,9 @@ module.exports = {
       },
       youtubeChannel: {
         type: Sequelize.STRING
+      },
+      workspaces: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
       },
       isBusiness: {
         type: Sequelize.BOOLEAN,

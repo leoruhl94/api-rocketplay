@@ -7,37 +7,29 @@ const MailService = require("../services/mailService");
 let mailService = new MailService();
 let usersService = new UsersService();
 
-router.get("/all", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
-    res.json(await usersService.findAllUsers());
-  } catch (error) {
-    next(error);
-  }
-});
-router.get("/deleteall", async (req, res, next) => {
-  try {
-    res.json(await usersService.deleteAllUsers());
+    const { email } = req.body;
+    if(email){
+      return res.status(200).json(await usersService.findOneUser(email));
+    } else{
+      res.json(await usersService.findAllUsers());
+    }
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/exist", async (req, res, next) => {
-  try {
-    const { email } = req.query;
-    const userBool = await usersService.findOneUser(email);
-    // Si ya estaba creado mando true
-    return res.status(200).json({ isRegistered: !!userBool });
-  } catch (error) {
-    res.send(error);
-  }
-});
-router.get("/", async (req, res, next) => {
+router.delete("/", async (req, res, next) => {
   try {
     const { email } = req.body;
-    return res.status(200).json(await usersService.findOneUser(email));
+    if(email){
+      return res.status(200).json(await usersService.deleteUser(email));
+    } else{
+      res.json(await usersService.deleteAllUsers());
+    }
   } catch (error) {
-    res.send(error);
+    next(error);
   }
 });
 
@@ -67,38 +59,27 @@ router.post("/", async (req, res, next) => {
     }
     res.status(200).json(newUser[0]);
   } catch (error) {
-    res.send(error);
+    next(error);
   }
 });
 
-router.put("/", async (req, res, next) => {
-  try {
-    const { isBusiness, email } = req.body;
-    const foundUser = await Users.findOne({
-      where: { mail: email },
-    });
-    await foundUser.update({ isBusiness: isBusiness });
-    res.status(200).json({ isBusiness });
-  } catch (error) {
-    res.send(error);
-  }
-});
 
-router.delete("/", async (req, res, next) => {
-  try {
-    const { email } = req.body;
-    const foundUser = await Users.findOne({
-      where: { mail: email },
-    });
-    const deletedUser = foundUser;
-    await foundUser.destroy({
-      truncate: true,
-    });
-    return res.json(deletedUser);
-  } catch (error) {
-    res.send(error);
-  }
-});
+
+// router.delete("/", async (req, res, next) => {
+//   try {
+//     const { email } = req.body;
+//     const foundUser = await Users.findOne({
+//       where: { mail: email },
+//     });
+//     const deletedUser = foundUser;
+//     await foundUser.destroy({
+//       truncate: true,
+//     });
+//     return res.json(deletedUser);
+//   } catch (error) {
+//     res.send(error);
+//   }
+// });
 
 module.exports = router;
  
