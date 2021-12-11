@@ -90,7 +90,7 @@ router.post("/", async (req, res, next) => {
         try {
           await createTemplate(schemaName);
           const sql = `
-                INSERT INTO ${schemaName}.Users (name, mail, userType)
+                INSERT INTO ${schemaName}.members (name, mail, userType)
                 VALUES ('${user.name}', '${user.mail}', 'superadmin')
         `;
           await sequelize.query(sql, {

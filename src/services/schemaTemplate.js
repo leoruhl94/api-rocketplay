@@ -5,7 +5,7 @@ const sequelize = conn
 
 
 module.exports = async function createTemplate(name) {
-    const User = sequelize.define('user', {
+    const Member = sequelize.define('members', {
         name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -22,9 +22,9 @@ module.exports = async function createTemplate(name) {
         }
     }, {
             sequelize,
-            modelName: 'user',
+            modelName: 'member',
             schema: name.toLowerCase(),
-            tableName: 'users',
+            tableName: 'members',
             timestamps: false, //we do not need updatedAt nor createdAt
             
             
@@ -68,16 +68,17 @@ module.exports = async function createTemplate(name) {
     const Video = sequelize.define('video', {
         title: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+        },
+        link: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            get(){
+                return "https://rocketplay2021.s3.us-east-1.amazonaws.com/" + this.getDataValue("link")
+            }
         },
         description: {
             type: DataTypes.TEXT
-        },
-        link: {
-            type: DataTypes.STRING
-        },
-        externalid: {
-            type: DataTypes.STRING
         },
         channelname: {
             type: DataTypes.STRING
@@ -94,7 +95,7 @@ module.exports = async function createTemplate(name) {
         modelName: 'video',
         schema: name.toLowerCase(),
         tableName: 'videos',
-        timestamps: false, //we do not need updatedAt nor createdAt
+        timestamps: true,
     })
 
     const Tag = sequelize.define('tag', {
@@ -124,15 +125,13 @@ module.exports = async function createTemplate(name) {
     })
 
     const Like = sequelize.define('like', {
-        like: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        }
+
     }, {
         sequelize,
         modelName: 'like',
         schema: name.toLowerCase(),
-        tableName: 'likes'
+        tableName: 'likes',
+        timestamps: false, //we do not need updatedAt nor createdAt
     })
 
 
@@ -148,17 +147,17 @@ module.exports = async function createTemplate(name) {
     Tag.belongsToMany(Video, { through: "videotags" })
     Video.belongsToMany(Tag, { through: "videotags" })
 
-    User.belongsToMany(Video, { through: "like" })
-    Video.belongsToMany(User, { through: "like" })
+    Member.belongsToMany(Video, { through: "like" })
+    Video.belongsToMany(Member, { through: "like" })
 
-    User.hasMany(Video)
-    Video.belongsTo(User)
+    Member.hasMany(Video)
+    Video.belongsTo(Member)
 
     Video.hasMany(Comment)
     Comment.belongsTo(Video)
 
-    User.hasMany(Comment)
-    Comment.belongsTo(User)
+    Member.hasMany(Comment)
+    Comment.belongsTo(Member)
 
     Category.hasMany(Video)
     Video.belongsTo(Category)

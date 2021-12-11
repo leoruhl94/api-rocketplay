@@ -19,7 +19,7 @@ class WorkspaceService {
       let user = await Users.findOne({ where: { mail: userEmail } });
       console.log("dentro del Join ", schemaName, user.mail, user.name);
       const sql = `
-    INSERT INTO ${schemaName}.users (name, mail, userType) VALUES('${user.name}', '${user.mail}', 'subscriber')
+    INSERT INTO ${schemaName}.members (name, mail, userType) VALUES('${user.name}', '${user.mail}', 'subscriber')
     `;
       try {
         let succesfully = await sequelize.query(sql, {
