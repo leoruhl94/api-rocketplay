@@ -73,6 +73,41 @@ router.get("/aws-client", async (req, res, next) => {
 })
 
 
+router.get("/video", async (req, res, next) => {
+  try {
+    let { schemaName, title } = req.body
+    title = title && title.replace(/\s+/g, "+");
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+    let sql;
+    if(!title){
+      sql = `
+      SELECT v.title, v.description, v.channelname AS workspace, v.channelavatar, v.thumbnail, u.name AS username, u.mail AS usermail, u.userType, cat.name AS category
+      FROM ${schemaName}.videos AS v
+      LEFT JOIN ${schemaName}.users AS u ON v."userId" = u.id
+      LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id;
+      `
+    } else {
+       sql =  `
+        SELECT v.title, v.description, v.channelname AS workspace, v.channelavatar, v.thumbnail, u.name AS username, u.mail AS usermail, u.userType, cat.name AS category
+        FROM ${schemaName}.videos AS v
+        LEFT JOIN ${schemaName}.users AS u ON v."userId" = u.id
+        LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
+        WHERE (v.title = '${title}')
+       `
+    }
+    
+
+    let videos = await sequelize.query(sql, {
+      type: sequelize.QueryTypes.SELECT
+    })
+
+    res.status(200).json(videos)
+
+  } catch (error) {
+    next(error)
+  }
+})
+
 //     const sql = `
 //     SELECT * FROM "Plans"
 // `
