@@ -54,9 +54,8 @@ router.post("/", async (req, res, next) => {
       youtubeChannel: youtubeChannel || null,
       isBusiness: isBusiness || false,
     });
-    console.log(newUser[1])
-    //mandar mail de welcome
-    if(newUser[1]){
+        //mandar mail de welcome
+    if(newUser){
       try {
         let subject = 'Welcome to RocketPlay'
         let text = `Hello ${name}! Welcome to RocketPlay, we hope you enjoy the experience with us.
@@ -69,7 +68,7 @@ router.post("/", async (req, res, next) => {
         console.log(error);
       }
     }
-    res.status(200).json(newUser[0]);
+    res.status(200).json(newUser);
   } catch (error) {
     next(error);
   }

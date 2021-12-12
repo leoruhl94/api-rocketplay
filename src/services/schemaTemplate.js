@@ -170,5 +170,4 @@ module.exports = async function createTemplate(name) {
     
     await sequelize.sync({schema: name.toLowerCase()}) 
 
-    return User
 }
