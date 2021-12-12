@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const router = Router();
 const {conn, Users} = require('../libs/sequelize');
-const config = require('../config/config.js')
+const config = require('../config/config.js');
+const { default: axios } = require('axios');
 const sequelize = conn
 
 const URL_BASE = config.env === "production" ? "https://api-rocketplay.herokuapp.com" : "http://localhost:3002"
@@ -37,7 +38,7 @@ router.post('/', async function(req, res, next){
 
 
 router.get('/', async (req, res, next) => {
-    let {schemaName} = req.body;
+    let {schemaName} = req.query;
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     try {
         const sql = `SELECT * FROM ${schemaName}.channels`

@@ -40,7 +40,7 @@ router.post("/", async (req, res, next) => {
 })
 
 router.get("/", async (req, res, next) => {
-    let {videoId, schemaName} = req.body
+    let {videoId, schemaName} = req.query
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     try {
         let sql = `

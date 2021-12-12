@@ -23,7 +23,7 @@ let subscriptionService = new SubscriptionService();
 
 /////////DESTROY SUBSCRIPTION
 router.get("/destroy", async (req, res, next) => {
-  const { subscription_id } = req.body;
+  const { subscription_id } = req.query;
   try {
     let deleted = await subscriptionService.deleteByIdDB(subscription_id);
     res.json(deleted);

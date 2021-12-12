@@ -22,7 +22,7 @@ router.post("/", async (req, res, next) => {
 })
 
 router.get("/", async (req, res, next) => {
-    let { schemaName, videoId, memberId } = req.body
+    let { schemaName, videoId, memberId } = req.query
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     try {
         if(memberId){

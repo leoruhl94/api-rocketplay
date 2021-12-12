@@ -5,8 +5,7 @@ const sequelize = conn;
 
 router.get("/", async (req, res, next) => {
 	try {
-		let { schemaName, title } = req.body;
-		title = title && title.replace(/\s+/g, "+");
+		let { schemaName, title } = req.query;
 		schemaName = schemaName.replace(/\s/g, "").toLowerCase();
 		let sql;
 		if (!title) {
@@ -37,7 +36,7 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/category", async (req, res, next) => {
-    let { categoryId, schemaName } = req.body
+    let { categoryId, schemaName } = req.query
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     try {
         const sql = `
