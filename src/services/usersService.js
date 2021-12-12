@@ -1,4 +1,3 @@
-const axios = require("axios").default;
 const { Users } = require("../libs/sequelize");
 
 class UsersService {
@@ -6,14 +5,21 @@ class UsersService {
     this.users = [];
   }
 
-  async findOrCreateUser({name, mail, youtubeChannel=null, isBusiness=false}) {
+  async findOrCreateUser({
+    name,
+    mail,
+    youtubeChannel = null,
+    isBusiness = false,
+  }) {
     try {
-      let user = await Users.findOrCreate({where:{
-        name,
-        mail,
-        youtubeChannel,
-        isBusiness
-      }});
+      let user = await Users.findOrCreate({
+        where: {
+          name,
+          mail,
+          youtubeChannel,
+          isBusiness,
+        },
+      });
       return user;
     } catch (error) {
       throw new Error(error.message || "everything is broken");
@@ -54,7 +60,7 @@ class UsersService {
     try {
       const user = await Users.findOne({
         where: { mail: email },
-        include: ["subscriptions"]
+        include: ["subscriptions"],
       });
       return user;
     } catch (error) {

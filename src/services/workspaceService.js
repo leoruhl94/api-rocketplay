@@ -1,8 +1,6 @@
-const axios = require("axios").default;
-const { Subscriptions, Users, Plans, Schemas } = require("../libs/sequelize");
+const { Users, Schemas } = require("../libs/sequelize");
 const { conn } = require("../libs/sequelize");
 const sequelize = conn;
-const config = require("../config/config");
 
 class WorkspaceService {
   async findWorkspaceByCode(schemaCode) {
@@ -15,7 +13,6 @@ class WorkspaceService {
   }
   async joinWorkspace(schemaName, userEmail) {
     try {
-      //   let schema = await Schemas.findOne({ where: { name: schemaName } });
       let user = await Users.findOne({ where: { mail: userEmail } });
       console.log("dentro del Join ", schemaName, user.mail, user.name);
       const sql = `

@@ -1,9 +1,8 @@
 const { Router } = require("express");
 const router = Router();
-const { conn, Users } = require("../libs/sequelize");
+const { conn } = require("../libs/sequelize");
 const config = require("../config/config.js");
 const { default: axios } = require("axios");
-const { response } = require("./loginUser");
 const sequelize = conn;
 const URL_BASE =
   config.env === "production"
@@ -14,7 +13,6 @@ router.get("/", async (req, res, next) => {
   let { schemaName, title } = req.query;
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
   try {
-    // titulo - id - thumbnail - channel - category
     sql = `
             SELECT v.title, v.id AS videoid, v.thumbnail, cat.name AS category, cat.id as "catId"
             FROM ${schemaName}.videos AS v
