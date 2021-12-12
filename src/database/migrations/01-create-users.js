@@ -24,6 +24,9 @@ module.exports = {
       workspaces: {
         type: Sequelize.ARRAY(Sequelize.STRING)
       },
+      workspacesTitles: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
+      },
       isBusiness: {
         type: Sequelize.BOOLEAN,
         defaultValue: null

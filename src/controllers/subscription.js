@@ -107,7 +107,9 @@ router.post("/", async (req, res, next) => {
           await user.update({ isBusiness: true });
           await createdSubscription[0].update({
             schema_id: schema.id,
-          });
+          })
+          await user.update({ workspaces: [...workspaces, schemaName] });
+          await user.update({ workspacesTitles: [...workspacesTitles, user.name] });
         } catch (error) {
           next(error);
         }

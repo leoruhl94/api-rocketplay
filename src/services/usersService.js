@@ -5,22 +5,22 @@ class UsersService {
     this.users = [];
   }
 
-  async findOrCreateUser({
-    name,
-    mail,
-    youtubeChannel = null,
-    isBusiness = false,
-  }) {
+  async findOrCreateUser({name, mail, youtubeChannel=null, isBusiness=false, workspaces=null}) {
     try {
-      let user = await Users.findOrCreate({
-        where: {
+      let foundUser = await Users.findOne({where:{
+        mail,
+      }});
+      if(!foundUser?.name){
+        let user = await Users.create({
           name,
           mail,
+          workspaces,
           youtubeChannel,
-          isBusiness,
-        },
-      });
-      return user;
+          isBusiness
+        });
+        return user;
+      }
+      return foundUser;
     } catch (error) {
       throw new Error(error.message || "everything is broken");
     }

@@ -8,9 +8,9 @@ const WorkspaceService = require("../services/workspaceService");
 let usersService = new UsersService();
 let workspaceService = new WorkspaceService();
 
-router.get("/delete", async (req, res, next) => {
+router.delete("/delete", async (req, res, next) => {
   try {
-    const { schemaName } = req.query;
+    const { schemaName } = req.body;
     let schema = await workspaceService.deleteWorkspaceByName(schemaName);
     res.send("Schema deleted succesfully", schema);
   } catch (error) {
@@ -27,10 +27,10 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/deleteall", async (req, res, next) => {
+router.delete("/deleteall", async (req, res, next) => {
   try {
     let allSchemas = await workspaceService.destroyAllWorkspaces();
-    res.send("all schemas deleted", allSchemas);
+    res.json("all schemas deleted", allSchemas);
   } catch (error) {
     next(error);
   }
@@ -39,25 +39,31 @@ router.get("/deleteall", async (req, res, next) => {
 router.get("/find", async (req, res, next) => {
   try {
     const { code } = req.query;
-    return res
-      .status(200)
-      .json(await workspaceService.findWorkspaceByCode(code));
+    let foundWorkspace = await workspaceService.findWorkspaceByCode(code);
+    if (foundWorkspace) {
+      return res.status(200).json({found:foundWorkspace , message:"Yupiii, Workspace found"});
+    }
+    return res.status(200).json({found:{} , message:"Sorry, Workspace not found"});
   } catch (error) {
     res.send(error);
   }
 });
 router.post("/join", async (req, res, next) => {
   try {
-    const { schemaName, userEmail } = req.body;
+    const { schemaName, userEmail, schemaTitle } = req.body;
     console.log("BODY => ", schemaName, userEmail);
     let joined = await workspaceService.joinWorkspace(schemaName, userEmail);
-      if (joined) {
+    if (joined) {
       let user = await usersService.findOneUser(userEmail);
       let workspaces = user.workspaces || [];
+      let workspacesTitles = user.workspacesTitles || [];
       await user.update({ workspaces: [...workspaces, schemaName] });
-      return res.status(201).json({status:true, message:"succesfully joined"});
+      await user.update({ workspacesTitles: [...workspacesTitles, schemaTitle] });
+      return res
+        .status(201)
+        .json({ status: true, message: "succesfully joined" });
     }
-    return res.status(200).json({status:false, message:"failed to join"});
+    return res.status(200).json({ status: false, message: "failed to join" });
   } catch (error) {
     res.send(error);
   }
