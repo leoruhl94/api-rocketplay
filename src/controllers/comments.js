@@ -44,7 +44,7 @@ router.get("/", async (req, res, next) => {
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     try {
         let sql = `
-        SELECT c.id AS "commentId", m.name AS "memberName", c.description AS text, v.title AS "videoTitle", v.id AS "videoId", v.channelname, c."createdAt"
+        SELECT c.id AS "commentId", m.name AS "memberName", m.id AS "memberId", c.description AS text, v.title AS "videoTitle", v.id AS "videoId", v.channelname, c."createdAt"
         FROM ${schemaName}.comments AS c
         LEFT JOIN ${schemaName}.videos AS v ON c."videoId" = v.id
         LEFT JOIN ${schemaName}.members AS m ON c."memberId" = m.id

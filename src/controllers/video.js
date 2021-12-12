@@ -10,7 +10,7 @@ router.get("/", async (req, res, next) => {
 		let sql;
 		if (!title) {
 			sql = `
-        SELECT v.title, v.description, v.channelname AS workspace, v.channelavatar, v.id AS videoid, v.thumbnail, m.name AS username, m.mail AS usermail, m.userType, cat.name AS category
+        SELECT v.title, v.description, v.channelname AS workspace, v.channelavatar, v.id AS videoid, v.thumbnail, m.name AS username, m.id AS "memberId", m.mail AS usermail, m.userType, cat.name AS category
         FROM ${schemaName}.videos AS v
         LEFT JOIN ${schemaName}.members AS m ON v."memberId" = m.id
         LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
