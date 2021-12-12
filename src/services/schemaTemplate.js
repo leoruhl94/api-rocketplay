@@ -86,7 +86,7 @@ module.exports = async function createTemplate(name) {
         get() {
           return (
             "https://rocketplay2021.s3.us-east-1.amazonaws.com/" +
-            this.getDataValue("link")
+            this.getDataValue("link").replace(/\s/g, "+")
           );
         },
       },

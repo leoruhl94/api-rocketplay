@@ -6,7 +6,7 @@ const sequelize = conn;
 
 router.post("/", async (req, res, next) => {
     // description - videoId - memberId
-    let {description, videoId, schemaName} = req.body
+    let {description, videoId, schemaName, memberId} = req.body
 
     let timestamp = getTime()
 
@@ -14,7 +14,7 @@ router.post("/", async (req, res, next) => {
         
         let sqlSelect = `
         SELECT * FROM ${schemaName.replace(/\s/g, "").toLowerCase()}.members 
-        WHERE name = '${schemaName}'
+        WHERE id = '${memberId}'
         `
         
         let member = await sequelize.query(sqlSelect, {
@@ -44,7 +44,7 @@ router.get("/", async (req, res, next) => {
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     try {
         let sql = `
-        SELECT c.description, c."createdAt", c.id AS "commentId", v.title, v.channelname, m.name
+        SELECT c.id AS "commentId", m.name AS "memberName", c.description AS text, v.title AS "videoTitle", v.id AS "videoId", v.channelname, c."createdAt"
         FROM ${schemaName}.comments AS c
         LEFT JOIN ${schemaName}.videos AS v ON c."videoId" = v.id
         LEFT JOIN ${schemaName}.members AS m ON c."memberId" = m.id
