@@ -6,11 +6,12 @@ class UsersService {
     this.users = [];
   }
 
-  async findOrCreateUser({name, mail, youtubeChannel=null, isBusiness=false}) {
+  async findOrCreateUser({name, mail, youtubeChannel=null, isBusiness=false, workspaces=null}) {
     try {
       let user = await Users.findOrCreate({where:{
         name,
         mail,
+        workspaces,
         youtubeChannel,
         isBusiness
       }});

@@ -19,6 +19,18 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+router.get("/test", async (req, res, next) => {
+  try {
+
+console.log(req.body)
+console.log(req.query)
+console.log(req.params)
+      res.json("algo");
+  
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.delete("/", async (req, res, next) => {
   try {
