@@ -10,7 +10,7 @@ let workspaceService = new WorkspaceService();
 
 router.get("/delete", async (req, res, next) => {
   try {
-    const { schemaName } = req.body;
+    const { schemaName } = req.query;
     let schema = await workspaceService.deleteWorkspaceByName(schemaName);
     res.send("Schema deleted succesfully", schema);
   } catch (error) {
@@ -38,7 +38,7 @@ router.get("/deleteall", async (req, res, next) => {
 
 router.get("/find", async (req, res, next) => {
   try {
-    const { code } = req.body;
+    const { code } = req.query;
     return res
       .status(200)
       .json(await workspaceService.findWorkspaceByCode(code));

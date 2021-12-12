@@ -23,7 +23,7 @@ let subscriptionService = new SubscriptionService();
 
 /////////DESTROY SUBSCRIPTION
 router.get("/destroy", async (req, res, next) => {
-  const { subscription_id } = req.body;
+  const { subscription_id } = req.query;
   try {
     let deleted = await subscriptionService.deleteByIdDB(subscription_id);
     res.json(deleted);
@@ -90,7 +90,7 @@ router.post("/", async (req, res, next) => {
         try {
           await createTemplate(schemaName);
           const sql = `
-                INSERT INTO ${schemaName}.Users (name, mail, userType)
+                INSERT INTO ${schemaName}.members (name, mail, userType)
                 VALUES ('${user.name}', '${user.mail}', 'superadmin')
         `;
           await sequelize.query(sql, {

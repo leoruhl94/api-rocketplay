@@ -16,7 +16,7 @@ router.post("/",  async function(req, res){
         }).then(async () => {
             await createTemplate(schemaName)
             // const sql = `
-            //         INSERT INTO ${schemaName}.Users (name, password, mail, userType)
+            //         INSERT INTO ${schemaName}.members (name, password, mail, userType)
             //         VALUES ('${name}', '${password}', '${email}', 'superadmin')
             // `
             // await sequelize.query(sql, {

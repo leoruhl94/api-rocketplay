@@ -46,7 +46,7 @@ router.post("/", async (req, res, next) => {
   // //
   // if(user){
   //     const sql = `
-  //     SELECT* FROM ${schemaName.toLowerCase()}.Users WHERE mail = '${mail}' AND password = '${password}'
+  //     SELECT* FROM ${schemaName.toLowerCase()}.members WHERE mail = '${mail}' AND password = '${password}'
   //     `
   //     const result = await sequelize.query(sql, {
   //     type: sequelize.QueryTypes.SELECT

@@ -9,7 +9,7 @@ let usersService = new UsersService();
 
 router.get("/", async (req, res, next) => {
   try {
-    const { email } = req.body;
+    const { email } = req.query;
     if(email){
       return res.status(200).json(await usersService.findOneUser(email));
     } else{

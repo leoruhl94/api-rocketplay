@@ -10,7 +10,7 @@ router.post('/', async (req, res, next)=> {
         const {schemaName, name, mail, userType} = req.body;
         if(true){
             const sql = `
-            INSERT INTO ${schemaName.toLowerCase()}.users (name, mail, userType) VALUES('${name}', '${mail}', '${userType}')
+            INSERT INTO ${schemaName.toLowerCase()}.members (name, mail, userType) VALUES('${name}', '${mail}', '${userType}')
             `
             await sequelize.query(sql, {
             type: sequelize.QueryTypes.INSERT

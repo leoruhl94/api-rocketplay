@@ -21,7 +21,7 @@ router.post("/", async function(req, res, next) {
 
 router.get("/", async (req, res, next) => {
   try {
-    let { schemaName } = req.body;
+    let { schemaName } = req.query;
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     const sql = `
             SELECT * FROM ${schemaName}.tags

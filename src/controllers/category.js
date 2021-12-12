@@ -22,7 +22,7 @@ router.post("/",async (req, res, next) => {
 
 router.get("/",async (req, res, next) => {
     try {
-      let { schemaName } = req.body;
+      let { schemaName } = req.query;
       schemaName = schemaName.replace(/\s/g, "").toLowerCase();
       const sql = `
               SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", cha.description, cha.isprivate 
