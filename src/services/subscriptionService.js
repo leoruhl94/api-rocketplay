@@ -1,5 +1,5 @@
 const axios = require("axios").default;
-const { Subscriptions, Users, Plans } = require("../libs/sequelize");
+const { Subscriptions } = require("../libs/sequelize");
 const config = require("../config/config");
 
 class SubscriptionService {
@@ -20,7 +20,7 @@ class SubscriptionService {
   }
   async updateSubscriptionMP(subscriptionId, newStatus) {
     try {
-     const response = await axios.put(
+      const response = await axios.put(
         `https://api.mercadopago.com/preapproval/${subscriptionId}?access_token=${config.tokenMP}`,
         JSON.stringify({ status: newStatus }),
         {
@@ -66,7 +66,6 @@ class SubscriptionService {
   }
   async findAllDB() {
     try {
-      // let subscriptions = await Subscriptions.findAll({include: ["schema", Plans]});
       let subscriptions = await Subscriptions.findAll();
       return subscriptions;
     } catch (error) {

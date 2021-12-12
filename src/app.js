@@ -20,7 +20,6 @@ server.use(express.json({ limit: "50mb" }));
 server.use(morgan("tiny"));
 server.use(
   cors({
-    // origin: config.corsWhiteList || !origin,
     origin: "*",
     credentials: true,
     methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE", "PATCH"],

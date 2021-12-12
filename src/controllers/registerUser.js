@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const validateUser = require ('../services/validateUser');
 
 const router = Router();
 const { conn } = require('../libs/sequelize');

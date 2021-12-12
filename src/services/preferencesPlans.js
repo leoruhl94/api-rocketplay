@@ -53,5 +53,3 @@ const preferences = {
 };
 
 module.exports = preferences;
-
-// preapprovalPlanId: "BASIC_RP_01",

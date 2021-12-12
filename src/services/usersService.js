@@ -1,4 +1,3 @@
-const axios = require("axios").default;
 const { Users } = require("../libs/sequelize");
 
 class UsersService {
@@ -61,7 +60,7 @@ class UsersService {
     try {
       const user = await Users.findOne({
         where: { mail: email },
-        include: ["subscriptions"]
+        include: ["subscriptions"],
       });
       return user;
     } catch (error) {
