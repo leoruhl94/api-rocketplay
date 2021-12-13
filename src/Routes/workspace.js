@@ -12,7 +12,7 @@ router.delete("/delete", async (req, res, next) => {
   try {
     const { schemaName } = req.body;
     let schema = await workspaceService.deleteWorkspaceByName(schemaName);
-    res.send("Schema deleted succesfully", schema);
+    res.send({ message: "Schema deleted succesfully", data:schema});
   } catch (error) {
     next(error);
   }
@@ -30,7 +30,7 @@ router.get("/", async (req, res, next) => {
 router.delete("/deleteall", async (req, res, next) => {
   try {
     let allSchemas = await workspaceService.destroyAllWorkspaces();
-    res.json("all schemas deleted", allSchemas);
+    res.status(200).json({ message: "all schemas deleted", data:allSchemas});
   } catch (error) {
     next(error);
   }
@@ -68,5 +68,22 @@ router.post("/join", async (req, res, next) => {
     res.send(error);
   }
 });
+
+router.put("/", async (req, res, next) => {
+  try {
+    let { schemaName, newName, newLogo, newCode } = req.body
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase()
+    const workspace = findWorkspaceByName(schemaName)
+
+    workspace.name = newName ? newName : workspace.name
+    workspace.code = newCode ? newCode : workspace.code
+    workspace.logoWorkspace = newLogo ? newLogo : workspace.logoWorkspace
+
+    res.status(200).json(workspace)
+
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = router;

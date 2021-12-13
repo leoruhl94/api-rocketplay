@@ -41,8 +41,13 @@ router.post("/", async function (req, res, next) {
 
 router.get("/", async (req, res, next) => {
   let { schemaName, channelId } = req.query;
+  if (!schemaName) return res.status(400).json({message: "U have to send me the schema name!"})
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+  
   try {
+    const allSchemas = await sequelize.showAllSchemas()
+  
+    if(!allSchemas.includes(schemaName)) return res.status(400).json({message: "Schema not found!"})
     if (!channelId) {
       const sql = `SELECT * FROM ${schemaName}.channels`;
       const result = await sequelize.query(sql, {

@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     code: DataTypes.STRING,
     title: DataTypes.STRING,
-  
+    logoWorkspace: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Schemas',

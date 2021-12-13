@@ -42,12 +42,11 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-
 ///////////////////
 router.post("/", async (req, res, next) => {
   // recibo id del pago
   const { subscription_id, mail } = req.body;
-  console.log("subscription email >> ", subscription_id, mail)
+  console.log("subscription email >>1 ", subscription_id, mail);
   try {
     // buscamos en mp la data del pago de la suscripcion
     let userPaymentData = await subscriptionService.findOneMP(subscription_id);
@@ -66,7 +65,7 @@ router.post("/", async (req, res, next) => {
         id: userPaymentData.preapproval_plan_id,
       },
     });
-    console.log("Sub ID:  ", subscription_id);
+    console.log("Sub ID1:  ", subscription_id);
     // creo la asociacion de la suscripcion con el plan
     await plan.setSubscriptions(subscription_id);
 
@@ -74,13 +73,17 @@ router.post("/", async (req, res, next) => {
     // creo la asociacion de la suscripcion con el plan
 
     await user.setSubscriptions(subscription_id);
-   
     const schemaName = user.name.replace(/\s/g, "").toLowerCase();
-    let foundSchema = await Schemas.findOne({ where: {name: schemaName}})
-   if (foundSchema) {
-    await sequelize.dropSchema(foundSchema);
-      await foundSchema.destroy()
-   } 
+    let foundSchema = await Schemas.findOne({ where: { name: schemaName } });
+
+    console.log("found Schema =>", foundSchema);
+    console.log("================================¨==============================================================================");
+
+    if (foundSchema) {
+      await sequelize.dropSchema(foundSchema.name);
+      await foundSchema.destroy();
+    }
+
     await sequelize
       .createSchema(schemaName, {
         logging: false,
@@ -102,14 +105,19 @@ router.post("/", async (req, res, next) => {
             code: schemaName,
             title: user.name,
           });
-          // await UsersSchemas.create({ userId: user.id, schemaId: schema.id });
+
           await user.addSchemas(schema.id);
           await user.update({ isBusiness: true });
           await createdSubscription[0].update({
             schema_id: schema.id,
-          })
+          });
+          
+          let workspaces = user.workspaces || [];
+          let workspacesTitles = user.workspacesTitles || [];
           await user.update({ workspaces: [...workspaces, schemaName] });
-          await user.update({ workspacesTitles: [...workspacesTitles, user.name] });
+          await user.update({
+            workspacesTitles: [...workspacesTitles, user.name],
+          });
         } catch (error) {
           next(error);
         }
@@ -131,7 +139,6 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-
 });
 
 /////////////////   PUT___
@@ -139,7 +146,7 @@ router.post("/", async (req, res, next) => {
 router.put("/", async (req, res, next) => {
   const { email, status, id } = req.body;
   try {
-    console.log("PUT ==>> ", email, status)
+    console.log("PUT ==>> ", email, status);
     let user = await userService.findOneUser(email);
     let subscription = await subscriptionService.findOneDB(
       user.subscriptions[0].id
