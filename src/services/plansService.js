@@ -42,11 +42,17 @@ class PlansService {
             },
           }
         );
-        planBasic.data.description = `The Basic Plans offers you a limit of 100 users on your platform`;
+        planBasic.data.description = [ "Our Basic Plan offers the possibility to add up to 100 subscribers to your workspace. It has an easy-to-use dashboard enabling customization. It has 50GB of storage with no limitations until you meet your quota. Reliable technical support. Video privacy and security. Responsive Video." , "100 subscribers", "50GB storage",
+        "Watch videos", "Give likes", "Write comments", "Edit videos", "Upload videos", "Create your workspace", "Edit your workspace", "Responsive Videos", "Video privacy and security", "Reliable technical support"
+        ];
         planBasic.data.userLimit = 100;
-        planStandard.data.description = `The Standard Plans offers you a limit of 500 users on your platform`;
+        planStandard.data.description = [ "Our Standard Plan offers the possibility to add up to 500 subscribers to your workspace. It has an easy-to-use dashboard enabling customization. It has 100GB of storage with no limitations until you meet your quota. Reliable technical support. Video privacy and security. Responsive Video." , "500 subscribers", "100GB storage",
+        "Watch videos", "Give likes", "Write comments", "Edit videos", "Upload videos", "Create your workspace", "Edit your workspace", "Responsive Videos", "Video privacy and security", "Reliable technical support during working hours"
+        ];
         planStandard.data.userLimit = 500;
-        planPremium.data.description = `The Premim Plans offers you a limit of 1000 users on your platform`;
+        planPremium.data.description = [ "Our Premium Plan offers the possibility to add up to 1000 subscribers to your workspace. It has an easy-to-use dashboard enabling customization. It has 200GB of storage with no limitations until you meet your quota. Reliable technical support. Video privacy and security. Responsive Video." , "1000 subscribers", "200GB storage",
+        "Watch videos", "Give likes", "Write comments", "Edit videos", "Upload videos", "Create your workspace", "Edit your workspace", "Responsive Videos", "Video privacy and security", "Reliable technical support 24/7"
+        ];
         planPremium.data.userLimit = 1000;
 
         let plans = [planBasic.data, planStandard.data, planPremium.data];
