@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const validateUser = require ('../services/validateUser');
 
 const router = Router();
 const { conn } = require('../libs/sequelize');
@@ -7,11 +6,10 @@ const sequelize = conn;
 
 router.post('/', async (req, res, next)=> {
     try{
-        const {schemaName, name, mail, password, userType} = req.body;
-        const result = validateUser(name, password, mail, userType);
-        if(result === "success"){
+        const {schemaName, name, mail, userType} = req.body;
+        if(true){
             const sql = `
-            INSERT INTO ${schemaName.toLowerCase()}.Users (name, password, mail, userType) VALUES('${name}', '${password}', '${mail}', '${userType}')
+            INSERT INTO ${schemaName.toLowerCase()}.members (name, mail, userType) VALUES('${name}', '${mail}', '${userType}')
             `
             await sequelize.query(sql, {
             type: sequelize.QueryTypes.INSERT

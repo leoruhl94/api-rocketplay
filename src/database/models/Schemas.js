@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   };
   Schemas.init({
     name: DataTypes.STRING,
-    // subscription_id: DataTypes.STRING //id del pago (mp)
+    status: DataTypes.STRING,
+    code: DataTypes.STRING,
+    title: DataTypes.STRING,
+    logoWorkspace: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Schemas',

@@ -1,91 +1,44 @@
-const Router = require('express')
-const axios = require('axios')
-const {google} = require('googleapis')
+const Router = require('express');
 const router = Router();
-const OAuth2Data = require('../../googleYoutube.json')
-//este archivo se descarga desde las credenciales con json
-const multer = require('multer')
-const fs = require('fs')
+const getTime = require("../services/getTime.js")
+const { awsAccessKey, awsSecretAccessKey, bucketName } = require('../config/config.js')
+const { conn } = require("../libs/sequelize");
+const sequelize = conn;
 
-//modelo de la copia del video que va a crear en la carpeta upload
-const storage = multer.diskStorage({
-    destination: function (req, file, cb){
-        cb(null, 'uploads')
-    },
-    filename: function(req, file, cb){
-        cb(null, `${Date.now()}-${file.originalname}`)
-    }
-})
-//guardamos el video que me llega con multer
-const upload = multer({storage: storage}).single('videoFile') //el nombre del key donde viene el archivo de video
-//datos del cliente
-
-// Para ver mis listas de reproduccion 
-// https://youtube.googleapis.com/youtube/v3/channels?part=contentDetails&mine=true&key=AIzaSyCy5bFCjzTESdANJcoW8GNZRvVS6LJ2864&access_token=ya29.a0ARrdaM_0HeyVKEOYyVvJ0FMHTiy4mQu8qEd_gvPQRVyaRTeCAcwJ43v0stDfhlTdqy_haABBpaWj13Ubhb_nYZIcrnO0qqyrvu0pmv3Pdiby7IFQH2xU8r7bDJRech3aAcNq8tb7VBSqL8NLgih91V_Mdcp7
-
-// Para ver los videos de la lista de reproduccion (sacar el id de lo de arriba)
-// https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails%2Cstatus&playlistId=UU2VixUI_oav1QOvFn95rEhA&key=AIzaSyCy5bFCjzTESdANJcoW8GNZRvVS6LJ2864&access_token=ya29.a0ARrdaM_0HeyVKEOYyVvJ0FMHTiy4mQu8qEd_gvPQRVyaRTeCAcwJ43v0stDfhlTdqy_haABBpaWj13Ubhb_nYZIcrnO0qqyrvu0pmv3Pdiby7IFQH2xU8r7bDJRech3aAcNq8tb7VBSqL8NLgih91V_Mdcp7
-
-
-router.post('/', async (req, res, next) => {//subir un video
-  let redirectUrl = req.headers.origin;
+router.get("/aws-client", async (req, res, next) => {
   try {
-    upload(req, res, async function(err){
-      try {
-        const oAuthClient = new google.auth.OAuth2(
-          OAuth2Data.web.client_id,
-          OAuth2Data.web.client_secret,
-          //OAuth2Data.web.redirect_uris[0]
-          redirectUrl
-        )
-        const {title, tokens} = req.body
-        console.log("Tokens =>>", tokens)
-        console.log("Title =>>", title)
-        await oAuthClient.setCredentials(JSON.parse(tokens))     
-        if(err) throw err
-        
-        const youtube = google.youtube({
-          version: 'v3',
-          auth: oAuthClient
-        })
-  
-        await youtube.videos.insert({//metodo para subir un video
-          resource:{
-            snippet:{
-              title, //titulo
-              description: 'this is a test of youtube api' ///descripcion
-            },
-            status:{
-              privacyStatus: 'private' //video publico, privado o no listado
-            }
-          },
-          part:'snippet,status',
-          media:{
-            body:fs.createReadStream(req.file.path)
-          }
-        },
-        (err, data) => {
-          if(err) throw err
-          console.log('uploading video done!')
-          
-          //borra la copia del video de la carpeta upload
-          fs.unlink(req.file.path, err => {
-            if (err) throw err;
-          })
-          res.send('success!')
-          
-        })
-        
+    const creds = {
+      accessKeyId: awsAccessKey,
+      secretAccessKey: awsSecretAccessKey
+    }
 
-      } catch (error) {
-        next(error)
-      }
-    })
     
-              
-  } catch(error) {
+    res.status(200).json({ creds: creds, bucket: bucketName })
+  } catch (error) {
     next(error)
-  }     
+  }
+})
+
+router.post("/database", async (req, res, next) => {
+  try {
+    // id - title - description - link - externalid - channelname - channelavatar - thumbnail - userId - categoryId
+    // Avatar - Autor - Descripcion - UUID (video) - Link AWS - Titulo video - Likes - 
+    let { title, avatar, author, description, thumbnail, memberId, categoryId } = req.body
+    const schemaName = author.replace(/\s/g, "").toLowerCase();
+    let timestamps = getTime()
+
+    const sql = `
+    INSERT INTO ${schemaName}.videos (title, description, channelname, channelavatar, thumbnail, link, "memberId", "categoryId", "createdAt", "updatedAt")
+    VALUES ('${title}', '${description}', '${author}', '${avatar}', '${thumbnail}', '${title}', '${memberId}', '${categoryId}', '${timestamps}', '${timestamps}')
+    `;
+    
+    await sequelize.query(sql, {
+      type: sequelize.QueryTypes.INSERT
+    })
+    res.status(200).json({message: "Video created successfully"})
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router;

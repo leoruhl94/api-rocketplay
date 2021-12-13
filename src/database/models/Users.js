@@ -20,13 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
         otherKey: "schema_id",
       });
-      // this.belongsToMany(models.Genres, {
-      //   as: "genres",
-      //   through: models.VideogamesGenres,
-      //   foreignKey: "videogameId",
-      //   otherKey: "genreId",
-      //   timestamps: false,
-      // });
     }
   }
   Users.init(
@@ -35,6 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       mail: { type: DataTypes.STRING, primaryKey: true },
       youtubeChannel: DataTypes.STRING,
       isBusiness: DataTypes.BOOLEAN,
+      workspaces: DataTypes.ARRAY(DataTypes.STRING),
+      workspacesTitles: DataTypes.ARRAY(DataTypes.STRING)
     },
     {
       sequelize,

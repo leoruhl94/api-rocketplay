@@ -1,9 +1,8 @@
 const axios = require("axios").default;
-const { Subscriptions, Users, Plans } = require("../libs/sequelize");
+const { Subscriptions } = require("../libs/sequelize");
 const config = require("../config/config");
 
 class SubscriptionService {
-
   async findOneMP(subscriptionId) {
     try {
       const response = await axios.get(
@@ -19,6 +18,24 @@ class SubscriptionService {
       throw new Error(error.message || "se rompio todo");
     }
   }
+  async updateSubscriptionMP(subscriptionId, newStatus) {
+    try {
+      const response = await axios.put(
+        `https://api.mercadopago.com/preapproval/${subscriptionId}?access_token=${config.tokenMP}`,
+        JSON.stringify({ status: newStatus }),
+        {
+          headers: {
+            Authorization: "Bearer ENV_ACCESS_TOKEN",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(error.message || "se rompio todo");
+    }
+  }
+
   async findAllMP(limit = 10) {
     try {
       const response = await axios.get(
@@ -49,7 +66,6 @@ class SubscriptionService {
   }
   async findAllDB() {
     try {
-      // let subscriptions = await Subscriptions.findAll({include: ["schema", Plans]});
       let subscriptions = await Subscriptions.findAll();
       return subscriptions;
     } catch (error) {

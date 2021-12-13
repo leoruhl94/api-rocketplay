@@ -1,5 +1,6 @@
 require("dotenv").config();
 const mercadopago = require("mercadopago");
+const nodemailer = require("nodemailer")
 
 const config = {
   env: process.env.NODE_ENV || "development",
@@ -14,6 +15,9 @@ const config = {
   // DATABASE_URL="postgres://postgres:38644082@localhost:5432/RocketPlay";
   dbUrl:process.env.DATABASE_URL,
   tokenMP:process.env.TOKEN_MERCADO_PAGO,
+  awsAccessKey:process.env.AWS_ACCESS_KEY_ID,
+  awsSecretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
+  bucketName:process.env.S3_BUCKET_NAME,
   corsWhiteList: [
     'https://www.rocketplay.com.ar',
     'http://www.rocketplay.com.ar',
@@ -24,11 +28,21 @@ const config = {
     'http://www.develop.rocketplay.com.ar',
     'https://www.develop.rocketplay.com.ar',
     'http://localhost:3006',
-  ]
+  ],
+  userName: process.env.EMAIL_USERNAME,
+  userPass: process.env.EMAIL_PASSWORD,
+  transporter: nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  })
 };
 
 mercadopago.configure({
   access_token: config.tokenMP,
 });
+
 
 module.exports = config;
