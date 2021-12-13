@@ -22,18 +22,32 @@ router.post("/",async (req, res, next) => {
 
 router.get("/",async (req, res, next) => {
     try {
-      let { schemaName } = req.query;
+      let { schemaName, categoryId } = req.query;
       schemaName = schemaName.replace(/\s/g, "").toLowerCase();
-      const sql = `
-              SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", cha.description, cha.isprivate 
-              FROM ${schemaName}.categories cat 
-              LEFT JOIN ${schemaName}.channels cha 
-              ON cat."channelId" = cha.id
-              `;
-      const result = await sequelize.query(sql, {
-        type: sequelize.QueryTypes.SELECT,
-      });
-      res.status(200).json(result);
+      if(!categoryId) {
+        const sql = `
+                SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", cha.description, cha.isprivate 
+                FROM ${schemaName}.categories cat 
+                LEFT JOIN ${schemaName}.channels cha 
+                ON cat."channelId" = cha.id
+                `;
+        const result = await sequelize.query(sql, {
+          type: sequelize.QueryTypes.SELECT,
+        });
+        return res.status(200).json(result);
+      } else {
+        const sql = `
+                SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", cha.description, cha.isprivate 
+                FROM ${schemaName}.categories cat 
+                LEFT JOIN ${schemaName}.channels cha 
+                ON cat."channelId" = cha.id
+                WHERE cat.id = '${categoryId}'
+                `;
+        const result = await sequelize.query(sql, {
+          type: sequelize.QueryTypes.SELECT,
+        });
+        return res.status(200).json(result);
+      }
     } catch (error) {
       next(error);
     }
