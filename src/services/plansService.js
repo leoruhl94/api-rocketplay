@@ -79,7 +79,9 @@ class PlansService {
         id: "2c9380847d7c2d8f017d8d739a4e0715",
         name: "Plan Basic",
         description:
-          "The Basic Plans offers you a limit of 100 users on your platform",
+        [ "Our Basic Plan offers the possibility to add up to 100 subscribers to your workspace. It has an easy-to-use dashboard enabling customization. It has 50GB of storage with no limitations until you meet your quota. Reliable technical support. Video privacy and security. Responsive Video." , "100 subscribers", "50GB storage",
+        "Watch videos", "Give likes", "Write comments", "Edit videos", "Upload videos", "Create your workspace", "Edit your workspace", "Responsive Videos", "Video privacy and security", "Reliable technical support"
+        ],
         price: 5000,
         userLimit: 100,
         link_checkout:
@@ -93,7 +95,9 @@ class PlansService {
         id: "2c9380847d7c2d8f017d8d739d140716",
         name: "Plan Standard",
         description:
-          "The Standard Plans offers you a limit of 500 users on your platform",
+        [ "Our Standard Plan offers the possibility to add up to 500 subscribers to your workspace. It has an easy-to-use dashboard enabling customization. It has 100GB of storage with no limitations until you meet your quota. Reliable technical support. Video privacy and security. Responsive Video." , "500 subscribers", "100GB storage",
+        "Watch videos", "Give likes", "Write comments", "Edit videos", "Upload videos", "Create your workspace", "Edit your workspace", "Responsive Videos", "Video privacy and security", "Reliable technical support during working hours"
+        ],
         price: 15000,
         userLimit: 500,
         link_checkout:
@@ -107,7 +111,9 @@ class PlansService {
         id: "2c9380847d7c2d8f017d8d739fab0717",
         name: "Plan Premium",
         description:
-          "The Premim Plans offers you a limit of 1000 users on your platform",
+        [ "Our Premium Plan offers the possibility to add up to 1000 subscribers to your workspace. It has an easy-to-use dashboard enabling customization. It has 200GB of storage with no limitations until you meet your quota. Reliable technical support. Video privacy and security. Responsive Video." , "1000 subscribers", "200GB storage",
+        "Watch videos", "Give likes", "Write comments", "Edit videos", "Upload videos", "Create your workspace", "Edit your workspace", "Responsive Videos", "Video privacy and security", "Reliable technical support 24/7"
+        ],
         price: 25000,
         userLimit: 1000,
         link_checkout:

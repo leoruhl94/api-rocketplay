@@ -1,6 +1,6 @@
 const Router = require("express");
 const router = Router();
-const { conn } = require("../libs/sequelize");
+const { conn, Users } = require("../libs/sequelize");
 const sequelize = conn;
 
 router.get("/", async (req, res, next) => {
@@ -59,7 +59,7 @@ router.delete("/", async (req, res, next) => {
         `
 
         const member = await sequelize.query(sql, {
-            type: sequelize.QueryTypes.INSERT
+            type: sequelize.QueryTypes.SELECT
         })
         console.log(member)
         if(member[1] === 1) {
@@ -71,11 +71,19 @@ router.delete("/", async (req, res, next) => {
             await sequelize.query(sqlDelete, {
                 type: sequelize.QueryTypes.INSERT
             })
-            res.status(200).json({message: "Member succesfully deleted"})
+            // res.status(200).json({message: "Member succesfully deleted"})
         } else {
             res.json({message: "Could not delete the member :c"})
         }
-            
+        try {
+            let usuario = Users.findOne({where: {
+                mail: member.mail
+            }})
+            console.log(usuario)
+            // usuario.update({workspaces: arrayFiltrado})
+        } catch (error) {
+
+        }
     } catch(error) {
         next(error)
     }

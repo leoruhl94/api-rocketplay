@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
             SELECT v.title, v.id AS videoid, v.thumbnail, cat.name AS category, cat.id as "catId"
             FROM ${schemaName}.videos AS v
             LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
-            WHERE (v.title like '%${title}%')
+            WHERE (LOWER(v.title) like '%${title.toLocaleLowerCase()}%')
             `;
 
     let videos = await sequelize.query(sql, {
