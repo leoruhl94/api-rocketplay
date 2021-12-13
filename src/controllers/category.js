@@ -53,6 +53,23 @@ router.get("/",async (req, res, next) => {
     }
 });
 
+router.get("/bychannel", async (req, res, next) => {
+  let {schemaName, channelId} = req.query
+  schemaName = schemaName.replace(/\s/g, "").toLowerCase()
+try {
+  const sql = `
+  SELECT * FROM ${schemaName}.categories
+  WHERE "channelId" = '${channelId}'
+  `
+  const result = await sequelize.query(sql, {
+    type: sequelize.QueryTypes.SELECT,
+  })
+  return res.status(200).json(result)
+} catch(error) {
+  next(error)
+}
+})
+
 router.put('/', async (req, res, next) => {
   let {schemaName, oldName, newName} = req.body;
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();

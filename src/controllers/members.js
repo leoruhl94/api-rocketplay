@@ -4,18 +4,30 @@ const { conn } = require("../libs/sequelize");
 const sequelize = conn;
 
 router.get("/", async (req, res, next) => {
-    let { schemaName } = req.query
+    let { schemaName, memberEmail } = req.query
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     try {
-        const sql = `
-        SELECT * FROM ${schemaName}.members
-        `
+        if(!memberEmail){
+            const sql = `
+            SELECT * FROM ${schemaName}.members
+            `
+    
+            const members = await sequelize.query(sql, {
+                type: sequelize.QueryTypes.SELECT
+            })
+            
+            return res.status(200).json(members);
+        } else {
+            const sql = `
+            SELECT * FROM ${schemaName}.members
+            WHERE mail = '${memberEmail}'
+            `
 
-        const members = await sequelize.query(sql, {
-            type: sequelize.QueryTypes.SELECT
-        })
-        
-        res.status(200).json(members);
+            const members = await sequelize.query(sql, {
+                type: sequelize.QueryTypes.SELECT
+            })
+            return res.status(200).json(members)
+        }
     } catch(error) {
         next(error)
     }

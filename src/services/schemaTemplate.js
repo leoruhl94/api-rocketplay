@@ -61,7 +61,6 @@ module.exports = async function createTemplate(name) {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
     },
     {
