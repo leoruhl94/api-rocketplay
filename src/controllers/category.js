@@ -27,7 +27,8 @@ router.get("/",async (req, res, next) => {
       schemaName = schemaName.replace(/\s/g, "").toLowerCase();
       if(!categoryId) {
         const sql = `
-                SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", cha.description, cha.isprivate 
+                SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", 
+                cha.description, cha.isprivate, cha.status AS "channelStatus", cat.status AS "categoryStatus"
                 FROM ${schemaName}.categories cat 
                 LEFT JOIN ${schemaName}.channels cha 
                 ON cat."channelId" = cha.id
@@ -38,7 +39,8 @@ router.get("/",async (req, res, next) => {
         return res.status(200).json(result);
       } else {
         const sql = `
-                SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", cha.description, cha.isprivate 
+                SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", 
+                cha.description, cha.isprivate, cha.status AS "channelStatus", cat.status AS "categoryStatus"
                 FROM ${schemaName}.categories cat 
                 LEFT JOIN ${schemaName}.channels cha 
                 ON cat."channelId" = cha.id
