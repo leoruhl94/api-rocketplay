@@ -97,7 +97,6 @@ router.post("/", async (req, res, next) => {
           await sequelize.query(sql, {
             type: sequelize.QueryTypes.INSERT,
           });
-          console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
           const schema = await Schemas.create({
             name: schemaName,
             status: "authorized",
@@ -107,7 +106,6 @@ router.post("/", async (req, res, next) => {
           console.log(schema)
           
           await user.addSchemas(schema.id);
-          console.log("////////////////////////////////////////////////////////")
           await user.update({ isBusiness: true });
           await createdSubscription[0].update({
             schema_id: schema.id,

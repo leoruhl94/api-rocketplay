@@ -10,14 +10,16 @@ router.get("/", async (req, res, next) => {
 		let sql;
 		if (!title) {
 			sql = `
-        SELECT v.title, v.link, v.description, v.channelname AS workspace, v.channelavatar, v.id AS videoid, v.thumbnail, m.name AS username, m.id AS "memberId", m.mail AS usermail, m.userType, cat.name AS category
+        SELECT v.title, v.link, v.description, v.channelname AS workspace, v.channelavatar, v.id AS videoid, v.thumbnail, 
+        m.name AS username, m.id AS "memberId", m.mail AS usermail, m.userType, cat.name AS category, v.status AS "videoStatus"
         FROM ${schemaName}.videos AS v
         LEFT JOIN ${schemaName}.members AS m ON v."memberId" = m.id
         LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
         `;
 		} else {
 			sql = `
-            SELECT v.title, v.link, v.description, v.channelname AS workspace, v.channelavatar, v.id AS videoid, v.thumbnail, m.name AS username, m.mail AS usermail, m.userType, cat.name AS category
+            SELECT v.title, v.link, v.description, v.channelname AS workspace, v.channelavatar, v.id AS videoid, v.thumbnail, 
+            m.name AS username, m.mail AS usermail, m.userType, cat.name AS category, v.status AS "videoStatus"
             FROM ${schemaName}.videos AS v
             LEFT JOIN ${schemaName}.members AS m ON v."memberId" = m.id
             LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
@@ -78,6 +80,25 @@ router.put("/delete", async (req, res, next) => {
         }
     }catch(error){
       next(error)
+    }
+})
+
+router.put("/status", async (req, res, next) => {
+    let { schemaName, title, status } = req.body;
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+    try {
+        const sql = `
+        UPDATE ${schemaName}.videos
+        SET status = '${status}'
+        WHERE title = '${title}'
+        `
+
+        await sequelize.query(sql, {
+            type: sequelize.QueryTypes.INSERT
+        })
+        res.json({message: "Status updated succesfully"})
+    } catch (error) {
+        next(error)
     }
 })
 

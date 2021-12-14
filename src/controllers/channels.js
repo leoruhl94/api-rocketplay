@@ -108,4 +108,23 @@ router.delete("/", async (req, res, next) => {
   }
 });
 
+router.put('/status', async (req, res, next) => {
+  let { schemaName, channelId, status } = req.body;
+  schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+  try {
+      let sql = `
+      UPDATE ${schemaName}.channels 
+      SET status='${status}'
+      WHERE id = '${channelId}'
+      `
+
+    await sequelize.query(sql, {
+    type: sequelize.QueryTypes.INSERT,
+  });
+    res.status(200).json({message: "Status updated succesfully"})
+
+  } catch (error) {
+    next(error)
+  }
+})
 module.exports = router;
