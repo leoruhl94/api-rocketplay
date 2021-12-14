@@ -60,7 +60,7 @@ class UsersService {
     try {
       const user = await Users.findOne({
         where: { mail: email },
-        include: ["subscriptions"],
+        include: ["subscriptions","schemas"],
       });
       return user;
     } catch (error) {
@@ -68,5 +68,5 @@ class UsersService {
     }
   }
 }
-
+ 
 module.exports = UsersService;
