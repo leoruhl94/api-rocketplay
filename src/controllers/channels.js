@@ -11,12 +11,12 @@ const URL_BASE =
     : "http://localhost:3002";
 
 router.post("/", async function (req, res, next) {
-  let { schemaName, name, isprivate, description } = req.body;
+  let { schemaName, name, isprivate } = req.body;
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
-  let privado = isprivate ? isprivate : false
+  let privado = isprivate ? isprivate : false;
   try {
-    const sql = `INSERT INTO ${schemaName}.channels (name, isprivate, description)
-                    VALUES ('${name}', '${privado}', '${description}')`;
+    const sql = `INSERT INTO ${schemaName}.channels (name, isprivate)
+                    VALUES ('${name}', '${privado}')`;
     await sequelize.query(sql, {
       type: sequelize.QueryTypes.INSERT,
     });
@@ -42,15 +42,20 @@ router.post("/", async function (req, res, next) {
 
 router.get("/", async (req, res, next) => {
   let { schemaName, channelId } = req.query;
-  if (!schemaName) return res.status(400).json({message: "U have to send me the schema name!"})
+  if (!schemaName)
+    return res
+      .status(400)
+      .json({ message: "U have to send me the schema name!" });
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
-  
+
   try {
-    const allSchemas = await sequelize.showAllSchemas()
-  
-    if(!allSchemas.includes(schemaName)) return res.status(400).json({message: "Schema not found!"})
+    const allSchemas = await sequelize.showAllSchemas();
+
+    if (!allSchemas.includes(schemaName))
+      return res.status(400).json({ message: "Schema not found!" });
     if (!channelId) {
-      const sql = `SELECT * FROM ${schemaName}.channels`;
+      const sql = `SELECT * FROM ${schemaName}.channels WHERE status = 'active'
+      `;
       const result = await sequelize.query(sql, {
         type: sequelize.QueryTypes.SELECT,
       });
@@ -81,50 +86,49 @@ router.put("/", async (req, res, next) => {
   }
 });
 
-router.delete("/", async (req, res, next) => {
+// router.delete("/", async (req, res, next) => {
+//   try {
+//     let { schemaName, name } = req.body;
+//     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+//     const sql = `
+//         SELECT * FROM ${schemaName}.channels WHERE name='${name}'
+//         `;
+//     const respond = await sequelize.query(sql, {
+//       type: sequelize.QueryTypes.INSERT,
+//     });
+
+//     if (respond[1] === 1) {
+//       const sql2 = `
+//             DELETE FROM ${schemaName}.channels WHERE name='${name}'
+//             `;
+//       await sequelize.query(sql2, {
+//         type: sequelize.QueryTypes.INSERT,
+//       });
+//       res.json({ message: "Channel deleted successfully" });
+//     } else {
+//       res.json({ message: "Could not delete channel" });
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+router.put("/status", async (req, res, next) => {
+  let { schemaName, channelId, status } = req.body;
+  schemaName = schemaName.replace(/\s/g, "").toLowerCase();
   try {
-    let { schemaName, name } = req.body;
-    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
-    const sql = `
-        SELECT * FROM ${schemaName}.channels WHERE name='${name}'  
-        `;
-    const respond = await sequelize.query(sql, {
+    let sql = `
+      UPDATE ${schemaName}.channels 
+      SET status='${status}'
+      WHERE id = '${channelId}'
+      `;
+
+    await sequelize.query(sql, {
       type: sequelize.QueryTypes.INSERT,
     });
-
-    if (respond[1] === 1) {
-      const sql2 = `
-            DELETE FROM ${schemaName}.channels WHERE name='${name}'
-            `;
-      await sequelize.query(sql2, {
-        type: sequelize.QueryTypes.INSERT,
-      });
-      res.json({ message: "Channel deleted successfully" });
-    } else {
-      res.json({ message: "Could not delete channel" });
-    }
+    res.status(200).json({ message: "Status updated succesfully" });
   } catch (error) {
     next(error);
   }
 });
-
-router.put('/status', async (req, res, next) => {
-  let { schemaName, channelId, status } = req.body;
-  schemaName = schemaName.replace(/\s/g, "").toLowerCase();
-  try {
-      let sql = `
-      UPDATE ${schemaName}.channels 
-      SET status='${status}'
-      WHERE id = '${channelId}'
-      `
-
-    await sequelize.query(sql, {
-    type: sequelize.QueryTypes.INSERT,
-  });
-    res.status(200).json({message: "Status updated succesfully"})
-
-  } catch (error) {
-    next(error)
-  }
-})
 module.exports = router;
