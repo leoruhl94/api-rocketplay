@@ -6,7 +6,8 @@ const router = Router();
 router.post("/",async (req, res, next) => {
     try {
       let { schemaName, name, channelId } = req.body;
-      schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+      console.log(req.body)
+      // schemaName = schemaName.replace(/\s/g, "").toLowerCase();
       const sql = `
               INSERT INTO ${schemaName.toLowerCase()}.categories (name, "channelId") VALUES('${name}', ${channelId});
               `;

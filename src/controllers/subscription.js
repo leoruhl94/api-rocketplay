@@ -76,9 +76,7 @@ router.post("/", async (req, res, next) => {
     const schemaName = user.name.replace(/\s/g, "").toLowerCase();
     let foundSchema = await Schemas.findOne({ where: { name: schemaName } });
 
-    console.log("found Schema =>", foundSchema);
-    console.log("================================¨==============================================================================");
-
+  
     if (foundSchema) {
       await sequelize.dropSchema(foundSchema.name);
       await foundSchema.destroy();
@@ -99,14 +97,17 @@ router.post("/", async (req, res, next) => {
           await sequelize.query(sql, {
             type: sequelize.QueryTypes.INSERT,
           });
+          console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
           const schema = await Schemas.create({
             name: schemaName,
             status: "authorized",
             code: schemaName,
             title: user.name,
           });
-
+          console.log(schema)
+          
           await user.addSchemas(schema.id);
+          console.log("////////////////////////////////////////////////////////")
           await user.update({ isBusiness: true });
           await createdSubscription[0].update({
             schema_id: schema.id,

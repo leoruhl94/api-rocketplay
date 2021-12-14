@@ -13,9 +13,10 @@ const URL_BASE =
 router.post("/", async function (req, res, next) {
   let { schemaName, name, isprivate, description } = req.body;
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+  let privado = isprivate ? isprivate : false
   try {
     const sql = `INSERT INTO ${schemaName}.channels (name, isprivate, description)
-                    VALUES ('${name}', '${isprivate}', '${description}')`;
+                    VALUES ('${name}', '${privado}', '${description}')`;
     await sequelize.query(sql, {
       type: sequelize.QueryTypes.INSERT,
     });
