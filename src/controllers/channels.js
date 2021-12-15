@@ -15,14 +15,24 @@ router.post("/", async function (req, res, next) {
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
   let privado = isprivate ? isprivate : false
   try {
+    const sqlChannel = `
+        SELECT * FROM ${schemaName}.channels WHERE name = '${name}' ORDER BY name ASC
+        `;
+    const channelFirst = await sequelize.query(sqlChannel, {
+      type: sequelize.QueryTypes.SELECT,
+    });
+    if(channelFirst.length > 0) {
+      return res.status(200).json({message: "That channel already exists"})
+    }
+
+
+
     const sql = `INSERT INTO ${schemaName}.channels (name, isprivate, description)
-                    VALUES ('${name}', '${privado}', '${description}')`;
+    VALUES ('${name}', '${privado}', '${description}')`;
     await sequelize.query(sql, {
       type: sequelize.QueryTypes.INSERT,
     });
-    const sqlChannel = `
-        SELECT * FROM ${schemaName}.channels WHERE name = '${name}'
-        `;
+    
     const channel = await sequelize.query(sqlChannel, {
       type: sequelize.QueryTypes.SELECT,
     });
@@ -50,7 +60,7 @@ router.get("/", async (req, res, next) => {
   
     if(!allSchemas.includes(schemaName)) return res.status(400).json({message: "Schema not found!"})
     if (!channelId) {
-      const sql = `SELECT * FROM ${schemaName}.channels`;
+      const sql = `SELECT * FROM ${schemaName}.channels WHERE status = 'active' ORDER BY name ASC`;
       const result = await sequelize.query(sql, {
         type: sequelize.QueryTypes.SELECT,
       });

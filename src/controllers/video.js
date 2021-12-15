@@ -15,6 +15,7 @@ router.get("/", async (req, res, next) => {
         FROM ${schemaName}.videos AS v
         LEFT JOIN ${schemaName}.members AS m ON v."memberId" = m.id
         LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
+        ORDER BY v.title ASC
         `;
 		} else {
 			sql = `
@@ -24,6 +25,7 @@ router.get("/", async (req, res, next) => {
             LEFT JOIN ${schemaName}.members AS m ON v."memberId" = m.id
             LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
             WHERE (v.title = '${title}')
+            ORDER BY v.title ASC
             `;
 		}
 
@@ -44,6 +46,7 @@ router.get("/category", async (req, res, next) => {
         const sql = `
         SELECT * FROM ${schemaName}.videos AS v
         WHERE "categoryId" = '${categoryId}'
+        ORDER BY title ASC
         `
 
         let videos = await sequelize.query(sql, {
