@@ -46,7 +46,6 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   // recibo id del pago
   const { subscription_id, mail } = req.body;
-  console.log("subscription email >>1 ", subscription_id, mail);
   try {
     // buscamos en mp la data del pago de la suscripcion
     let userPaymentData = await subscriptionService.findOneMP(subscription_id);
@@ -65,7 +64,7 @@ router.post("/", async (req, res, next) => {
         id: userPaymentData.preapproval_plan_id,
       },
     });
-    console.log("Sub ID1:  ", subscription_id);
+   
     // creo la asociacion de la suscripcion con el plan
     await plan.setSubscriptions(subscription_id);
 
@@ -103,7 +102,7 @@ router.post("/", async (req, res, next) => {
             code: schemaName,
             title: user.name,
           });
-          console.log(schema)
+         
           
           await user.addSchemas(schema.id);
           await user.update({ isBusiness: true });
