@@ -77,7 +77,7 @@ router.get("/bychannel", async (req, res, next) => {
     type: sequelize.QueryTypes.SELECT,
   })
 
-  result = result?.filter(category => category.status === 'active')
+  result = result?.filter(category => category.categoryStatus === 'active')
   return res.status(200).json(result)
 } catch(error) {
   next(error)
