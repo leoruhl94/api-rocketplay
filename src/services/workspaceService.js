@@ -38,6 +38,20 @@ class WorkspaceService {
       throw new Error(error.message || "se rompio todo");
     }
   }
+  async updateWorkspaceByName(schemaName, newName,  code=false ) {
+    try {
+      let schema = await Schemas.findOne({ where: { name: schemaName } });
+        
+      if(newName) await schema.update({title: newName})
+
+      if(newCode) await schema.update({code: newCode})
+
+
+      return schema;
+    } catch (error) {
+      throw new Error(error.message || "se rompio todo");
+    }
+  }
   async deleteWorkspaceByName(schemaName) {
     try {
       await sequelize.dropSchema(schemaName);

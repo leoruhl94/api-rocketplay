@@ -73,11 +73,11 @@ router.get("/bychannel", async (req, res, next) => {
   ON cat."channelId" = cha.id
   WHERE cha.id = '${channelId}'
   `
-  const result = await sequelize.query(sql, {
+  let result = await sequelize.query(sql, {
     type: sequelize.QueryTypes.SELECT,
   })
-
-  // result = result?.filter(category => category.categoryStatus === 'active')
+  result = result?.filter(category => category.categoryStatus === 'active')
+  console.log(result)
   return res.status(200).json(result)
 } catch(error) {
   next(error)

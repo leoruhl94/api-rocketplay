@@ -203,4 +203,35 @@ router.put("/", async (req, res, next) => {
   }
 });
 
+router.put("/test", async (req, res, next) => {
+  const { email, status, id } = req.body;
+  try {
+    let user = await userService.findOneUser(email);
+    let subscription = await subscriptionService.findOneDB(
+      user.subscriptions[0].id
+    );
+
+   
+
+    let schema = await Schemas.findByPk(subscription.schema_id)
+    console.log("Schema:  ", schema)
+    let allUsers = await Users.findAll()
+    console.log("All users:  ", allUsers)
+    const usersMapped = allUsers.filter(user => user.workspaces?.includes(schema.name))
+    console.log("Users mapeados:  ", usersMapped)
+
+    usersMapped.map(async (user) => {
+      let newWorkspaces = user.workspaces.filter(workspace => workspace !== schema.name)
+      await user.update({workspaces: newWorkspaces})
+      let newWorkspacesTitles = user.workspacesTitles.filter(workspace => workspace !== schema.title)
+      await user.update({workspaces: newWorkspacesTitles})
+    })
+
+    await user.update({ isBusiness: false })
+    res.status(200).json({usersMapped})
+  } catch(error) { 
+    next(error)
+  }
+})
+
 module.exports = router;

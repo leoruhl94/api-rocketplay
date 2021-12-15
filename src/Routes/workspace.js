@@ -99,14 +99,17 @@ router.post("/join", async (req, res, next) => {
 
 router.put("/", async (req, res, next) => {
   try {
-    let { schemaName, newName, newCode } = req.body;
+    let { schemaName, name, code } = req.body;
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
-    const workspace = findWorkspaceByName(schemaName);
+    let workspace = await workspaceService.findWorkspaceByName(schemaName);
+    console.log("Antes de editar:  ", workspace)
+    console.log(req.body)
+    if(name) (console.log(await workspace.update({title: name})))
 
-    if(newName) workspace.update({title: newName ? newName : workspace.title})
+    if(code) await workspace.update({code: code})
 
-    if(newCode) workspace.update({code: newCode ? newCode : workspace.code})
-    
+
+    // console.log("Despues de editar:  ", workspace)
     res.status(200).json({message: "Schema updated succesfully."});
   } catch (error) {
     next(error);
