@@ -15,8 +15,6 @@ router.get("/", async (req, res, next) => {
         FROM ${schemaName}.videos AS v
         LEFT JOIN ${schemaName}.members AS m ON v."memberId" = m.id
         LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
-        ORDER BY v.title ASC
-        WHERE (v.status = 'active')
         `;
     } else {
       sql = `
@@ -25,8 +23,7 @@ router.get("/", async (req, res, next) => {
             FROM ${schemaName}.videos AS v
             LEFT JOIN ${schemaName}.members AS m ON v."memberId" = m.id
             LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
-            ORDER BY v.title ASC
-            WHERE (v.title = '${title}') AND (v.status = 'active')
+            WHERE (v.title = '${title}')
             `;
     }
 
@@ -87,13 +84,13 @@ router.get("/category", async (req, res, next) => {
 // })
 
 router.put("/status", async (req, res, next) => {
-  let { schemaName, title, status } = req.body;
+  let { schemaName, id, status } = req.body;
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
   try {
     const sql = `
         UPDATE ${schemaName}.videos
         SET status = '${status}'
-        WHERE title = '${title}'
+        WHERE id = '${id}'
         `;
 
     await sequelize.query(sql, {
@@ -104,5 +101,47 @@ router.put("/status", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/editTitle", async (req, res, next) => {
+  try {
+    let { schemaName, newTitle, id } = req.body;
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+    const sql = `
+          UPDATE ${schemaName}.videos
+          SET title = '${newTitle}'
+          WHERE id = '${id}'
+          `;
+  
+    await sequelize.query(sql, {
+      type: sequelize.QueryTypes.INSERT,
+    });
+    res.json({ message: "Title updated succesfully" });
+
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put("/editDescription", async (req, res, next) => {
+  try {
+    let { schemaName, newDescription, id } = req.body;
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+    const sql = `
+          UPDATE ${schemaName}.videos
+          SET description = '${newDescription}'
+          WHERE id = '${id}'
+          `;
+  
+    await sequelize.query(sql, {
+      type: sequelize.QueryTypes.INSERT,
+    });
+    res.json({ message: "Description updated succesfully" });
+
+  } catch (error) {
+    next(error)
+  }
+})
+
+
 
 module.exports = router;

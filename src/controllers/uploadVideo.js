@@ -24,7 +24,7 @@ router.post("/database", async (req, res, next) => {
     // id - title - description - link - externalid - channelname - channelavatar - thumbnail - userId - categoryId
     // Avatar - Autor - Descripcion - UUID (video) - Link AWS - Titulo video - Likes - 
     let { title, avatar, author, description, thumbnail, memberId, categoryId } = req.body
-    let thumb = thumbnail === '-thumb' ? "defaultThumbnail" : thumbnail
+    let thumb = thumbnail === '' ? "defaultThumbnail.jpg" : thumbnail
     const schemaName = author.replace(/\s/g, "").toLowerCase();
     let timestamps = getTime()
 

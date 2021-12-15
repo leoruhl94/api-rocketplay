@@ -63,7 +63,7 @@ router.get("/", async (req, res, next) => {
     if (!allSchemas.includes(schemaName))
       return res.status(400).json({ message: "Schema not found!" });
     if (!channelId) {
-      const sql = `SELECT * FROM ${schemaName}.channels WHERE status = 'active' ORDER BY name ASC`;
+      const sql = `SELECT * FROM ${schemaName}.channels`;
       const result = await sequelize.query(sql, {
         type: sequelize.QueryTypes.SELECT,
       });

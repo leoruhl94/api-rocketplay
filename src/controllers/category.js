@@ -28,25 +28,25 @@ router.get("/", async (req, res, next) => {
       const sql = `
                 SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", 
                 cha.isprivate, cha.status AS "channelStatus", cat.status AS "categoryStatus"
-                FROM ${schemaName}.categories cat 
-                LEFT JOIN ${schemaName}.channels cha 
-                ON cat."channelId" = cha.id
-                ORDER BY "catName" ASC
-                WHERE cat.status = 'active'`;
-               
+                FROM ${schemaName}.categories AS cat 
+                LEFT JOIN ${schemaName}.channels AS cha 
+                ON cat."channelId" = cha.id`;
+               console.log('estoy?')
         const result = await sequelize.query(sql, {
           type: sequelize.QueryTypes.SELECT,
         });
+        // console.log(result, '<=soy result')
         return res.status(200).json(result);
     } else {
       const sql = `
                 SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", 
-                cha.description, cha.isprivate
-                FROM ${schemaName}.categories cat 
-                LEFT JOIN ${schemaName}.channels cha 
+                cha.isprivate, cat.status AS "categoryStatus"
+                FROM ${schemaName}.categories AS cat 
+                LEFT JOIN ${schemaName}.channels AS cha 
                 ON cat."channelId" = cha.id
-                WHERE cat.id = '${categoryId}' AND cat.status = 'active'
+                WHERE cat.id = '${categoryId}'
                 `;
+
       const result = await sequelize.query(sql, {
         type: sequelize.QueryTypes.SELECT,
       });
@@ -61,10 +61,17 @@ router.get("/bychannel", async (req, res, next) => {
   let { schemaName, channelId } = req.query;
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
   try {
-    const sql = `
-  SELECT * FROM ${schemaName}.categories
-  WHERE "channelId" = '${channelId}' AND cat.status = 'active'
-  ORDER BY name ASC
+  //   const sql = `
+  // SELECT * FROM ${schemaName}.categories AS cat
+  // WHERE "channelId" = '${channelId}'
+  // `;
+  const sql = `
+  SELECT cat.name AS "catName", cat.id AS "catId", cha.id AS "chaId", cha.name AS "chaName", 
+  cha.isprivate, cat.status AS "categoryStatus"
+  FROM ${schemaName}.categories AS cat 
+  LEFT JOIN ${schemaName}.channels AS cha 
+  ON cat."channelId" = cha.id
+  WHERE cha.id = '${channelId}'
   `
   const result = await sequelize.query(sql, {
     type: sequelize.QueryTypes.SELECT,
@@ -76,10 +83,10 @@ router.get("/bychannel", async (req, res, next) => {
 })
 
 router.put("/", async (req, res, next) => {
-  let { schemaName, oldName, newName } = req.body;
+  let { schemaName, categoryId, newName } = req.body;
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
   try {
-    const sql = `UPDATE ${schemaName}.categories SET name='${newName}' WHERE name='${oldName}'`;
+    const sql = `UPDATE ${schemaName}.categories SET name='${newName}' WHERE id='${categoryId}'`;
     const result = await sequelize.query(sql, {
       type: sequelize.QueryTypes.SELECT,
     });

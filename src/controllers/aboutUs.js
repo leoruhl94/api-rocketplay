@@ -131,40 +131,25 @@ router.get("/", async (req, res, next) => {
       },
       {
         id: 7,
-        name: "Daniel Sereno",
-        links: {
-          LinkedIn: "https://www.linkedin.com/in/danielserenopd/",
-          GitHub: "https://github.com/DanielSerenoPD",
-        },
-        photo: "https://avatars.githubusercontent.com/u/86926807?v=4",
-        description: `Quién soy? ✋
-        📌 Soy un desarrollador Web Full Stack con conocimientos en JavaScript, Java y Python 👨‍💻. me siento muy cómodo desarrollando apps con tecnologías como React, Redux, Node, Express y Sequelize. Disfruto bastante el sentarme y ponerme a codear todo lo que veo en mi día a día, me siento poderoso cuando veo algo y me digo a mi mismo,"Estoy seguro que puedo programar eso", en fin mi pasión es programar!😊
-        
-        ¿Que me caracteriza? 🤷🏽‍♂️
-        📌 Lo que me caracteriza es la pasión que le pongo a los proyectos que estoy realizando, cuando me pongo a programar o a estudiar lo disfruto al máximo! Cuando hablo o me preguntan sobre lo que hago se nota la emoción en mi voz, tanto que hasta me pongo sentimental. Disfruto bastante el trabajo en equipo, siempre he sido una persona que le gusta trabajar con muchas personas, nunca he sido individualista, pero eso no quiere decir que no pueda desempeñarme al máximo trabajando solo.😊
-        
-        📌 También, tras estar codeando en java y manejando bases de datos con mysql desde hace dos añitos mas o menos, y hasta la fecha sigo codeando en Java, me tuve que casar con el debido a la facultad!🤷🏽‍♂️ , algunos cursos de Python, flask y estar cursando un bootcamp de más de 800 horas de programación Web Full Stack, estoy listo para afrontar cualquier reto que me ayude a desarrollarme en estas áreas al aplicar toda mi experiencia, conocimientos en un lugar de trabajo que me ayude a seguir aprendiendo, que este lleno de retos que me hagan crecer profesionalmente!!
-        
-        📚 Tecnologías por aprender:
-        Spring, Angular: Estoy bastante entusiasmado aprendiendo estas tecnologías, tengo un manejo de Java bastante bueno y quiero desarrollar un potente punto de venta con estas tecnologías!💻
-        
-        ¡Mi experiencia! 💻
-        Hasta ahora, mi experiencia es principalmente académica. Pueden ver un poquito sobre quien soy yo plasmado en código en mis repositorios!❤️
-        
-        https://github.com/DanielSerenoPD
-        
-        💬 Pregúntame sobre cualquier cosa, estoy feliz de poder ayudarte.`,
-      },
-      {
-        id: 8,
         name: "Marcos Stricker",
         links: {
           LinkedIn: "https://www.linkedin.com/in/marcos-stricker/",
           GitHub: "https://github.com/marcosst17",
         },
         photo: "https://avatars.githubusercontent.com/u/80062940?v=4",
-        description: `Hi ! My name is Marcos and i'm from Argentina.. I'm currently studying Full Stack Web Development in Henry and so far it has been really good.
-        Im fluent in English and native in Spanish and I look forward to working remotely for a company somewhere abroad.`,
+        description: `Who Am I? 🤔
+        🔸 My name is Marcos, I'm from Argentina and I'm a Full Stack Web Developer. I've been in love with computers in general since I was a teen, I've built all the computers that I ever had and I repaired a lot of computers from my friends as a side gig / hobby. I finally decided to dive into programming and I'm very motivated to learn and be able to create new things.
+        
+        Why Me? ❔
+        🔸 I'm very passionate about programming and computers in general, I'm always trying to learn new things and put myself in a position in which I need to learn something. I'm very charismatic and able to adapt to any environment.
+        
+        Tech Stack 📋
+        🔸 HTML - CSS - JavaScript - React - Redux - NodeJS - Express - PostgreSQL - Sequelize - TypeScript - Python.
+        
+        Languages
+        🔸 English (C2) - Spanish (Native) - Portuguese (B1/B2)
+        
+        I'm currently looking forward to bring my experience into a team and help in every way I can.`,
       },
     ];
     res.status(200).json(aboutUs);
