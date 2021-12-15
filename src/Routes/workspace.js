@@ -103,7 +103,7 @@ router.put("/", async (req, res, next) => {
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     const workspace = findWorkspaceByName(schemaName);
 
-    if(newName) workspace.update({title: newName ? newName : workspace.name})
+    if(newName) workspace.update({title: newName ? newName : workspace.title})
 
     if(newCode) workspace.update({code: newCode ? newCode : workspace.code})
     
