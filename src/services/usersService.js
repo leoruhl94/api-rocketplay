@@ -4,7 +4,7 @@ class UsersService {
   constructor() {
     this.users = [];
   }
-
+ 
   async findOrCreateUser({name, mail, youtubeChannel=null, isBusiness=false, workspaces=null}) {
     try {
       let foundUser = await Users.findOne({where:{
