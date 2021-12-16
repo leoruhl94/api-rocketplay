@@ -103,6 +103,7 @@ router.put("/status", async (req, res, next) => {
 });
 
 router.put("/editTitle", async (req, res, next) => {
+  console.log(req.body)
   try {
     let { schemaName, newTitle, id } = req.body;
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
@@ -123,6 +124,7 @@ router.put("/editTitle", async (req, res, next) => {
 })
 
 router.put("/editDescription", async (req, res, next) => {
+  console.log(req.body)
   try {
     let { schemaName, newDescription, id } = req.body;
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
@@ -142,6 +144,28 @@ router.put("/editDescription", async (req, res, next) => {
   }
 })
 
+router.get("/id", async (req, res, next) => {
+  try {
+    let { schemaName, videoId } = req.query;
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+  
+    let sql = `
+        SELECT v.title, v.link, v.description, v.channelname AS workspace, v.channelavatar, v.id AS videoid, v.thumbnail, 
+        m.name AS username, m.mail AS usermail, m.userType, cat.name AS category, v.status AS "videoStatus", v."createdAt"
+        FROM ${schemaName}.videos AS v
+        LEFT JOIN ${schemaName}.members AS m ON v."memberId" = m.id
+        LEFT JOIN ${schemaName}.categories AS cat ON v."categoryId" = cat.id
+        WHERE (v.id = '${videoId}')
+      `;
 
+    let videos = await sequelize.query(sql, {
+      type: sequelize.QueryTypes.SELECT,
+    });
+
+    res.status(200).json(videos);
+  } catch (error) {
+    next(error);
+  }
+})
 
 module.exports = router;
