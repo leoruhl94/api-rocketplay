@@ -7,6 +7,9 @@ router.get("/", async (req, res, next) => {
   let { schemaName, memberEmail } = req.query;
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
   try {
+    if (!schemaName) {
+      res.status(400).json({ message: "U have to send me the schema name " });
+    }
     if (!memberEmail) {
       const sql = `
             SELECT * FROM ${schemaName}.members

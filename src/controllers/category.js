@@ -7,6 +7,9 @@ router.post("/", async (req, res, next) => {
   try {
     let { schemaName, name, channelId } = req.body;
     console.log(req.body);
+    if(!schemaName) {
+      return res.status(400).json({message: "U have to send me a schema name !"})
+    }
     // schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     const sql = `
               INSERT INTO ${schemaName.toLowerCase()}.categories (name, "channelId") VALUES('${name}', ${channelId});
@@ -59,6 +62,10 @@ router.get("/", async (req, res, next) => {
 
 router.get("/bychannel", async (req, res, next) => {
   let { schemaName, channelId } = req.query;
+  if (!schemaName || !channelId)
+    return res
+      .status(400)
+      .json({ message: "U have to send schema name or channel Id!" });
   schemaName = schemaName.replace(/\s/g, "").toLowerCase();
   try {
   //   const sql = `

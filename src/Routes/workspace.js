@@ -56,9 +56,7 @@ router.post("/join", async (req, res, next) => {
   try {
     const { schemaName, userEmail, schemaTitle } = req.body;
     let user = await usersService.findOneUser(userEmail);
-    console.log(user);
     if (user.workspaces?.includes(schemaName)) {
-      console.log("Entre aca");
       return res
         .status(201)
         .json({ message: "You are already in this workspace" });
@@ -97,19 +95,38 @@ router.post("/join", async (req, res, next) => {
   }
 });
 
+
+router.put("/leave", async (req, res, next) => {
+  try {
+    const { schemaName, userEmail, schemaTitle } = req.body;
+    let user = await usersService.findOneUser(userEmail);
+
+    let newWorkspaces = user.workspaces.filter(
+      (workspace) => workspace !== schemaName
+    );
+    await user.update({ workspaces: newWorkspaces });
+
+    let newWorkspacesTitles = user.workspacesTitles.filter(
+      (workspace) => workspace !== schemaTitle
+    );
+    await user.update({ workspacesTitles: newWorkspacesTitles });
+
+    res.status(200).json({message: "U have left this workspace!"})
+
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.put("/", async (req, res, next) => {
   try {
     let { schemaName, name, code } = req.body;
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     let workspace = await workspaceService.findWorkspaceByName(schemaName);
-    console.log("Antes de editar:  ", workspace)
-    console.log(req.body)
     if(name) (console.log(await workspace.update({title: name})))
 
     if(code) await workspace.update({code: code})
 
-
-    // console.log("Despues de editar:  ", workspace)
     res.status(200).json({message: "Schema updated succesfully."});
   } catch (error) {
     next(error);
