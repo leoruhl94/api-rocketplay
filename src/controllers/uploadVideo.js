@@ -24,12 +24,13 @@ router.post("/database", async (req, res, next) => {
     // id - title - description - link - externalid - channelname - channelavatar - thumbnail - userId - categoryId
     // Avatar - Autor - Descripcion - UUID (video) - Link AWS - Titulo video - Likes - 
     let { title, avatar, author, description, thumbnail, memberId, categoryId } = req.body
+    let thumb = thumbnail === '' ? "defaultThumbnail.jpg" : thumbnail
     const schemaName = author.replace(/\s/g, "").toLowerCase();
     let timestamps = getTime()
 
     const sql = `
     INSERT INTO ${schemaName}.videos (title, description, channelname, channelavatar, thumbnail, link, "memberId", "categoryId", "createdAt", "updatedAt")
-    VALUES ('${title}', '${description}', '${author}', '${avatar}', '${thumbnail}', '${title}', '${memberId}', '${categoryId}', '${timestamps}', '${timestamps}')
+    VALUES ('${title}', '${description}', '${author}', '${avatar}', '${thumb}', '${title}', '${memberId}', '${categoryId}', '${timestamps}', '${timestamps}')
     `;
     
     await sequelize.query(sql, {

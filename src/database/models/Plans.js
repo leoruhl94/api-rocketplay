@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Plans.init({
   id: {type: DataTypes.STRING, primaryKey: true }, // id (mp)
     name: DataTypes.STRING,  //reason (mp)
-    description: DataTypes.TEXT,
+    description: DataTypes.ARRAY(DataTypes.STRING),
     price: DataTypes.INTEGER, //(auto_recurring) transaction_amount
     userLimit: DataTypes.INTEGER,
     link_checkout: DataTypes.STRING, //init_point (mp)

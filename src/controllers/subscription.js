@@ -46,7 +46,6 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
   // recibo id del pago
   const { subscription_id, mail } = req.body;
-  console.log("subscription email >>1 ", subscription_id, mail);
   try {
     // buscamos en mp la data del pago de la suscripcion
     let userPaymentData = await subscriptionService.findOneMP(subscription_id);
@@ -65,7 +64,7 @@ router.post("/", async (req, res, next) => {
         id: userPaymentData.preapproval_plan_id,
       },
     });
-    console.log("Sub ID1:  ", subscription_id);
+
     // creo la asociacion de la suscripcion con el plan
     await plan.setSubscriptions(subscription_id);
 
@@ -75,9 +74,6 @@ router.post("/", async (req, res, next) => {
     await user.setSubscriptions(subscription_id);
     const schemaName = user.name.replace(/\s/g, "").toLowerCase();
     let foundSchema = await Schemas.findOne({ where: { name: schemaName } });
-
-    console.log("found Schema =>", foundSchema);
-    console.log("================================¨==============================================================================");
 
     if (foundSchema) {
       await sequelize.dropSchema(foundSchema.name);
@@ -111,7 +107,7 @@ router.post("/", async (req, res, next) => {
           await createdSubscription[0].update({
             schema_id: schema.id,
           });
-          
+
           let workspaces = user.workspaces || [];
           let workspacesTitles = user.workspacesTitles || [];
           await user.update({ workspaces: [...workspaces, schemaName] });
@@ -162,6 +158,25 @@ router.put("/", async (req, res, next) => {
 
       if (subscriptionUpdated.status === "cancelled") {
         // cambiar en tabla schema a cancelled
+        let schema = await Schemas.findByPk(subscription.schema_id);
+
+        let allUsers = await Users.findAll();
+
+        const usersMapped = allUsers.filter((user) =>
+          user.workspaces?.includes(schema.name)
+        );
+
+        usersMapped.map(async (user) => {
+          let newWorkspaces = user.workspaces.filter(
+            (workspace) => workspace !== schema.name
+          );
+          await user.update({ workspaces: newWorkspaces });
+          let newWorkspacesTitles = user.workspacesTitles.filter(
+            (workspace) => workspace !== schema.title
+          );
+          await user.update({ workspacesTitles: newWorkspacesTitles });
+        });
+        await schema.update({ status: status });
         await user.update({ isBusiness: false });
       }
 
@@ -204,5 +219,46 @@ router.put("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.put("/test", async (req, res, next) => {
+  const { email, status, id } = req.body;
+  try {
+    let user = await userService.findOneUser(email);
+    let subscription = await subscriptionService.findOneDB(
+      user.subscriptions[0].id
+    );
+
+    let schema = await Schemas.findByPk(subscription.schema_id);
+
+    let allUsers = await Users.findAll();
+
+    const usersMapped = allUsers.filter((user) =>
+      user.workspaces?.includes(schema.name)
+    );
+
+    usersMapped.map(async (user) => {
+      let newWorkspaces = user.workspaces.filter(
+        (workspace) => workspace !== schema.name
+      );
+      await user.update({ workspaces: newWorkspaces });
+      let newWorkspacesTitles = user.workspacesTitles.filter(
+        (workspace) => workspace !== schema.title
+      );
+      await user.update({ workspacesTitles: newWorkspacesTitles });
+    });
+
+    await user.update({ isBusiness: false });
+    res.status(200).json({ usersMapped });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// router.put("/test1", async (req, res, next) => {
+//   const { email } = req.body;
+//   const user = await Users.findOne({ where: { mail: email } });
+//   await user.update({ workspaces: [...user.workspaces, "jimena medina"] });
+//   res.status(200).json({ message: "Te lo hardocdie, te aviso" });
+// });
 
 module.exports = router;

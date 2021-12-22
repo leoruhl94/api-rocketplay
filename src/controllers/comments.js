@@ -44,7 +44,8 @@ router.get("/", async (req, res, next) => {
     schemaName = schemaName.replace(/\s/g, "").toLowerCase();
     try {
         let sql = `
-        SELECT c.id AS "commentId", m.name AS "memberName", m.id AS "memberId", c.description AS text, v.title AS "videoTitle", v.id AS "videoId", v.channelname, c."createdAt"
+        SELECT c.id AS "commentId", m.name AS "memberName", m.id AS "memberId", c.description AS text, 
+        v.title AS "videoTitle", v.id AS "videoId", v.channelname, c."createdAt", c.status AS "commentStatus"
         FROM ${schemaName}.comments AS c
         LEFT JOIN ${schemaName}.videos AS v ON c."videoId" = v.id
         LEFT JOIN ${schemaName}.members AS m ON c."memberId" = m.id
@@ -78,6 +79,25 @@ router.put("/", async (req, res, next) => {
         res.status(200).json({message: "Comment succesfully deleted"})
     } catch(error) {
         next(error)
+    }
+})
+
+router.put("/status", async (req, res, next) => {
+    let {schemaName, commentId, status} = req.body
+    schemaName = schemaName.replace(/\s/g, "").toLowerCase();
+
+    try {
+        const sql = `
+        UPDATE ${schemaName}.comments
+        SET status = '${status}'
+        WHERE id = '${commentId}'
+        `
+        await sequelize.query(sql, {
+            type: sequelize.QueryTypes.INSERT
+        })
+        res.json({message: "Comment updated succesfully"})
+    } catch ( error){
+        next(error) 
     }
 })
 

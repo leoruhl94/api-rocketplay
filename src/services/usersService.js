@@ -4,7 +4,7 @@ class UsersService {
   constructor() {
     this.users = [];
   }
-
+ 
   async findOrCreateUser({name, mail, youtubeChannel=null, isBusiness=false, workspaces=null}) {
     try {
       let foundUser = await Users.findOne({where:{
@@ -60,7 +60,7 @@ class UsersService {
     try {
       const user = await Users.findOne({
         where: { mail: email },
-        include: ["subscriptions"],
+        include: ["subscriptions","schemas"],
       });
       return user;
     } catch (error) {
@@ -68,5 +68,5 @@ class UsersService {
     }
   }
 }
-
+ 
 module.exports = UsersService;

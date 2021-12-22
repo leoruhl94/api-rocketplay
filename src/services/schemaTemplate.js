@@ -21,6 +21,10 @@ module.exports = async function createTemplate(name) {
         allowNull: false,
         defaultValue: "subscriber",
       },
+      status: {
+        type: DataTypes.ENUM("active", "deleted"),
+        defaultValue: "active",
+      },
     },
     {
       sequelize,
@@ -42,8 +46,9 @@ module.exports = async function createTemplate(name) {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
-      description: {
-        type: DataTypes.TEXT,
+      status: {
+        type: DataTypes.ENUM("active", "deleted"),
+        defaultValue: "active",
       },
     },
     {
@@ -61,7 +66,10 @@ module.exports = async function createTemplate(name) {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+      },
+      status: {
+        type: DataTypes.ENUM("active", "deleted"),
+        defaultValue: "active",
       },
     },
     {
@@ -102,6 +110,10 @@ module.exports = async function createTemplate(name) {
       thumbnail: {
         type: DataTypes.STRING,
       },
+      status: {
+        type: DataTypes.ENUM("active", "deleted"),
+        defaultValue: "active",
+      },
     },
     {
       sequelize,
@@ -136,6 +148,10 @@ module.exports = async function createTemplate(name) {
       description: {
         type: DataTypes.TEXT,
         allowNull: false,
+      },
+      status: {
+        type: DataTypes.ENUM("active", "deleted"),
+        defaultValue: "active",
       },
     },
     {
